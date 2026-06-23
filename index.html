@@ -65,6 +65,10 @@
             email: "sdnegeri.sekardoja@gmail.com",
             about: "SD Negeri Sekardoja berkomitmen untuk menyediakan pendidikan dasar berkualitas tinggi yang memadukan keunggulan akademik dengan pengembangan akhlak mulia dan karakter mulia siswa secara terpadu di Pamulihan Larangan Brebes.",
             history: "Didirikan demi melayani akses pendidikan bagi warga desa Sekardoja, sekolah kami telah berkembang menjadi salah satu sekolah dasar percontohan yang menerapkan Kurikulum Merdeka secara kreatif.",
+            logoUrl: "", // custom school logo URL (empty fallback to default SVG)
+            ministryLogoUrl: "", // custom ministry badge URL (empty fallback to default SVG)
+            ministryText1: "Kementerian Pendidikan",
+            ministryText2: "Republik Indonesia",
             principal: {
                 name: "H. Sukardo, S.Pd., M.Pd.",
                 speech: "Assalamualaikum Wr. Wb. Puji syukur kami panjatkan kehadirat Allah SWT atas limpahan rahmat-Nya sehingga kami dapat menghadirkan media informasi resmi SD NEGERI SEKARDOJA ini. Di era digitalisasi pendidikan, transparansi dan kemudahan akses informasi adalah prioritas utama kami untuk mendukung tumbuh kembang siswa yang cerdas, berkarakter, dan religius.",
@@ -149,17 +153,9 @@
         <div class="absolute inset-0 bg-gradient-to-r from-blue-900/30 to-transparent pointer-events-none"></div>
         
         <div class="z-10 flex items-center space-x-4 mb-4 md:mb-0">
-            <!-- Custom Brebes Regional Logo SVG -->
-            <div class="w-16 h-16 md:w-20 md:h-20 bg-white/10 backdrop-blur-sm p-1.5 rounded-full border border-white/20 flex items-center justify-center">
-                <svg viewBox="0 0 100 100" class="w-full h-full text-emerald-400">
-                    <polygon points="50,5 90,25 90,75 50,95 10,75 10,25" fill="#1b5e20" stroke="#ffd700" stroke-width="3.5"/>
-                    <circle cx="50" cy="50" r="28" fill="#1e88e5" />
-                    <!-- Shield inner detail -->
-                    <path d="M50,30 Q65,40 50,70 Q35,40 50,30" fill="#fff59d" />
-                    <!-- Padi & Kapas stylized inside -->
-                    <circle cx="50" cy="50" r="10" fill="#e53935" />
-                    <text x="50" y="90" fill="#ffffff" font-size="10.5" font-weight="bold" text-anchor="middle">BREBES</text>
-                </svg>
+            <!-- Custom Brebes Regional Logo SVG or Custom Image -->
+            <div id="header-logo-container" class="w-16 h-16 md:w-20 md:h-20 bg-white/10 backdrop-blur-sm p-1.5 rounded-full border border-white/20 flex items-center justify-center">
+                <!-- Dynamic Logo Loaded Here -->
             </div>
             <div>
                 <h1 id="header-school-name" class="text-2xl md:text-4xl font-extrabold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-white to-amber-200 drop-shadow-md">
@@ -173,15 +169,12 @@
 
         <!-- Tut Wuri Handayani Badge -->
         <div class="z-10 flex items-center space-x-3 bg-slate-900/40 backdrop-blur-xs py-2 px-4 rounded-xl border border-white/10">
-            <svg class="w-11 h-11 text-sky-400" viewBox="0 0 100 100" fill="currentColor">
-                <polygon points="50,10 85,35 85,75 50,90 15,75 15,35" fill="#0066cc" stroke="#ffffff" stroke-width="2"/>
-                <polygon points="50,22 75,40 75,70 50,82 25,70 25,40" fill="#ffffff"/>
-                <path d="M50,30 L55,48 L73,48 L58,58 L63,76 L50,65 L37,76 L42,58 L27,48 L45,48 Z" fill="#ffcc00"/>
-                <text x="50" y="97" fill="#ffffff" font-size="7.5" font-weight="bold" text-anchor="middle">TUT WURI HANDAYANI</text>
-            </svg>
+            <div id="ministry-logo-container" class="flex-shrink-0 flex items-center justify-center">
+                <!-- Dynamic Ministry Logo Loaded Here -->
+            </div>
             <div>
-                <div class="text-[10px] text-slate-400">Kementerian Pendidikan</div>
-                <div class="text-xs font-bold text-slate-200 leading-tight">Republik Indonesia</div>
+                <div id="header-ministry-text1" class="text-[10px] text-slate-400">Kementerian Pendidikan</div>
+                <div id="header-ministry-text2" class="text-xs font-bold text-slate-200 leading-tight">Republik Indonesia</div>
             </div>
         </div>
     </header>
@@ -558,11 +551,9 @@
             <!-- Company profile and info -->
             <div class="lg:col-span-4 space-y-4">
                 <div class="flex items-center space-x-3">
-                    <svg viewBox="0 0 100 100" class="w-12 h-12 text-emerald-400 flex-shrink-0">
-                        <polygon points="50,5 90,25 90,75 50,95 10,75 10,25" fill="#1b5e20" stroke="#ffd700" stroke-width="3"/>
-                        <circle cx="50" cy="50" r="28" fill="#1e88e5"/>
-                        <path d="M50,30 Q65,40 50,70 Q35,40 50,30" fill="#fff59d"/>
-                    </svg>
+                    <div id="footer-logo-container" class="flex-shrink-0 flex items-center justify-center">
+                        <!-- Dynamic Footer Logo Loaded Here -->
+                    </div>
                     <div>
                         <h4 id="footer-school-name" class="font-extrabold text-base text-slate-100 uppercase">SD NEGERI SEKARDOJA</h4>
                         <p class="text-[10px] text-slate-500 tracking-widest uppercase">Brebes, Jawa Tengah</p>
@@ -934,6 +925,28 @@
                         </div>
 
                         <div class="border-t border-slate-100 pt-4 space-y-4">
+                            <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wider">Kustomisasi Logo & Kementerian (Header)</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">URL Logo Sekolah (Kosongkan untuk Default)</label>
+                                    <input type="text" id="input-school-logo-url" class="w-full text-xs p-3 border border-slate-200 rounded-lg outline-none" placeholder="Contoh: https://link-ke-gambar-logo-sekolah.png">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">URL Logo Kementerian (Kosongkan untuk Default)</label>
+                                    <input type="text" id="input-ministry-logo-url" class="w-full text-xs p-3 border border-slate-200 rounded-lg outline-none" placeholder="Contoh: https://link-ke-gambar-tut-wuri.png">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Teks Kementerian Baris 1</label>
+                                    <input type="text" id="input-ministry-text1" class="w-full text-xs p-3 border border-slate-200 rounded-lg outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Teks Kementerian Baris 2</label>
+                                    <input type="text" id="input-ministry-text2" class="w-full text-xs p-3 border border-slate-200 rounded-lg outline-none">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-slate-100 pt-4 space-y-4">
                             <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wider">Deskripsi & Sejarah (Tentang Sekolah)</h4>
                             <div>
                                 <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Deskripsi Singkat</label>
@@ -1259,6 +1272,59 @@
             document.getElementById('footer-school-email').innerText = appData.email;
             document.getElementById('footer-about-summary').innerText = appData.about;
 
+            // Render Dynamic Logos (Header and Footer)
+            const logoContainer = document.getElementById('header-logo-container');
+            const footerLogoContainer = document.getElementById('footer-logo-container');
+            const defaultSchoolLogoSVG = `
+                <svg viewBox="0 0 100 100" class="w-full h-full text-emerald-400">
+                    <polygon points="50,5 90,25 90,75 50,95 10,75 10,25" fill="#1b5e20" stroke="#ffd700" stroke-width="3.5"/>
+                    <circle cx="50" cy="50" r="28" fill="#1e88e5" />
+                    <path d="M50,30 Q65,40 50,70 Q35,40 50,30" fill="#fff59d" />
+                    <circle cx="50" cy="50" r="10" fill="#e53935" />
+                    <text x="50" y="90" fill="#ffffff" font-size="10.5" font-weight="bold" text-anchor="middle">BREBES</text>
+                </svg>
+            `;
+            const defaultFooterLogoSVG = `
+                <svg viewBox="0 0 100 100" class="w-12 h-12 text-emerald-400 flex-shrink-0">
+                    <polygon points="50,5 90,25 90,75 50,95 10,75 10,25" fill="#1b5e20" stroke="#ffd700" stroke-width="3"/>
+                    <circle cx="50" cy="50" r="28" fill="#1e88e5"/>
+                    <path d="M50,30 Q65,40 50,70 Q35,40 50,30" fill="#fff59d"/>
+                </svg>
+            `;
+
+            if (appData.logoUrl && appData.logoUrl.trim() !== "") {
+                logoContainer.innerHTML = `<img src="${appData.logoUrl}" class="w-full h-full object-contain rounded-full" onerror="this.src='https://placehold.co/150x150/0a2540/ffffff?text=Logo'">`;
+                if (footerLogoContainer) {
+                    footerLogoContainer.innerHTML = `<img src="${appData.logoUrl}" class="w-12 h-12 object-contain rounded-full" onerror="this.src='https://placehold.co/150x150/0a2540/ffffff?text=Logo'">`;
+                }
+            } else {
+                logoContainer.innerHTML = defaultSchoolLogoSVG;
+                if (footerLogoContainer) {
+                    footerLogoContainer.innerHTML = defaultFooterLogoSVG;
+                }
+            }
+
+            // Render Dynamic Ministry Badge
+            const ministryLogoContainer = document.getElementById('ministry-logo-container');
+            const defaultMinistryLogoSVG = `
+                <svg class="w-11 h-11 text-sky-400" viewBox="0 0 100 100" fill="currentColor">
+                    <polygon points="50,10 85,35 85,75 50,90 15,75 15,35" fill="#0066cc" stroke="#ffffff" stroke-width="2"/>
+                    <polygon points="50,22 75,40 75,70 50,82 25,70 25,40" fill="#ffffff"/>
+                    <path d="M50,30 L55,48 L73,48 L58,58 L63,76 L50,65 L37,76 L42,58 L27,48 L45,48 Z" fill="#ffcc00"/>
+                    <text x="50" y="97" fill="#ffffff" font-size="7.5" font-weight="bold" text-anchor="middle">TUT WURI HANDAYANI</text>
+                </svg>
+            `;
+
+            if (appData.ministryLogoUrl && appData.ministryLogoUrl.trim() !== "") {
+                ministryLogoContainer.innerHTML = `<img src="${appData.ministryLogoUrl}" class="w-11 h-11 object-contain" onerror="this.src='https://placehold.co/150x150/0066cc/ffffff?text=Kemendikbud'">`;
+            } else {
+                ministryLogoContainer.innerHTML = defaultMinistryLogoSVG;
+            }
+
+            // Render Ministry Text
+            document.getElementById('header-ministry-text1').innerText = appData.ministryText1 || "Kementerian Pendidikan";
+            document.getElementById('header-ministry-text2').innerText = appData.ministryText2 || "Republik Indonesia";
+
             // Sambutan Section
             document.getElementById('speech-name').innerText = appData.principal.name;
             document.getElementById('speech-image').src = appData.principal.image;
@@ -1537,6 +1603,12 @@
             document.getElementById('input-school-email').value = appData.email;
             document.getElementById('input-school-about').value = appData.about;
             document.getElementById('input-school-history').value = appData.history;
+
+            // Logos and ministry state binding
+            document.getElementById('input-school-logo-url').value = appData.logoUrl || "";
+            document.getElementById('input-ministry-logo-url').value = appData.ministryLogoUrl || "";
+            document.getElementById('input-ministry-text1').value = appData.ministryText1 || "Kementerian Pendidikan";
+            document.getElementById('input-ministry-text2').value = appData.ministryText2 || "Republik Indonesia";
             
             document.getElementById('input-principal-name').value = appData.principal.name;
             document.getElementById('input-principal-image').value = appData.principal.image;
@@ -1939,6 +2011,12 @@
             appData.about = document.getElementById('input-school-about').value;
             appData.history = document.getElementById('input-school-history').value;
             
+            // Logos and Ministry data
+            appData.logoUrl = document.getElementById('input-school-logo-url').value;
+            appData.ministryLogoUrl = document.getElementById('input-ministry-logo-url').value;
+            appData.ministryText1 = document.getElementById('input-ministry-text1').value;
+            appData.ministryText2 = document.getElementById('input-ministry-text2').value;
+
             // Kepala Sekolah
             appData.principal.name = document.getElementById('input-principal-name').value;
             appData.principal.image = document.getElementById('input-principal-image').value;
