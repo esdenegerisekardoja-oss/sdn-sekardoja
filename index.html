@@ -109,6 +109,9 @@
             welcomeTitle: "SELAMAT DATANG DI <br><span class=\"text-blue-600\">WEBSITE</span> SEKOLAH KAMI",
             welcomeDesc: "Website ini dirancang untuk mendukung komunikasi dan transparansi antara sekolah, siswa, orang tua, dan masyarakat. Temukan informasi terbaru, program unggulan, dan berbagai kegiatan sekolah dalam satu tempat. Bersama-sama, kita wujudkan generasi yang unggul dan berkarakter.",
             welcomeBadgeText: "A",
+            welcomeImg1: "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80&w=300",
+            welcomeImg2: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=300",
+            welcomeImg3: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=300",
             principal: {
                 name: "H. Sukardo, S.Pd., M.Pd.",
                 speech: "Assalamualaikum Wr. Wb. Puji syukur kami panjatkan kehadirat Allah SWT atas limpahan rahmat-Nya sehingga kami dapat menghadirkan media informasi resmi SD NEGERI SEKARDOJA ini. Di era digitalisasi pendidikan, transparansi dan kemudahan akses informasi adalah prioritas utama kami untuk mendukung tumbuh kembang siswa yang cerdas, berkarakter, dan religius.",
@@ -192,23 +195,21 @@
             ]
         };
 
-        // Load active state from localStorage or use defaults
-        let appData = JSON.parse(localStorage.getItem('sekardoja_comprehensive_data')) || DEFAULT_SCHOOL_DATA;
+        // Initialize state globally
+        window.appData = JSON.parse(localStorage.getItem('sekardoja_comprehensive_data')) || DEFAULT_SCHOOL_DATA;
 
         // Ensure newly introduced properties exist in appData (backwards compatibility)
-        if (!appData.welcomeTitle) appData.welcomeTitle = DEFAULT_SCHOOL_DATA.welcomeTitle;
-        if (!appData.welcomeDesc) appData.welcomeDesc = DEFAULT_SCHOOL_DATA.welcomeDesc;
-        if (!appData.welcomeBadgeText) appData.welcomeBadgeText = DEFAULT_SCHOOL_DATA.welcomeBadgeText;
-        if (!appData.heroTagline) appData.heroTagline = DEFAULT_SCHOOL_DATA.heroTagline;
-        if (!appData.heroTitle) appData.heroTitle = DEFAULT_SCHOOL_DATA.heroTitle;
-        if (!appData.heroDesc) appData.heroDesc = DEFAULT_SCHOOL_DATA.heroDesc;
-        if (!appData.advantages) appData.advantages = DEFAULT_SCHOOL_DATA.advantages;
-        if (!appData.partners) appData.partners = DEFAULT_SCHOOL_DATA.partners;
-
-        function saveState() {
-            localStorage.setItem('sekardoja_comprehensive_data', JSON.stringify(appData));
-            renderAllSections();
-        }
+        if (!window.appData.welcomeTitle) window.appData.welcomeTitle = DEFAULT_SCHOOL_DATA.welcomeTitle;
+        if (!window.appData.welcomeDesc) window.appData.welcomeDesc = DEFAULT_SCHOOL_DATA.welcomeDesc;
+        if (!window.appData.welcomeBadgeText) window.appData.welcomeBadgeText = DEFAULT_SCHOOL_DATA.welcomeBadgeText;
+        if (!window.appData.welcomeImg1) window.appData.welcomeImg1 = DEFAULT_SCHOOL_DATA.welcomeImg1;
+        if (!window.appData.welcomeImg2) window.appData.welcomeImg2 = DEFAULT_SCHOOL_DATA.welcomeImg2;
+        if (!window.appData.welcomeImg3) window.appData.welcomeImg3 = DEFAULT_SCHOOL_DATA.welcomeImg3;
+        if (!window.appData.heroTagline) window.appData.heroTagline = DEFAULT_SCHOOL_DATA.heroTagline;
+        if (!window.appData.heroTitle) window.appData.heroTitle = DEFAULT_SCHOOL_DATA.heroTitle;
+        if (!window.appData.heroDesc) window.appData.heroDesc = DEFAULT_SCHOOL_DATA.heroDesc;
+        if (!window.appData.advantages) window.appData.advantages = DEFAULT_SCHOOL_DATA.advantages;
+        if (!window.appData.partners) window.appData.partners = DEFAULT_SCHOOL_DATA.partners;
     </script>
 
     <!-- Top banner matching the corporate header shown in image_34038c.jpg and image_34e564.png -->
@@ -377,11 +378,11 @@
             <div class="absolute -bottom-10 -left-10 w-48 h-48 bg-sky-200/50 rounded-full blur-2xl"></div>
             
             <div class="bg-white/80 backdrop-blur-md rounded-2xl p-6 md:p-10 border border-white/60 shadow-xl max-w-2xl relative z-10 flex flex-col md:flex-row items-center gap-6">
-                <!-- Decorative rotating grid of school life illustrations -->
+                <!-- Decorative rotating grid of school life illustrations (Dinamis / Editable via Admin Panel) -->
                 <div class="flex-shrink-0 grid grid-cols-2 gap-2 w-48 h-48">
-                    <img class="w-full h-full object-cover rounded-xl shadow-xs border-2 border-white rotate-[-3deg]" src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80&w=300" alt="Belajar" onerror="this.src='https://placehold.co/150x150/0a2540/ffffff?text=Siswa'">
-                    <img class="w-full h-full object-cover rounded-xl shadow-xs border-2 border-white rotate-[4deg]" src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=300" alt="Upacara" onerror="this.src='https://placehold.co/150x150/f59e0b/ffffff?text=Upacara'">
-                    <img class="w-full h-full object-cover rounded-xl shadow-xs border-2 border-white rotate-[-2deg]" src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=300" alt="Kelas" onerror="this.src='https://placehold.co/150x150/0284c7/ffffff?text=Kelas'">
+                    <img id="welcome-img1-display" class="w-full h-full object-cover rounded-xl shadow-xs border-2 border-white rotate-[-3deg]" src="" alt="Belajar" onerror="this.src='https://placehold.co/150x150/0a2540/ffffff?text=Siswa1'">
+                    <img id="welcome-img2-display" class="w-full h-full object-cover rounded-xl shadow-xs border-2 border-white rotate-[4deg]" src="" alt="Upacara" onerror="this.src='https://placehold.co/150x150/f59e0b/ffffff?text=Siswa2'">
+                    <img id="welcome-img3-display" class="w-full h-full object-cover rounded-xl shadow-xs border-2 border-white rotate-[-2deg]" src="" alt="Kelas" onerror="this.src='https://placehold.co/150x150/0284c7/ffffff?text=Siswa3'">
                     <div class="bg-blue-600 rounded-xl flex flex-col items-center justify-center text-white p-2 text-center rotate-[3deg] shadow-xs">
                         <i class="fa-solid fa-star text-amber-300 text-lg mb-1 animate-pulse"></i>
                         <span class="text-[9px] font-bold tracking-wider uppercase">Terakreditasi</span>
@@ -396,7 +397,7 @@
                         SELAMAT DATANG DI <br><span class="text-blue-600">WEBSITE</span> SEKOLAH KAMI
                     </h3>
                     <p id="welcome-desc-display" class="text-slate-600 text-xs mt-3 leading-relaxed">
-                        Website ini dirancang untuk mendukung komunikasi dan transparansi antara sekolah, siswa, orang tua, dan masyarakat. Temukan informasi terbaru, program unggulan, dan berbagai kegiatan sekolah dalam satu tempat. Bersama-sama, kita wujudkan generasi yang unggul dan berkarakter.
+                        Website ini dirancang untuk mendukung komunikasi dan transparansi antara sekolah, siswa, orang tua, dan masyarakat. Temukan informasi terbaru, program unggulan, and berbagai kegiatan sekolah dalam satu tempat. Bersama-sama, kita wujudkan generasi yang unggul dan berkarakter.
                     </p>
                 </div>
             </div>
@@ -686,7 +687,7 @@
                 <button onclick="closeStructureModal()" class="text-white/80 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <div id="structure-org-tree" class="p-6 space-y-4">
-                <!-- Org tree loaded dynamically from appData.organization -->
+                <!-- Org tree loaded dynamically from window.appData.organization -->
             </div>
             <div class="bg-slate-50 px-6 py-4 flex justify-end border-t border-slate-100">
                 <button onclick="closeStructureModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-950 text-white rounded-lg text-xs font-bold">Tutup</button>
@@ -947,7 +948,7 @@
                             </div>
                         </div>
 
-                        <!-- Welcome card profile (image_5361e4.jpg) -->
+                        <!-- Welcome card profile (image_5361e4.jpg) with Editable Grid Photos -->
                         <div class="border-t border-slate-100 pt-4 space-y-4">
                             <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wider">Profil Selamat Datang (Welcome Card Hero - Kanan)</h4>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -962,6 +963,26 @@
                                 <div>
                                     <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Nilai Akreditasi / Teks Badge</label>
                                     <input type="text" id="input-welcome-badge" class="w-full text-xs p-3 border border-slate-200 rounded-lg outline-none" placeholder="Contoh: A">
+                                </div>
+                            </div>
+
+                            <!-- Welcome Grid Images Inputs (image_7a5fa5.png) -->
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-150 space-y-4 mt-3">
+                                <h5 class="text-xs font-extrabold text-blue-900 uppercase"><i class="fa-solid fa-images mr-1"></i> Kelola 3 Foto Grid Dekoratif (Welcome Card)</h5>
+                                <p class="text-[9px] text-amber-600 font-semibold"><i class="fa-solid fa-circle-info"></i> Tautan ini mendukung link Google Drive/Dropbox secara langsung dalam resolusi tinggi (tidak pecah).</p>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                    <div>
+                                        <label class="block text-[9px] font-bold text-slate-600 uppercase mb-1">URL Foto 1 (Kiri Atas)</label>
+                                        <input type="text" id="input-welcome-img1" class="w-full text-[11px] p-2.5 border border-slate-200 rounded-lg outline-none font-mono text-blue-600">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[9px] font-bold text-slate-600 uppercase mb-1">URL Foto 2 (Kanan Atas)</label>
+                                        <input type="text" id="input-welcome-img2" class="w-full text-[11px] p-2.5 border border-slate-200 rounded-lg outline-none font-mono text-blue-600">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[9px] font-bold text-slate-600 uppercase mb-1">URL Foto 3 (Kiri Bawah)</label>
+                                        <input type="text" id="input-welcome-img3" class="w-full text-[11px] p-2.5 border border-slate-200 rounded-lg outline-none font-mono text-blue-600">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1238,6 +1259,364 @@
         <span id="feedback-text" class="text-xs font-semibold">Perubahan berhasil disimpan!</span>
     </div>
 
+    <!-- Dynamic Firebase & Firestore Real-Time Module Integrator -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global Application Context Configuration
+        // Safely extract from environment variables
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : { apiKey: "mock-key", authDomain: "mock-domain", projectId: "mock-project" };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'sd-negeri-sekardoja';
+
+        // Reference strictly constructed using RULE 1 path directives
+        const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'schoolData', 'settings');
+
+        // Global variables exposed inside window for layout actions compatibility
+        window.appData = DEFAULT_SCHOOL_DATA;
+        let currentUser = null;
+
+        // AUTHENTICATION GUARDRAIL (RULE 3)
+        const initAuth = async () => {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (err) {
+                console.warn("Authentication initialization error, falling back to LocalStorage:", err);
+                setupLocalStorageFallback();
+            }
+        };
+
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            if (user) {
+                setupCloudSyncListener();
+            } else {
+                setupLocalStorageFallback();
+            }
+        });
+
+        // Initialize authentication process
+        initAuth();
+
+        // REAL-TIME SYNCHRONIZATION LISTENER
+        function setupCloudSyncListener() {
+            onSnapshot(docRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    window.appData = docSnap.data();
+                    ensureDataCompatibility();
+                    renderAllSections();
+                } else {
+                    // Initialize first-time dataset to Cloud
+                    window.appData = JSON.parse(localStorage.getItem('sekardoja_comprehensive_data')) || DEFAULT_SCHOOL_DATA;
+                    saveStateToCloud(window.appData);
+                }
+            }, (error) => {
+                console.warn("Cloud database sync failed (using local fallback mode):", error);
+                setupLocalStorageFallback();
+            });
+        }
+
+        function setupLocalStorageFallback() {
+            window.appData = JSON.parse(localStorage.getItem('sekardoja_comprehensive_data')) || DEFAULT_SCHOOL_DATA;
+            ensureDataCompatibility();
+            renderAllSections();
+        }
+
+        // Backward compatibility handler
+        function ensureDataCompatibility() {
+            if (!window.appData.welcomeTitle) window.appData.welcomeTitle = DEFAULT_SCHOOL_DATA.welcomeTitle;
+            if (!window.appData.welcomeDesc) window.appData.welcomeDesc = DEFAULT_SCHOOL_DATA.welcomeDesc;
+            if (!window.appData.welcomeBadgeText) window.appData.welcomeBadgeText = DEFAULT_SCHOOL_DATA.welcomeBadgeText;
+            if (!window.appData.welcomeImg1) window.appData.welcomeImg1 = DEFAULT_SCHOOL_DATA.welcomeImg1;
+            if (!window.appData.welcomeImg2) window.appData.welcomeImg2 = DEFAULT_SCHOOL_DATA.welcomeImg2;
+            if (!window.appData.welcomeImg3) window.appData.welcomeImg3 = DEFAULT_SCHOOL_DATA.welcomeImg3;
+            if (!window.appData.heroTagline) window.appData.heroTagline = DEFAULT_SCHOOL_DATA.heroTagline;
+            if (!window.appData.heroTitle) window.appData.heroTitle = DEFAULT_SCHOOL_DATA.heroTitle;
+            if (!window.appData.heroDesc) window.appData.heroDesc = DEFAULT_SCHOOL_DATA.heroDesc;
+            if (!window.appData.advantages) window.appData.advantages = DEFAULT_SCHOOL_DATA.advantages;
+            if (!window.appData.partners) window.appData.partners = DEFAULT_SCHOOL_DATA.partners;
+        }
+
+        // Save State Mutation to Cloud
+        async function saveStateToCloud(newData) {
+            localStorage.setItem('sekardoja_comprehensive_data', JSON.stringify(newData));
+            if (!currentUser) {
+                renderAllSections();
+                showToast("Tersimpan secara lokal di browser ini.");
+                return;
+            }
+            try {
+                await setDoc(docRef, newData);
+                renderAllSections();
+            } catch (err) {
+                console.warn("Gagal melakukan sinkronisasi awan, tersimpan lokal:", err);
+                renderAllSections();
+                showToast("Tersimpan lokal (Koneksi cloud terganggu).");
+            }
+        }
+
+        // Export all form saving and mutations into global window scope for inline HTML handlers
+        window.saveAdminData = function() {
+            // Profil Utama
+            window.appData.name = document.getElementById('input-school-name').value;
+            window.appData.address = document.getElementById('input-school-address').value;
+            window.appData.phone = document.getElementById('input-school-phone').value;
+            window.appData.email = document.getElementById('input-school-email').value;
+            window.appData.about = document.getElementById('input-school-about').value;
+            window.appData.history = document.getElementById('input-school-history').value;
+
+            window.appData.welcomeTitle = document.getElementById('input-welcome-title').value;
+            window.appData.welcomeDesc = document.getElementById('input-welcome-desc').value;
+            window.appData.welcomeBadgeText = document.getElementById('input-welcome-badge').value;
+            
+            // Save Welcome card 3 photos (image_7a5fa5.png)
+            window.appData.welcomeImg1 = document.getElementById('input-welcome-img1').value;
+            window.appData.welcomeImg2 = document.getElementById('input-welcome-img2').value;
+            window.appData.welcomeImg3 = document.getElementById('input-welcome-img3').value;
+
+            // Logos and Ministry data
+            window.appData.logoUrl = document.getElementById('input-school-logo-url').value;
+            window.appData.ministryLogoUrl = document.getElementById('input-ministry-logo-url').value;
+            window.appData.ministryText1 = document.getElementById('input-ministry-text1').value;
+            window.appData.ministryText2 = document.getElementById('input-ministry-text2').value;
+
+            // Kepala Sekolah
+            window.appData.principal.name = document.getElementById('input-principal-name').value;
+            window.appData.principal.image = document.getElementById('input-principal-image').value;
+            window.appData.principal.speech = document.getElementById('input-principal-speech').value;
+            
+            // Visi
+            window.appData.visi = document.getElementById('input-school-visi').value;
+
+            // Stats
+            window.appData.stats.siswa = parseInt(document.getElementById('input-stat-siswa').value) || 0;
+            window.appData.stats.rombel = parseInt(document.getElementById('input-stat-rombel').value) || 0;
+            window.appData.stats.guru = parseInt(document.getElementById('input-stat-guru').value) || 0;
+            window.appData.stats.prestasi = parseInt(document.getElementById('input-stat-prestasi').value) || 0;
+
+            // Save Hero Left Section
+            window.appData.heroTagline = document.getElementById('input-hero-tagline').value;
+            window.appData.heroTitle = document.getElementById('input-hero-title').value;
+            window.appData.heroDesc = document.getElementById('input-hero-desc').value;
+
+            // Save 4 Key Advantages
+            window.appData.advantages.forEach((adv, index) => {
+                adv.title = document.getElementById(`adv-title-${index}`).value;
+                adv.icon = document.getElementById(`adv-icon-${index}`).value;
+                adv.desc = document.getElementById(`adv-desc-${index}`).value;
+            });
+
+            // Save Partners links and parameters
+            window.appData.partners.forEach((partner, index) => {
+                partner.name = document.getElementById(`partner-name-${index}`).value;
+                partner.icon = document.getElementById(`partner-icon-${index}`).value;
+                partner.url = document.getElementById(`partner-url-${index}`).value;
+            });
+
+            // Save Gallery Photos Direct Inputs
+            window.appData.gallery.forEach((item, i) => {
+                const titleInput = document.getElementById(`gallery-photo-title-${i}`);
+                const imageInput = document.getElementById(`gallery-photo-image-${i}`);
+                if (titleInput && imageInput) {
+                    item.title = titleInput.value;
+                    item.image = imageInput.value;
+                }
+            });
+
+            syncOrgStateFromInputs();
+
+            saveStateToCloud(window.appData);
+            closeAdminModal();
+            showToast("Semua perubahan berhasil diterapkan!");
+        };
+
+        window.restoreDefaults = function() {
+            if (confirm("Apakah Anda yakin ingin mengembalikan seluruh data situs ke setelan dasar pabrik SD Negeri Sekardoja?")) {
+                window.appData = JSON.parse(JSON.stringify(DEFAULT_SCHOOL_DATA));
+                saveStateToCloud(window.appData);
+                openAdminModal(); // Reload fields view
+                showToast("Setelan bawaan sekolah berhasil dipulihkan!");
+            }
+        };
+
+        // Export helper mutations so inline actions can utilize them
+        window.deleteTeacher = function(index) {
+            window.appData.teachers.splice(index, 1);
+            renderAdminTeachersList();
+            showToast("Guru berhasil dihapus!");
+        };
+        window.deleteFacility = function(index) {
+            window.appData.facilities.splice(index, 1);
+            renderAdminFacilitiesList();
+            showToast("Sarana prasarana berhasil dihapus!");
+        };
+        window.deleteExtracurricular = function(index) {
+            window.appData.extracurriculars.splice(index, 1);
+            renderAdminKesiswaanList();
+            showToast("Ekstrakurikuler berhasil dihapus!");
+        };
+        window.deletePost = function(index) {
+            window.appData.posts.splice(index, 1);
+            renderAdminPostsList();
+            showToast("Postingan berhasil dihapus!");
+        };
+        window.deleteGalleryPhoto = function(index) {
+            window.appData.gallery.splice(index, 1);
+            renderAdminGalleryList();
+            showToast("Foto dihapus dari galeri!");
+        };
+        window.deleteGalleryVideo = function(index) {
+            window.appData.videos.splice(index, 1);
+            renderAdminGalleryList();
+            showToast("Link video berhasil dihapus!");
+        };
+        window.deleteQuote = function(index) {
+            window.appData.quotes.splice(index, 1);
+            renderAdminQuotesList();
+            showToast("Quote berhasil dihapus!");
+        };
+        window.deleteOrgRole = function(index) {
+            syncOrgStateFromInputs();
+            window.appData.organization.splice(index, 1);
+            renderAdminOrgList();
+        };
+
+        window.createNewTeacher = function() {
+            const name = prompt("Nama Lengkap Guru (dengan gelar):");
+            if (!name) return;
+            const role = prompt("Jabatan / Mata Pelajaran:", "Guru Kelas");
+            const nip = prompt("NIP Guru (Opsional):", "");
+            const image = prompt("URL Foto Guru (Opsional):", "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=300");
+            
+            window.appData.teachers.push({
+                name,
+                role: role || "Guru Kelas",
+                nip: nip || "",
+                image: image || "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=300"
+            });
+            renderAdminTeachersList();
+            showToast("Guru berhasil ditambahkan ke daftar!");
+        };
+
+        window.createNewFacility = function() {
+            const title = prompt("Nama Sarana Prasarana:");
+            if (!title) return;
+            const desc = prompt("Keterangan Detail Sarpras:");
+            const icon = prompt("Nama Ikon FontAwesome (contoh: fa-door-open, fa-book, fa-desktop):", "fa-building");
+            
+            window.appData.facilities.push({
+                title,
+                desc: desc || "Fasilitas penunjang pembelajaran berkualitas unggulan.",
+                icon: icon || "fa-building"
+            });
+            renderAdminFacilitiesList();
+            showToast("Sarana prasarana baru berhasil ditambahkan!");
+        };
+
+        window.createNewExtracurricular = function() {
+            const name = prompt("Nama Kegiatan Ekskul:");
+            if (!name) return;
+            const desc = prompt("Deskripsi Kegiatan:");
+            const icon = prompt("Nama Ikon FontAwesome (contoh: fa-campground, fa-drum, fa-volleyball):", "fa-star-and-crescent");
+            
+            window.appData.extracurriculars.push({
+                name,
+                desc: desc || "Kegiatan ekstrakurikuler peningkatan bakat siswa.",
+                icon: icon || "fa-star-and-crescent"
+            });
+            renderAdminKesiswaanList();
+            showToast("Ekstrakurikuler berhasil ditambahkan!");
+        };
+
+        window.createNewPost = function() {
+            const title = prompt("Masukkan Judul Postingan:");
+            if (!title) return;
+            const category = prompt("Masukkan Kategori (Berita / Artikel / Informasi):", "Berita");
+            const summary = prompt("Teks/Ringkasan Isi Postingan:");
+            const image = prompt("URL Foto Sampul (Opsional):", "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80&w=600");
+            
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            const today = new Date().toLocaleDateString('en-US', options);
+
+            window.appData.posts.unshift({
+                id: Date.now(),
+                title,
+                category: category || "Berita",
+                date: today,
+                summary: summary || "Postingan portal dinamis sekolah yang disunting langsung oleh admin SD Negeri Sekardoja.",
+                image: image || "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80&w=600"
+            });
+            renderAdminPostsList();
+            showToast("Postingan baru berhasil diluncurkan!");
+        };
+
+        window.addNewGalleryPhoto = function() {
+            const title = prompt("Judul Foto Kegiatan:");
+            if (!title) return;
+            const image = prompt("URL Foto Kegiatan (Mendukung Google Drive & Dropbox):");
+            if (!image) return;
+
+            window.appData.gallery.unshift({
+                id: Date.now(),
+                title,
+                image,
+                type: "FOTO"
+            });
+            renderAdminGalleryList();
+            showToast("Foto baru berhasil ditambahkan ke galeri!");
+        };
+
+        window.addNewGalleryVideo = function() {
+            const title = prompt("Judul Dokumentasi Video:");
+            if (!title) return;
+            const embedUrl = prompt("URL Video YouTube Embed (contoh: https://www.youtube.com/embed/dQw4w9WgXcQ):");
+            if (!embedUrl) return;
+
+            if (!window.appData.videos) window.appData.videos = [];
+            window.appData.videos.push({
+                id: Date.now(),
+                title,
+                embedUrl
+            });
+            renderAdminGalleryList();
+            showToast("Link video berhasil ditambahkan ke kanal!");
+        };
+
+        window.createNewQuote = function() {
+            const text = prompt("Isi Kalimat Quote Motivasi:");
+            if (!text) return;
+            const author = prompt("Nama Penulis Quote:", "Anonim");
+            window.appData.quotes.push({
+                text,
+                author: author || "Anonim"
+            });
+            renderAdminQuotesList();
+            showToast("Quote motivasi baru ditambahkan!");
+        };
+
+        window.addOrgRole = function() {
+            syncOrgStateFromInputs();
+            window.appData.organization.push({ role: "Jabatan Baru", name: "Nama Pejabat" });
+            renderAdminOrgList();
+        };
+
+        window.updateQuoteText = function(index, value) {
+            window.appData.quotes[index].text = value;
+        };
+        window.updateQuoteAuthor = function(index, value) {
+            window.appData.quotes[index].author = value;
+        };
+    </script>
+
+    <!-- MAIN JAVASCRIPT GLOBAL LOGIC -->
     <script>
         // Active states & Carousel controls
         let activeQuoteIndex = 0;
@@ -1267,12 +1646,12 @@
         // Render quotes slideshow
         function renderQuotes() {
             const container = document.getElementById('quotes-container');
-            if (!appData.quotes || appData.quotes.length === 0) {
+            if (!window.appData.quotes || window.appData.quotes.length === 0) {
                 container.innerHTML = `<p class="text-slate-400 text-xs">Belum ada quote inspiratif.</p>`;
                 return;
             }
-            if (activeQuoteIndex >= appData.quotes.length) activeQuoteIndex = 0;
-            const q = appData.quotes[activeQuoteIndex];
+            if (activeQuoteIndex >= window.appData.quotes.length) activeQuoteIndex = 0;
+            const q = window.appData.quotes[activeQuoteIndex];
             container.innerHTML = `
                 <p class="text-xs md:text-sm font-semibold italic leading-relaxed text-slate-100">
                     "${q.text}"
@@ -1284,12 +1663,12 @@
         }
 
         function prevQuote() {
-            activeQuoteIndex = (activeQuoteIndex - 1 + appData.quotes.length) % appData.quotes.length;
+            activeQuoteIndex = (activeQuoteIndex - 1 + window.appData.quotes.length) % window.appData.quotes.length;
             renderQuotes();
         }
 
         function nextQuote() {
-            activeQuoteIndex = (activeQuoteIndex + 1) % appData.quotes.length;
+            activeQuoteIndex = (activeQuoteIndex + 1) % window.appData.quotes.length;
             renderQuotes();
         }
 
@@ -1300,9 +1679,9 @@
             const catHeader = document.getElementById('current-category-view');
             grid.innerHTML = '';
             
-            let filtered = appData.posts;
+            let filtered = window.appData.posts;
             if (category !== 'Semua') {
-                filtered = appData.posts.filter(p => p.category.toLowerCase() === category.toLowerCase());
+                filtered = window.appData.posts.filter(p => p.category.toLowerCase() === category.toLowerCase());
                 catHeader.innerText = `${category} Terbaru`;
             } else {
                 catHeader.innerText = "Berita & Artikel Terbaru";
@@ -1330,7 +1709,7 @@
                             </div>
                             <div class="mt-4 pt-3 border-t border-slate-50 flex justify-end">
                                 <button onclick="openPostModal('${post.title}', '${post.summary}', '${post.image}', '${post.category}')" class="text-[11px] font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1">
-                                    Baca Selengkapnya <i class="fa-solid fa-chevron-right text-[9px]"></i>
+                                    Baca Selengkapnya <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1.5 transition-transform"></i>
                                 </button>
                             </div>
                         </div>
@@ -1365,23 +1744,28 @@
 
         function renderAllSections() {
             // Update Text Nodes
-            document.getElementById('header-school-name').innerText = appData.name;
-            document.getElementById('footer-school-name').innerText = appData.name;
-            document.getElementById('header-school-address').innerHTML = `<i class="fa-solid fa-location-dot text-amber-400"></i> ${appData.address}`;
-            document.getElementById('footer-school-address').innerText = appData.address;
-            document.getElementById('footer-school-phone').innerText = appData.phone;
-            document.getElementById('footer-school-email').innerText = appData.email;
-            document.getElementById('footer-about-summary').innerText = appData.about;
+            document.getElementById('header-school-name').innerText = window.appData.name;
+            document.getElementById('footer-school-name').innerText = window.appData.name;
+            document.getElementById('header-school-address').innerHTML = `<i class="fa-solid fa-location-dot text-amber-400"></i> ${window.appData.address}`;
+            document.getElementById('footer-school-address').innerText = window.appData.address;
+            document.getElementById('footer-school-phone').innerText = window.appData.phone;
+            document.getElementById('footer-school-email').innerText = window.appData.email;
+            document.getElementById('footer-about-summary').innerText = window.appData.about;
 
             // Render Dynamic Welcome Card Kiri (Situs Resmi Selamat Datang)
-            document.getElementById('hero-tagline-display').innerText = appData.heroTagline || "SITUS RESMI";
-            document.getElementById('hero-title-display').innerHTML = appData.heroTitle || "Selamat <br class=\"hidden md:inline\">Datang";
-            document.getElementById('hero-desc-display').innerText = appData.heroDesc || "";
+            document.getElementById('hero-tagline-display').innerText = window.appData.heroTagline || "SITUS RESMI";
+            document.getElementById('hero-title-display').innerHTML = window.appData.heroTitle || "Selamat <br class=\"hidden md:inline\">Datang";
+            document.getElementById('hero-desc-display').innerText = window.appData.heroDesc || "";
 
             // Render Dynamic Welcome Card Kanan (Hero section right panel - image_5361e4.jpg)
-            document.getElementById('welcome-title-display').innerHTML = appData.welcomeTitle || 'SELAMAT DATANG DI <br><span class="text-blue-600">WEBSITE</span> SEKOLAH KAMI';
-            document.getElementById('welcome-desc-display').innerText = appData.welcomeDesc || '';
-            document.getElementById('welcome-badge-display').innerText = appData.welcomeBadgeText || 'A';
+            document.getElementById('welcome-title-display').innerHTML = window.appData.welcomeTitle || 'SELAMAT DATANG DI <br><span class="text-blue-600">WEBSITE</span> SEKOLAH KAMI';
+            document.getElementById('welcome-desc-display').innerText = window.appData.welcomeDesc || '';
+            document.getElementById('welcome-badge-display').innerText = window.appData.welcomeBadgeText || 'A';
+
+            // Render 3 Welcome Card Grid Images (Dinamis / Editable)
+            document.getElementById('welcome-img1-display').src = convertCloudLink(window.appData.welcomeImg1 || DEFAULT_SCHOOL_DATA.welcomeImg1);
+            document.getElementById('welcome-img2-display').src = convertCloudLink(window.appData.welcomeImg2 || DEFAULT_SCHOOL_DATA.welcomeImg2);
+            document.getElementById('welcome-img3-display').src = convertCloudLink(window.appData.welcomeImg3 || DEFAULT_SCHOOL_DATA.welcomeImg3);
 
             // Render Dynamic 4 Key Advantages
             const advantagesContainer = document.getElementById('advantages-container');
@@ -1392,7 +1776,7 @@
                 purple: "bg-purple-50 text-purple-600",
                 amber: "bg-amber-50 text-amber-600"
             };
-            appData.advantages.forEach(adv => {
+            window.appData.advantages.forEach(adv => {
                 const badgeColor = colorClassMap[adv.colorClass] || "bg-blue-50 text-blue-600";
                 advantagesContainer.innerHTML += `
                     <div class="bg-white p-6 rounded-2xl border border-slate-100 hover:shadow-lg transition-all text-center flex flex-col items-center">
@@ -1427,10 +1811,10 @@
                 </svg>
             `;
 
-            if (appData.logoUrl && appData.logoUrl.trim() !== "") {
-                logoContainer.innerHTML = `<img src="${convertCloudLink(appData.logoUrl)}" class="w-full h-full object-contain rounded-full" onerror="this.src='https://placehold.co/150x150/0a2540/ffffff?text=Logo'">`;
+            if (window.appData.logoUrl && window.appData.logoUrl.trim() !== "") {
+                logoContainer.innerHTML = `<img src="${convertCloudLink(window.appData.logoUrl)}" class="w-full h-full object-contain rounded-full" onerror="this.src='https://placehold.co/150x150/0a2540/ffffff?text=Logo'">`;
                 if (footerLogoContainer) {
-                    footerLogoContainer.innerHTML = `<img src="${convertCloudLink(appData.logoUrl)}" class="w-12 h-12 object-contain rounded-full" onerror="this.src='https://placehold.co/150x150/0a2540/ffffff?text=Logo'">`;
+                    footerLogoContainer.innerHTML = `<img src="${convertCloudLink(window.appData.logoUrl)}" class="w-12 h-12 object-contain rounded-full" onerror="this.src='https://placehold.co/150x150/0a2540/ffffff?text=Logo'">`;
                 }
             } else {
                 logoContainer.innerHTML = defaultSchoolLogoSVG;
@@ -1450,34 +1834,34 @@
                 </svg>
             `;
 
-            if (appData.ministryLogoUrl && appData.ministryLogoUrl.trim() !== "") {
-                ministryLogoContainer.innerHTML = `<img src="${convertCloudLink(appData.ministryLogoUrl)}" class="w-11 h-11 object-contain" onerror="this.src='https://placehold.co/150x150/0066cc/ffffff?text=Kemendikbud'">`;
+            if (window.appData.ministryLogoUrl && window.appData.ministryLogoUrl.trim() !== "") {
+                ministryLogoContainer.innerHTML = `<img src="${convertCloudLink(window.appData.ministryLogoUrl)}" class="w-11 h-11 object-contain" onerror="this.src='https://placehold.co/150x150/0066cc/ffffff?text=Kemendikbud'">`;
             } else {
                 ministryLogoContainer.innerHTML = defaultMinistryLogoSVG;
             }
 
             // Render Ministry Text
-            document.getElementById('header-ministry-text1').innerText = appData.ministryText1 || "Kementerian Pendidikan";
-            document.getElementById('header-ministry-text2').innerText = appData.ministryText2 || "Republik Indonesia";
+            document.getElementById('header-ministry-text1').innerText = window.appData.ministryText1 || "Kementerian Pendidikan";
+            document.getElementById('header-ministry-text2').innerText = window.appData.ministryText2 || "Republik Indonesia";
 
             // Sambutan Section
-            document.getElementById('speech-name').innerText = appData.principal.name;
-            document.getElementById('speech-image').src = convertCloudLink(appData.principal.image);
+            document.getElementById('speech-name').innerText = window.appData.principal.name;
+            document.getElementById('speech-image').src = convertCloudLink(window.appData.principal.image);
             document.getElementById('speech-image').onerror = function() { this.src='https://placehold.co/400x500/0c1a30/ffffff?text=Principal'; };
             
             const speechTextContainer = document.getElementById('speech-text');
-            speechTextContainer.innerHTML = appData.principal.speech.split('\n').map(p => `<p class="mb-3">${p}</p>`).join('');
+            speechTextContainer.innerHTML = window.appData.principal.speech.split('\n').map(p => `<p class="mb-3">${p}</p>`).join('');
 
             // Stats Counters
-            document.getElementById('stat-siswa').innerText = appData.stats.siswa;
-            document.getElementById('stat-rombel').innerText = appData.stats.rombel;
-            document.getElementById('stat-guru').innerText = appData.stats.guru;
-            document.getElementById('stat-prestasi').innerText = appData.stats.prestasi;
+            document.getElementById('stat-siswa').innerText = window.appData.stats.siswa;
+            document.getElementById('stat-rombel').innerText = window.appData.stats.rombel;
+            document.getElementById('stat-guru').innerText = window.appData.stats.guru;
+            document.getElementById('stat-prestasi').innerText = window.appData.stats.prestasi;
 
             // News Feed
             const grid = document.getElementById('news-grid');
             grid.innerHTML = '';
-            appData.posts.forEach(post => {
+            window.appData.posts.forEach(post => {
                 grid.innerHTML += `
                     <article class="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-xs hover:shadow-lg transition-all flex flex-col">
                         <div class="relative aspect-video">
@@ -1494,7 +1878,7 @@
                             </div>
                             <div class="mt-4 pt-3 border-t border-slate-50 flex justify-end">
                                 <button onclick="openPostModal('${post.title}', '${post.summary}', '${post.image}', '${post.category}')" class="text-[11px] font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1">
-                                    Baca Selengkapnya <i class="fa-solid fa-chevron-right text-[9px]"></i>
+                                    Baca Selengkapnya <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1.5 transition-transform"></i>
                                 </button>
                             </div>
                         </div>
@@ -1505,7 +1889,7 @@
             // News Update in Footer matching image_34038c.jpg
             const footerNews = document.getElementById('footer-news');
             footerNews.innerHTML = '';
-            appData.posts.slice(0, 2).forEach(post => {
+            window.appData.posts.slice(0, 2).forEach(post => {
                 footerNews.innerHTML += `
                     <div class="flex items-center space-x-3.5">
                         <img class="w-11 h-11 object-cover rounded-lg bg-slate-800 flex-shrink-0" src="${convertCloudLink(post.image)}" alt="${post.title}" onerror="this.src='https://placehold.co/100x100/0c1a30/ffffff?text=Berita'">
@@ -1527,7 +1911,7 @@
             // Photo Gallery Grid matching image_33ffca.jpg & image_34038c.jpg style
             const galleryGrid = document.getElementById('gallery-grid');
             galleryGrid.innerHTML = '';
-            appData.gallery.forEach(item => {
+            window.appData.gallery.forEach(item => {
                 galleryGrid.innerHTML += `
                     <div class="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-xs hover:shadow-lg transition-all group cursor-pointer" onclick="openLightbox('${convertCloudLink(item.image)}', '${item.title}')">
                         <div class="relative overflow-hidden aspect-[4/3]">
@@ -1546,7 +1930,7 @@
             // Render Dynamic Partner Badges with Links
             const partnersContainer = document.getElementById('partners-container');
             partnersContainer.innerHTML = '';
-            appData.partners.forEach(partner => {
+            window.appData.partners.forEach(partner => {
                 partnersContainer.innerHTML += `
                     <a href="${partner.url || '#'}" target="_blank" class="h-8 flex items-center space-x-2 grayscale hover:grayscale-0 transition-all hover:scale-105 duration-150">
                         <i class="fa-solid ${partner.icon || 'fa-link'} ${partner.colorClass || 'text-slate-700'} text-lg"></i>
@@ -1578,8 +1962,8 @@
     <script>
         // Dialog: About/Profil
         function showAboutModal() {
-            document.getElementById('about-text-desc').innerText = appData.about;
-            document.getElementById('about-text-history').innerText = appData.history;
+            document.getElementById('about-text-desc').innerText = window.appData.about;
+            document.getElementById('about-text-history').innerText = window.appData.history;
             document.getElementById('about-modal').classList.remove('hidden');
         }
         function closeAboutModal() {
@@ -1588,9 +1972,9 @@
 
         // Dialog: Visi & Misi
         function showVisiMisiModal() {
-            document.getElementById('modal-visi').innerText = appData.visi;
+            document.getElementById('modal-visi').innerText = window.appData.visi;
             const mList = document.getElementById('modal-misi');
-            mList.innerHTML = appData.misi.map(m => `<li>${m}</li>`).join('');
+            mList.innerHTML = window.appData.misi.map(m => `<li>${m}</li>`).join('');
             document.getElementById('visi-misi-modal').classList.remove('hidden');
         }
         function closeVisiMisiModal() {
@@ -1601,7 +1985,7 @@
         function showTeachersModal() {
             const grid = document.getElementById('teachers-modal-grid');
             grid.innerHTML = '';
-            appData.teachers.forEach(t => {
+            window.appData.teachers.forEach(t => {
                 grid.innerHTML += `
                     <div class="bg-slate-50 rounded-2xl p-4 flex items-center gap-4 border border-slate-150">
                         <img class="w-14 h-14 object-cover rounded-full border border-slate-300" src="${convertCloudLink(t.image)}" onerror="this.src='https://placehold.co/150x150/0c1a30/ffffff?text=Guru'">
@@ -1623,7 +2007,7 @@
         function showStructureModal() {
             const orgContainer = document.getElementById('structure-org-tree');
             orgContainer.innerHTML = '';
-            appData.organization.forEach(item => {
+            window.appData.organization.forEach(item => {
                 orgContainer.innerHTML += `
                     <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex items-center justify-between">
                         <div>
@@ -1644,7 +2028,7 @@
         function showFacilitiesModal() {
             const list = document.getElementById('facilities-modal-list');
             list.innerHTML = '';
-            appData.facilities.forEach(item => {
+            window.appData.facilities.forEach(item => {
                 list.innerHTML += `
                     <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex items-center gap-4">
                         <div class="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-sm flex-shrink-0">
@@ -1667,7 +2051,7 @@
         function showKesiswaanModal() {
             const list = document.getElementById('kesiswaan-modal-list');
             list.innerHTML = '';
-            appData.extracurriculars.forEach(item => {
+            window.appData.extracurriculars.forEach(item => {
                 list.innerHTML += `
                     <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex gap-4">
                         <div class="w-10 h-10 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center text-sm flex-shrink-0">
@@ -1688,8 +2072,8 @@
 
         // Dialog: Siswa Dashboard & PPDB Info
         function showSiswaDashboardModal() {
-            document.getElementById('dash-siswa').innerText = appData.stats.siswa;
-            document.getElementById('dash-prestasi').innerText = appData.stats.prestasi;
+            document.getElementById('dash-siswa').innerText = window.appData.stats.siswa;
+            document.getElementById('dash-prestasi').innerText = window.appData.stats.prestasi;
             document.getElementById('siswa-dashboard-modal').classList.remove('hidden');
         }
         function closeSiswaDashboardModal() {
@@ -1700,10 +2084,10 @@
         function showVideoGalleryModal() {
             const list = document.getElementById('video-modal-list');
             list.innerHTML = '';
-            if (!appData.videos || appData.videos.length === 0) {
+            if (!window.appData.videos || window.appData.videos.length === 0) {
                 list.innerHTML = `<p class="text-slate-500 text-xs py-4 text-center">Belum ada video.</p>`;
             } else {
-                appData.videos.forEach(v => {
+                window.appData.videos.forEach(v => {
                     list.innerHTML += `
                         <div class="bg-slate-50 border border-slate-150 rounded-2xl p-4 space-y-2">
                             <span class="font-extrabold text-slate-900 text-xs leading-snug block">${v.title}</span>
@@ -1744,39 +2128,44 @@
             }
 
             // Bind values to Admin Editor inputs on open
-            document.getElementById('input-school-name').value = appData.name;
-            document.getElementById('input-school-address').value = appData.address;
-            document.getElementById('input-school-phone').value = appData.phone;
-            document.getElementById('input-school-email').value = appData.email;
-            document.getElementById('input-school-about').value = appData.about;
-            document.getElementById('input-school-history').value = appData.history;
+            document.getElementById('input-school-name').value = window.appData.name;
+            document.getElementById('input-school-address').value = window.appData.address;
+            document.getElementById('input-school-phone').value = window.appData.phone;
+            document.getElementById('input-school-email').value = window.appData.email;
+            document.getElementById('input-school-about').value = window.appData.about;
+            document.getElementById('input-school-history').value = window.appData.history;
 
-            document.getElementById('input-welcome-title').value = appData.welcomeTitle || "";
-            document.getElementById('input-welcome-desc').value = appData.welcomeDesc || "";
-            document.getElementById('input-welcome-badge').value = appData.welcomeBadgeText || "A";
+            document.getElementById('input-welcome-title').value = window.appData.welcomeTitle || "";
+            document.getElementById('input-welcome-desc').value = window.appData.welcomeDesc || "";
+            document.getElementById('input-welcome-badge').value = window.appData.welcomeBadgeText || "A";
+            
+            // Welcome card 3 photos bindings (image_7a5fa5.png)
+            document.getElementById('input-welcome-img1').value = window.appData.welcomeImg1 || "";
+            document.getElementById('input-welcome-img2').value = window.appData.welcomeImg2 || "";
+            document.getElementById('input-welcome-img3').value = window.appData.welcomeImg3 || "";
 
             // Logos and ministry state binding
-            document.getElementById('input-school-logo-url').value = appData.logoUrl || "";
-            document.getElementById('input-ministry-logo-url').value = appData.ministryLogoUrl || "";
-            document.getElementById('input-ministry-text1').value = appData.ministryText1 || "Kementerian Pendidikan";
-            document.getElementById('input-ministry-text2').value = appData.ministryText2 || "Republik Indonesia";
+            document.getElementById('input-school-logo-url').value = window.appData.logoUrl || "";
+            document.getElementById('input-ministry-logo-url').value = window.appData.ministryLogoUrl || "";
+            document.getElementById('input-ministry-text1').value = window.appData.ministryText1 || "Kementerian Pendidikan";
+            document.getElementById('input-ministry-text2').value = window.appData.ministryText2 || "Republik Indonesia";
             
-            document.getElementById('input-principal-name').value = appData.principal.name;
-            document.getElementById('input-principal-image').value = appData.principal.image;
-            document.getElementById('input-principal-speech').value = appData.principal.speech;
+            document.getElementById('input-principal-name').value = window.appData.principal.name;
+            document.getElementById('input-principal-image').value = window.appData.principal.image;
+            document.getElementById('input-principal-speech').value = window.appData.principal.speech;
             
-            document.getElementById('input-school-visi').value = appData.visi;
+            document.getElementById('input-school-visi').value = window.appData.visi;
 
             // Stats
-            document.getElementById('input-stat-siswa').value = appData.stats.siswa;
-            document.getElementById('input-stat-rombel').value = appData.stats.rombel;
-            document.getElementById('input-stat-guru').value = appData.stats.guru;
-            document.getElementById('input-stat-prestasi').value = appData.stats.prestasi;
+            document.getElementById('input-stat-siswa').value = window.appData.stats.siswa;
+            document.getElementById('input-stat-rombel').value = window.appData.stats.rombel;
+            document.getElementById('input-stat-guru').value = window.appData.stats.guru;
+            document.getElementById('input-stat-prestasi').value = window.appData.stats.prestasi;
 
             // Hero Left Section binding
-            document.getElementById('input-hero-tagline').value = appData.heroTagline || "SITUS RESMI";
-            document.getElementById('input-hero-title').value = appData.heroTitle || "Selamat <br class=\"hidden md:inline\">Datang";
-            document.getElementById('input-hero-desc').value = appData.heroDesc || "";
+            document.getElementById('input-hero-tagline').value = window.appData.heroTagline || "SITUS RESMI";
+            document.getElementById('input-hero-title').value = window.appData.heroTitle || "Selamat <br class=\"hidden md:inline\">Datang";
+            document.getElementById('input-hero-desc').value = window.appData.heroDesc || "";
 
             // Render sub lists
             renderAdminTeachersList();
@@ -1855,7 +2244,7 @@
         function renderAdminTeachersList() {
             const list = document.getElementById('admin-teachers-list');
             list.innerHTML = '';
-            appData.teachers.forEach((t, i) => {
+            window.appData.teachers.forEach((t, i) => {
                 list.innerHTML += `
                     <div class="p-3 border border-slate-150 bg-slate-50/50 rounded-xl flex items-center justify-between gap-2">
                         <div class="flex items-center space-x-3 overflow-hidden">
@@ -1874,14 +2263,14 @@
         function renderAdminFacilitiesList() {
             const list = document.getElementById('admin-facilities-list');
             list.innerHTML = '';
-            appData.facilities.forEach((fac, i) => {
+            window.appData.facilities.forEach((fac, i) => {
                 list.innerHTML += `
                     <div class="p-3 border border-slate-150 bg-slate-50/50 rounded-xl flex items-center justify-between gap-3">
                         <div>
                             <span class="text-xs font-bold text-slate-800 block">${fac.title}</span>
                             <span class="text-[9px] text-slate-400 block line-clamp-1">${fac.desc}</span>
                         </div>
-                        <button onclick="deleteFacility(${i})" class="text-rose-600 hover:bg-rose-100 w-7 h-7 rounded-lg flex items-center justify-center text-xs"><i class="fa-solid fa-trash"></i></button>
+                        <button onclick="deleteFacility(${i})" class="text-rose-600 hover:bg-rose-100 w-7 h-7 rounded-lg flex items-center justify-center text-xs"><i class="fa-solid fa-trash text-sm"></i></button>
                     </div>
                 `;
             });
@@ -1890,14 +2279,14 @@
         function renderAdminKesiswaanList() {
             const list = document.getElementById('admin-extracurricular-list');
             list.innerHTML = '';
-            appData.extracurriculars.forEach((item, i) => {
+            window.appData.extracurriculars.forEach((item, i) => {
                 list.innerHTML += `
                     <div class="p-3 border border-slate-150 bg-slate-50/50 rounded-xl flex items-center justify-between gap-3">
                         <div>
                             <span class="text-xs font-bold text-slate-800 block">${item.name}</span>
                             <span class="text-[9px] text-slate-400 block line-clamp-1">${item.desc}</span>
                         </div>
-                        <button onclick="deleteExtracurricular(${i})" class="text-rose-600 hover:bg-rose-100 w-7 h-7 rounded-lg flex items-center justify-center text-xs"><i class="fa-solid fa-trash"></i></button>
+                        <button onclick="deleteExtracurricular(${i})" class="text-rose-600 hover:bg-rose-100 w-7 h-7 rounded-lg flex items-center justify-center text-xs"><i class="fa-solid fa-trash text-sm"></i></button>
                     </div>
                 `;
             });
@@ -1906,7 +2295,7 @@
         function renderAdminPostsList() {
             const list = document.getElementById('admin-posts-list');
             list.innerHTML = '';
-            appData.posts.forEach((post, i) => {
+            window.appData.posts.forEach((post, i) => {
                 list.innerHTML += `
                     <div class="p-3 border border-slate-150 bg-slate-50/50 rounded-xl flex items-center justify-between gap-3">
                         <div class="flex items-center space-x-3 overflow-hidden">
@@ -1916,7 +2305,7 @@
                                 <span class="text-[9px] font-bold text-slate-400 block">${post.category} | ${post.date}</span>
                             </div>
                         </div>
-                        <button onclick="deletePost(${i})" class="text-rose-600 hover:bg-rose-100 w-7 h-7 rounded-lg flex items-center justify-center text-xs"><i class="fa-solid fa-trash"></i></button>
+                        <button onclick="deletePost(${i})" class="text-rose-600 hover:bg-rose-100 w-7 h-7 rounded-lg flex items-center justify-center text-xs"><i class="fa-solid fa-trash text-sm"></i></button>
                     </div>
                 `;
             });
@@ -1926,7 +2315,7 @@
             // Photo Section (Strictly matching image_33ffca.jpg design with smart direct-editing inputs)
             const photoList = document.getElementById('admin-gallery-photo-grid');
             photoList.innerHTML = '';
-            appData.gallery.forEach((item, i) => {
+            window.appData.gallery.forEach((item, i) => {
                 photoList.innerHTML += `
                     <div class="border border-slate-200 rounded-2xl p-4 bg-slate-50/50 space-y-3 relative shadow-xs">
                         <!-- Red delete icon on top right -->
@@ -1957,8 +2346,8 @@
             // Video Section
             const videoList = document.getElementById('admin-gallery-video-list');
             videoList.innerHTML = '';
-            if (appData.videos) {
-                appData.videos.forEach((video, i) => {
+            if (window.appData.videos) {
+                window.appData.videos.forEach((video, i) => {
                     videoList.innerHTML += `
                         <div class="p-3 border border-slate-150 bg-slate-50/50 rounded-xl flex items-center justify-between gap-3">
                             <div>
@@ -1975,7 +2364,7 @@
         function renderAdminQuotesList() {
             const list = document.getElementById('admin-quotes-list');
             list.innerHTML = '';
-            appData.quotes.forEach((q, i) => {
+            window.appData.quotes.forEach((q, i) => {
                 list.innerHTML += `
                     <div class="p-3.5 border border-slate-150 bg-slate-50/50 rounded-xl space-y-2">
                         <textarea onchange="updateQuoteText(${i}, this.value)" class="w-full text-xs p-2 border border-slate-200 rounded-lg outline-none" rows="2">${q.text}</textarea>
@@ -1991,7 +2380,7 @@
         function renderAdminOrgList() {
             const container = document.getElementById('admin-org-list');
             container.innerHTML = '';
-            appData.organization.forEach((item, index) => {
+            window.appData.organization.forEach((item, index) => {
                 container.innerHTML += `
                     <div class="flex items-center gap-3 bg-slate-50 p-2.5 rounded-xl border border-slate-150">
                         <div class="flex-1">
@@ -2013,7 +2402,7 @@
         function renderAdminAdvantagesList() {
             const container = document.getElementById('admin-advantages-list');
             container.innerHTML = '';
-            appData.advantages.forEach((adv, index) => {
+            window.appData.advantages.forEach((adv, index) => {
                 container.innerHTML += `
                     <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
                         <div class="font-bold text-xs text-blue-600 uppercase tracking-wider">Kotak Keunggulan #${index + 1}</div>
@@ -2039,7 +2428,7 @@
         function renderAdminPartnersList() {
             const container = document.getElementById('admin-partners-list');
             container.innerHTML = '';
-            appData.partners.forEach((partner, index) => {
+            window.appData.partners.forEach((partner, index) => {
                 container.innerHTML += `
                     <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
                         <div class="font-bold text-xs text-emerald-600 uppercase tracking-wider">Partner Badge #${index + 1}</div>
@@ -2061,183 +2450,9 @@
                 `;
             });
         }
-    </script>
 
-    <!-- PANEL ADMIN DATA MUTATION ACTIONS -->
-    <script>
-        // Guru Mutations
-        function createNewTeacher() {
-            const name = prompt("Nama Lengkap Guru (dengan gelar):");
-            if (!name) return;
-            const role = prompt("Jabatan / Mata Pelajaran:", "Guru Kelas");
-            const nip = prompt("NIP Guru (Opsional):", "");
-            const image = prompt("URL Foto Guru (Opsional):", "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=300");
-            
-            appData.teachers.push({
-                name,
-                role: role || "Guru Kelas",
-                nip: nip || "",
-                image: image || "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=300"
-            });
-            renderAdminTeachersList();
-            showToast("Guru berhasil ditambahkan ke daftar!");
-        }
-        function deleteTeacher(index) {
-            appData.teachers.splice(index, 1);
-            renderAdminTeachersList();
-            showToast("Guru berhasil dihapus!");
-        }
-
-        // Facilities Mutations
-        function createNewFacility() {
-            const title = prompt("Nama Sarana Prasarana:");
-            if (!title) return;
-            const desc = prompt("Keterangan Detail Sarpras:");
-            const icon = prompt("Nama Ikon FontAwesome (contoh: fa-door-open, fa-book, fa-desktop):", "fa-building");
-            
-            appData.facilities.push({
-                title,
-                desc: desc || "Fasilitas penunjang pembelajaran berkualitas unggulan.",
-                icon: icon || "fa-building"
-            });
-            renderAdminFacilitiesList();
-            showToast("Sarana prasarana baru berhasil ditambahkan!");
-        }
-        function deleteFacility(index) {
-            appData.facilities.splice(index, 1);
-            renderAdminFacilitiesList();
-            showToast("Sarana prasarana berhasil dihapus!");
-        }
-
-        // Extracurriculars Mutations
-        function createNewExtracurricular() {
-            const name = prompt("Nama Kegiatan Ekskul:");
-            if (!name) return;
-            const desc = prompt("Deskripsi Kegiatan:");
-            const icon = prompt("Nama Ikon FontAwesome (contoh: fa-campground, fa-drum, fa-volleyball):", "fa-star-and-crescent");
-            
-            appData.extracurriculars.push({
-                name,
-                desc: desc || "Kegiatan ekstrakurikuler peningkatan bakat siswa.",
-                icon: icon || "fa-star-and-crescent"
-            });
-            renderAdminKesiswaanList();
-            showToast("Ekstrakurikuler berhasil ditambahkan!");
-        }
-        function deleteExtracurricular(index) {
-            appData.extracurriculars.splice(index, 1);
-            renderAdminKesiswaanList();
-            showToast("Ekstrakurikuler berhasil dihapus!");
-        }
-
-        // Blog Posts Mutations
-        function createNewPost() {
-            const title = prompt("Masukkan Judul Postingan:");
-            if (!title) return;
-            const category = prompt("Masukkan Kategori (Berita / Artikel / Informasi):", "Berita");
-            const summary = prompt("Teks/Ringkasan Isi Postingan:");
-            const image = prompt("URL Foto Sampul (Opsional):", "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80&w=600");
-            
-            const options = { year: 'numeric', month: 'short', day: 'numeric' };
-            const today = new Date().toLocaleDateString('en-US', options);
-
-            appData.posts.unshift({
-                id: Date.now(),
-                title,
-                category: category || "Berita",
-                date: today,
-                summary: summary || "Postingan portal dinamis sekolah yang disunting langsung oleh admin SD Negeri Sekardoja.",
-                image: image || "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80&w=600"
-            });
-            renderAdminPostsList();
-            showToast("Postingan baru berhasil diluncurkan!");
-        }
-        function deletePost(index) {
-            appData.posts.splice(index, 1);
-            renderAdminPostsList();
-            showToast("Postingan berhasil dihapus!");
-        }
-
-        // Gallery Photos Mutations (Matching image_33ffca.jpg design)
-        function addNewGalleryPhoto() {
-            const title = prompt("Judul Foto Kegiatan:");
-            if (!title) return;
-            const image = prompt("URL Foto Kegiatan (Mendukung Google Drive & Dropbox):");
-            if (!image) return;
-
-            appData.gallery.unshift({
-                id: Date.now(),
-                title,
-                image,
-                type: "FOTO"
-            });
-            renderAdminGalleryList();
-            showToast("Foto baru berhasil ditambahkan ke galeri!");
-        }
-        function deleteGalleryPhoto(index) {
-            appData.gallery.splice(index, 1);
-            renderAdminGalleryList();
-            showToast("Foto dihapus dari galeri!");
-        }
-
-        // Gallery Videos Mutations
-        function addNewGalleryVideo() {
-            const title = prompt("Judul Dokumentasi Video:");
-            if (!title) return;
-            const embedUrl = prompt("URL Video YouTube Embed (contoh: https://www.youtube.com/embed/dQw4w9WgXcQ):");
-            if (!embedUrl) return;
-
-            if (!appData.videos) appData.videos = [];
-            appData.videos.push({
-                id: Date.now(),
-                title,
-                embedUrl
-            });
-            renderAdminGalleryList();
-            showToast("Link video berhasil ditambahkan ke kanal!");
-        }
-        function deleteGalleryVideo(index) {
-            appData.videos.splice(index, 1);
-            renderAdminGalleryList();
-            showToast("Link video berhasil dihapus!");
-        }
-
-        // Quote Mutations
-        function createNewQuote() {
-            const text = prompt("Isi Kalimat Quote Motivasi:");
-            if (!text) return;
-            const author = prompt("Nama Penulis Quote:", "Anonim");
-            appData.quotes.push({
-                text,
-                author: author || "Anonim"
-            });
-            renderAdminQuotesList();
-            showToast("Quote motivasi baru ditambahkan!");
-        }
-        function updateQuoteText(index, value) {
-            appData.quotes[index].text = value;
-        }
-        function updateQuoteAuthor(index, value) {
-            appData.quotes[index].author = value;
-        }
-        function deleteQuote(index) {
-            appData.quotes.splice(index, 1);
-            renderAdminQuotesList();
-            showToast("Quote berhasil dihapus!");
-        }
-
-        function addOrgRole() {
-            syncOrgStateFromInputs();
-            appData.organization.push({ role: "Jabatan Baru", name: "Nama Pejabat" });
-            renderAdminOrgList();
-        }
-        function deleteOrgRole(index) {
-            syncOrgStateFromInputs();
-            appData.organization.splice(index, 1);
-            renderAdminOrgList();
-        }
         function syncOrgStateFromInputs() {
-            appData.organization.forEach((item, index) => {
+            window.appData.organization.forEach((item, index) => {
                 const roleInput = document.getElementById(`org-role-${index}`);
                 const nameInput = document.getElementById(`org-name-${index}`);
                 if (roleInput && nameInput) {
@@ -2246,101 +2461,6 @@
                 }
             });
         }
-
-        // Restore default state
-        function restoreDefaults() {
-            if (confirm("Apakah Anda yakin ingin mengembalikan seluruh data situs ke setelan dasar pabrik SD Negeri Sekardoja?")) {
-                appData = JSON.parse(JSON.stringify(DEFAULT_SCHOOL_DATA));
-                saveState();
-                openAdminModal(); // Reload fields view
-                showToast("Setelan bawaan sekolah berhasil dipulihkan!");
-            }
-        }
-
-        // Action toast banner
-        function showToast(text) {
-            const t = document.getElementById('feedback-toast');
-            document.getElementById('feedback-text').innerText = text;
-            t.classList.remove('translate-y-24');
-            setTimeout(() => {
-                t.classList.add('translate-y-24');
-            }, 3000);
-        }
-
-        // SAVE FORM INPUT WORKSPACE
-        function saveAdminData() {
-            // Profil Utama
-            appData.name = document.getElementById('input-school-name').value;
-            appData.address = document.getElementById('input-school-address').value;
-            appData.phone = document.getElementById('input-school-phone').value;
-            appData.email = document.getElementById('input-school-email').value;
-            appData.about = document.getElementById('input-school-about').value;
-            appData.history = document.getElementById('input-school-history').value;
-
-            appData.welcomeTitle = document.getElementById('input-welcome-title').value;
-            appData.welcomeDesc = document.getElementById('input-welcome-desc').value;
-            appData.welcomeBadgeText = document.getElementById('input-welcome-badge').value;
-            
-            // Logos and Ministry data
-            appData.logoUrl = document.getElementById('input-school-logo-url').value;
-            appData.ministryLogoUrl = document.getElementById('input-ministry-logo-url').value;
-            appData.ministryText1 = document.getElementById('input-ministry-text1').value;
-            appData.ministryText2 = document.getElementById('input-ministry-text2').value;
-
-            // Kepala Sekolah
-            appData.principal.name = document.getElementById('input-principal-name').value;
-            appData.principal.image = document.getElementById('input-principal-image').value;
-            appData.principal.speech = document.getElementById('input-principal-speech').value;
-            
-            // Visi
-            appData.visi = document.getElementById('input-school-visi').value;
-
-            // Stats
-            appData.stats.siswa = parseInt(document.getElementById('input-stat-siswa').value) || 0;
-            appData.stats.rombel = parseInt(document.getElementById('input-stat-rombel').value) || 0;
-            appData.stats.guru = parseInt(document.getElementById('input-stat-guru').value) || 0;
-            appData.stats.prestasi = parseInt(document.getElementById('input-stat-prestasi').value) || 0;
-
-            // Save Hero Left Section
-            appData.heroTagline = document.getElementById('input-hero-tagline').value;
-            appData.heroTitle = document.getElementById('input-hero-title').value;
-            appData.heroDesc = document.getElementById('input-hero-desc').value;
-
-            // Save 4 Key Advantages
-            appData.advantages.forEach((adv, index) => {
-                adv.title = document.getElementById(`adv-title-${index}`).value;
-                adv.icon = document.getElementById(`adv-icon-${index}`).value;
-                adv.desc = document.getElementById(`adv-desc-${index}`).value;
-            });
-
-            // Save Partners links and parameters
-            appData.partners.forEach((partner, index) => {
-                partner.name = document.getElementById(`partner-name-${index}`).value;
-                partner.icon = document.getElementById(`partner-icon-${index}`).value;
-                partner.url = document.getElementById(`partner-url-${index}`).value;
-            });
-
-            // Save Gallery Photos Direct Inputs
-            appData.gallery.forEach((item, i) => {
-                const titleInput = document.getElementById(`gallery-photo-title-${i}`);
-                const imageInput = document.getElementById(`gallery-photo-image-${i}`);
-                if (titleInput && imageInput) {
-                    item.title = titleInput.value;
-                    item.image = imageInput.value;
-                }
-            });
-
-            syncOrgStateFromInputs();
-
-            saveState();
-            closeAdminModal();
-            showToast("Semua perubahan berhasil diterapkan pada website!");
-        }
-
-        // On window load
-        window.onload = function() {
-            renderAllSections();
-        };
     </script>
 </body>
 </html>
