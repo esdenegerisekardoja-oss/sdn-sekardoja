@@ -100,6 +100,10 @@
             ministryText1: "Kementerian Pendidikan",
             ministryText2: "Republik Indonesia",
             
+            // Custom Firebase config storage for dynamic multi-device synchronization
+            firebaseConfigStr: "",
+            firebaseAppId: "sdnegeri-sekardoja-custom",
+
             // Welcome Section Banner (Left Panel)
             heroTagline: "SITUS RESMI",
             heroTitle: "Selamat <br class=\"hidden md:inline\">Datang",
@@ -1023,6 +1027,41 @@
                             </div>
                         </div>
 
+                        <!-- DYNAMIC REAL-TIME SINKRONISASI CONFIGURATION BLOCK (Memperbaiki image_7b47c3.jpg & image_7b47eb.jpg) -->
+                        <div class="border-t-2 border-dashed border-blue-200 pt-5 space-y-4">
+                            <div class="flex items-center space-x-2">
+                                <span class="w-7 h-7 rounded-lg bg-blue-600 text-white flex items-center justify-center text-xs"><i class="fa-solid fa-cloud-arrow-up"></i></span>
+                                <h4 class="font-black text-blue-900 text-xs uppercase tracking-wider">Pengaturan Sinkronisasi Awan (Firebase Real-Time Config)</h4>
+                            </div>
+                            <p class="text-[10px] text-slate-500 leading-relaxed">
+                                Agar semua perubahan yang Anda simpan di satu perangkat (misal HP) langsung tersinkronisasi dan tampil di semua perangkat (misal laptop/perangkat pengunjung lain), Anda dapat memasukkan kunci konfigurasi Firebase mandiri di bawah ini. Jika dikosongkan, website akan secara otomatis mencadangkan data di penyimpanan lokal browser.
+                            </p>
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="block text-[9px] font-black text-slate-600 uppercase tracking-widest mb-1">Isi Firebase Config JSON</label>
+                                    <textarea id="input-firebase-config-str" rows="5" class="w-full text-[11px] p-3 border border-slate-200 rounded-lg outline-none font-mono text-emerald-700" placeholder='Masukkan Format Konfigurasi Firebase Anda disini. Contoh:
+{
+  "apiKey": "AIzaSyA1...",
+  "authDomain": "sdnegeri-sekardoja.firebaseapp.com",
+  "projectId": "sdnegeri-sekardoja",
+  "storageBucket": "sdnegeri-sekardoja.appspot.com",
+  "messagingSenderId": "12345678",
+  "appId": "1:123456:web:abcd"
+}'></textarea>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-[9px] font-black text-slate-600 uppercase tracking-widest mb-1">Firebase App ID / Collection Path</label>
+                                        <input type="text" id="input-firebase-app-id" class="w-full text-xs p-3 border border-slate-200 rounded-lg outline-none font-mono text-slate-700" placeholder="Contoh: sdnegeri-sekardoja">
+                                    </div>
+                                    <div class="bg-blue-50/50 p-3 rounded-lg border border-blue-100 flex items-center gap-2 text-[10px] text-blue-800">
+                                        <i class="fa-solid fa-circle-question text-xs flex-shrink-0"></i>
+                                        <span>Jika Anda tidak memiliki Firebase config, website akan berjalan pada mode **Penyimpanan Lokal Browser** secara aman.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="border-t border-slate-100 pt-4 space-y-4">
                             <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wider">Deskripsi & Sejarah (Tentang Sekolah)</h4>
                             <div>
@@ -1077,7 +1116,7 @@
                         </div>
                         <div>
                             <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Deskripsi Sambutan</label>
-                            <textarea id="input-hero-desc" rows="4" class="w-full text-xs p-3 border border-slate-200 rounded-lg outline-none" placeholder="Pusat layanan informasi digital..."></textarea>
+                            <textarea id="input-hero-desc" rows="4" class="w-full text-xs p-3 border border-slate-200 rounded-lg outline-none" placeholder="Pusat layanan info digital..."></textarea>
                         </div>
                     </div>
 
@@ -1265,61 +1304,79 @@
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Global Application Context Configuration
-        // Safely extract from environment variables
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : { apiKey: "mock-key", authDomain: "mock-domain", projectId: "mock-project" };
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'sd-negeri-sekardoja';
-
-        // Reference strictly constructed using RULE 1 path directives
-        const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'schoolData', 'settings');
-
-        // Global variables exposed inside window for layout actions compatibility
-        window.appData = DEFAULT_SCHOOL_DATA;
-        let currentUser = null;
+        // Firebase Initialization with Dynamic Custom Configuration Binding
+        let customApp = null;
+        let customAuth = null;
+        let customDb = null;
+        let customDocRef = null;
+        let isFirebaseInitialized = false;
 
         // AUTHENTICATION GUARDRAIL (RULE 3)
-        const initAuth = async () => {
-            try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
+        const initFirebaseService = async () => {
+            let activeConfig = null;
+            let activeAppId = "sdnegeri-sekardoja";
+
+            // 1. Check if user configured custom Firebase in Admin Panel
+            if (window.appData.firebaseConfigStr && window.appData.firebaseConfigStr.trim() !== "") {
+                try {
+                    activeConfig = JSON.parse(window.appData.firebaseConfigStr);
+                    if (window.appData.firebaseAppId) {
+                        activeAppId = window.appData.firebaseAppId.trim();
+                    }
+                } catch (e) {
+                    console.error("Format JSON Firebase Config Salah!", e);
                 }
-            } catch (err) {
-                console.warn("Authentication initialization error, falling back to LocalStorage:", err);
+            } 
+            // 2. Otherwise try using system Canvas default (if inside the Canvas iframe environment)
+            else if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+                activeConfig = JSON.parse(__firebase_config);
+                activeAppId = typeof __app_id !== 'undefined' ? __app_id : 'sdnegeri-sekardoja';
+            }
+
+            if (activeConfig && activeConfig.apiKey && activeConfig.apiKey !== "mock-key") {
+                try {
+                    customApp = initializeApp(activeConfig);
+                    customAuth = getAuth(customApp);
+                    customDb = getFirestore(customApp);
+                    customDocRef = doc(customDb, 'artifacts', activeAppId, 'public', 'data', 'schoolData', 'settings');
+                    isFirebaseInitialized = true;
+
+                    // Auth anonymously
+                    onAuthStateChanged(customAuth, (user) => {
+                        if (user) {
+                            setupCloudSyncListener();
+                        }
+                    });
+
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        await signInWithCustomToken(customAuth, __initial_auth_token);
+                    } else {
+                        await signInAnonymously(customAuth);
+                    }
+                } catch (err) {
+                    console.warn("Gagal inisialisasi Firebase (Beralih ke LocalStorage):", err);
+                    setupLocalStorageFallback();
+                }
+            } else {
                 setupLocalStorageFallback();
             }
         };
 
-        onAuthStateChanged(auth, (user) => {
-            currentUser = user;
-            if (user) {
-                setupCloudSyncListener();
-            } else {
-                setupLocalStorageFallback();
-            }
-        });
-
-        // Initialize authentication process
-        initAuth();
-
         // REAL-TIME SYNCHRONIZATION LISTENER
         function setupCloudSyncListener() {
-            onSnapshot(docRef, (docSnap) => {
+            if (!isFirebaseInitialized || !customDocRef) return;
+
+            onSnapshot(customDocRef, (docSnap) => {
                 if (docSnap.exists()) {
                     window.appData = docSnap.data();
                     ensureDataCompatibility();
                     renderAllSections();
                 } else {
-                    // Initialize first-time dataset to Cloud
-                    window.appData = JSON.parse(localStorage.getItem('sekardoja_comprehensive_data')) || DEFAULT_SCHOOL_DATA;
+                    // Send first time set
                     saveStateToCloud(window.appData);
                 }
             }, (error) => {
-                console.warn("Cloud database sync failed (using local fallback mode):", error);
+                console.warn("Real-time cloud database disconnected:", error);
                 setupLocalStorageFallback();
             });
         }
@@ -1348,18 +1405,18 @@
         // Save State Mutation to Cloud
         async function saveStateToCloud(newData) {
             localStorage.setItem('sekardoja_comprehensive_data', JSON.stringify(newData));
-            if (!currentUser) {
+            if (!isFirebaseInitialized || !customDocRef) {
                 renderAllSections();
-                showToast("Tersimpan secara lokal di browser ini.");
+                showToast("Tersimpan lokal di browser ini.");
                 return;
             }
             try {
-                await setDoc(docRef, newData);
+                await setDoc(customDocRef, newData);
                 renderAllSections();
             } catch (err) {
-                console.warn("Gagal melakukan sinkronisasi awan, tersimpan lokal:", err);
+                console.warn("Sinkronisasi gagal, disimpan secara lokal:", err);
                 renderAllSections();
-                showToast("Tersimpan lokal (Koneksi cloud terganggu).");
+                showToast("Disimpan secara lokal (Awan terputus).");
             }
         }
 
@@ -1377,7 +1434,7 @@
             window.appData.welcomeDesc = document.getElementById('input-welcome-desc').value;
             window.appData.welcomeBadgeText = document.getElementById('input-welcome-badge').value;
             
-            // Save Welcome card 3 photos (image_7a5fa5.png)
+            // Welcome 3 photos
             window.appData.welcomeImg1 = document.getElementById('input-welcome-img1').value;
             window.appData.welcomeImg2 = document.getElementById('input-welcome-img2').value;
             window.appData.welcomeImg3 = document.getElementById('input-welcome-img3').value;
@@ -1387,6 +1444,10 @@
             window.appData.ministryLogoUrl = document.getElementById('input-ministry-logo-url').value;
             window.appData.ministryText1 = document.getElementById('input-ministry-text1').value;
             window.appData.ministryText2 = document.getElementById('input-ministry-text2').value;
+
+            // Custom Firebase string configs
+            window.appData.firebaseConfigStr = document.getElementById('input-firebase-config-str').value;
+            window.appData.firebaseAppId = document.getElementById('input-firebase-app-id').value;
 
             // Kepala Sekolah
             window.appData.principal.name = document.getElementById('input-principal-name').value;
@@ -1433,9 +1494,12 @@
 
             syncOrgStateFromInputs();
 
+            // Re-initialize Firebase configurations in case they have changed
+            isFirebaseInitialized = false;
             saveStateToCloud(window.appData);
+            initFirebaseService();
             closeAdminModal();
-            showToast("Semua perubahan berhasil diterapkan!");
+            showToast("Perubahan diterapkan & Berhasil disimpan!");
         };
 
         window.restoreDefaults = function() {
@@ -1614,6 +1678,9 @@
         window.updateQuoteAuthor = function(index, value) {
             window.appData.quotes[index].author = value;
         };
+
+        // Initialize dynamic Firebase environment process
+        initFirebaseService();
     </script>
 
     <!-- MAIN JAVASCRIPT GLOBAL LOGIC -->
@@ -1988,7 +2055,7 @@
             window.appData.teachers.forEach(t => {
                 grid.innerHTML += `
                     <div class="bg-slate-50 rounded-2xl p-4 flex items-center gap-4 border border-slate-150">
-                        <img class="w-14 h-14 object-cover rounded-full border border-slate-300" src="${convertCloudLink(t.image)}" onerror="this.src='https://placehold.co/150x150/0c1a30/ffffff?text=Guru'">
+                        <img class="w-14 h-14 object-cover rounded-full border border-slate-300" src="${convertCloudLink(t.image)}" onerror="this.src='https://placehold.co/150x150/0a2540/ffffff?text=Guru'">
                         <div>
                             <h5 class="font-extrabold text-slate-900 text-xs md:text-sm leading-tight">${t.name}</h5>
                             <p class="text-[11px] text-blue-600 font-bold mt-0.5">${t.role}</p>
@@ -2150,6 +2217,10 @@
             document.getElementById('input-ministry-text1').value = window.appData.ministryText1 || "Kementerian Pendidikan";
             document.getElementById('input-ministry-text2').value = window.appData.ministryText2 || "Republik Indonesia";
             
+            // Custom Firebase fields binding
+            document.getElementById('input-firebase-config-str').value = window.appData.firebaseConfigStr || "";
+            document.getElementById('input-firebase-app-id').value = window.appData.firebaseAppId || "";
+
             document.getElementById('input-principal-name').value = window.appData.principal.name;
             document.getElementById('input-principal-image').value = window.appData.principal.image;
             document.getElementById('input-principal-speech').value = window.appData.principal.speech;
@@ -2276,6 +2347,7 @@
             });
         }
 
+        // Sub lists rendering
         function renderAdminKesiswaanList() {
             const list = document.getElementById('admin-extracurricular-list');
             list.innerHTML = '';
