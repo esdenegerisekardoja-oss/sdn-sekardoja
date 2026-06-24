@@ -1309,12 +1309,12 @@
         // =========================================================================
         const CUSTOM_FIREBASE_CONFIG = {
            apiKey: "AIzaSyBOKAzVSKVzaA-mTKaKZUX9LTbI14xqfI4",
-  authDomain: "esdesekardoja-34a83.firebaseapp.com",
-  databaseURL: "https://esdesekardoja-34a83-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "esdesekardoja-34a83",
-  storageBucket: "esdesekardoja-34a83.firebasestorage.app",
-  messagingSenderId: "815052026723",
-  appId: "1:815052026723:web:9ea60667dc49cf5c6c9956"
+           authDomain: "esdesekardoja-34a83.firebaseapp.com",
+           databaseURL: "https://esdesekardoja-34a83-default-rtdb.asia-southeast1.firebasedatabase.app",
+           projectId: "esdesekardoja-34a83",
+           storageBucket: "esdesekardoja-34a83.firebasestorage.app",
+           messagingSenderId: "815052026723",
+           appId: "1:815052026723:web:9ea60667dc49cf5c6c9956"
         };
         const CUSTOM_COLLECTION_APP_ID = "sdnegeri-sekardoja"; // Anda bisa mengganti ID ini jika mau
         // =========================================================================
@@ -1351,31 +1351,34 @@
                 activeAppId = typeof __app_id !== 'undefined' ? __app_id : CUSTOM_COLLECTION_APP_ID;
             }
 
-            if (activeConfig && activeConfig.apiKey && activeConfig.apiKey !== "mock-key") {
-                try {
-                    customApp = initializeApp(activeConfig);
-                    customAuth = getAuth(customApp);
-                    customDb = getFirestore(customApp);
-                    customDocRef = doc(customDb, 'artifacts', activeAppId, 'public', 'data', 'schoolData', 'settings');
-                    isFirebaseInitialized = true;
+            // Jika config tidak lengkap atau tidak valid, langsung gunakan LocalStorage secara aman tanpa mencoba init
+            if (!activeConfig || !activeConfig.apiKey || activeConfig.apiKey.trim() === "" || activeConfig.apiKey === "mock-key") {
+                console.log("Firebase tidak dikonfigurasi. Menggunakan penyimpanan lokal (Offline Mode).");
+                setupLocalStorageFallback();
+                return;
+            }
 
-                    // Auth anonymously
-                    onAuthStateChanged(customAuth, (user) => {
-                        if (user) {
-                            setupCloudSyncListener();
-                        }
-                    });
+            try {
+                customApp = initializeApp(activeConfig);
+                customAuth = getAuth(customApp);
+                customDb = getFirestore(customApp);
+                customDocRef = doc(customDb, 'artifacts', activeAppId, 'public', 'data', 'schoolData', 'settings');
+                isFirebaseInitialized = true;
 
-                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                        await signInWithCustomToken(customAuth, __initial_auth_token);
-                    } else {
-                        await signInAnonymously(customAuth);
+                // Auth anonymously
+                onAuthStateChanged(customAuth, (user) => {
+                    if (user) {
+                        setupCloudSyncListener();
                     }
-                } catch (err) {
-                    console.warn("Gagal inisialisasi Firebase (Beralih ke LocalStorage):", err);
-                    setupLocalStorageFallback();
+                });
+
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(customAuth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(customAuth);
                 }
-            } else {
+            } catch (err) {
+                console.warn("Gagal mengaktifkan layanan Firebase (Kunci API tidak valid atau diblokir). Menggunakan penyimpanan lokal:", err);
                 setupLocalStorageFallback();
             }
         };
