@@ -1041,12 +1041,12 @@
                                     <label class="block text-[9px] font-black text-slate-600 uppercase tracking-widest mb-1">Isi Firebase Config JSON</label>
                                     <textarea id="input-firebase-config-str" rows="5" class="w-full text-[11px] p-3 border border-slate-200 rounded-lg outline-none font-mono text-emerald-700" placeholder='Masukkan Format Konfigurasi Firebase Anda disini. Contoh:
 {
-  "apiKey": "AIzaSyA1...",
-  "authDomain": "sdnegeri-sekardoja.firebaseapp.com",
-  "projectId": "sdnegeri-sekardoja",
-  "storageBucket": "sdnegeri-sekardoja.appspot.com",
-  "messagingSenderId": "12345678",
-  "appId": "1:123456:web:abcd"
+apiKey: "AIzaSyBOKAzVSKVzaA-mTKaKZUX9LTbI14xqfI4",
+  authDomain: "esdesekardoja-34a83.firebaseapp.com",
+  projectId: "esdesekardoja-34a83",
+  storageBucket: "esdesekardoja-34a83.firebasestorage.app",
+  messagingSenderId: "815052026723",
+  appId: "1:815052026723:web:9ea60667dc49cf5c6c9956"
 }'></textarea>
                                 </div>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -1304,7 +1304,20 @@
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Firebase Initialization with Dynamic Custom Configuration Binding
+        // =========================================================================
+        // SILAKAN TEMPEL (PASTE) CONFIG FIREBASE ANDA DI BAWAH INI SECARA PERMANEN
+        // =========================================================================
+        const CUSTOM_FIREBASE_CONFIG = {
+            apiKey: "",
+            authDomain: "",
+            projectId: "",
+            storageBucket: "",
+            messagingSenderId: "",
+            appId: ""
+        };
+        const CUSTOM_COLLECTION_APP_ID = "sdnegeri-sekardoja"; // Anda bisa mengganti ID ini jika mau
+        // =========================================================================
+
         let customApp = null;
         let customAuth = null;
         let customDb = null;
@@ -1314,10 +1327,14 @@
         // AUTHENTICATION GUARDRAIL (RULE 3)
         const initFirebaseService = async () => {
             let activeConfig = null;
-            let activeAppId = "sdnegeri-sekardoja";
+            let activeAppId = CUSTOM_COLLECTION_APP_ID;
 
-            // 1. Check if user configured custom Firebase in Admin Panel
-            if (window.appData.firebaseConfigStr && window.appData.firebaseConfigStr.trim() !== "") {
+            // 1. Prioritaskan Config yang di-hardcode oleh pengguna di atas
+            if (CUSTOM_FIREBASE_CONFIG && CUSTOM_FIREBASE_CONFIG.apiKey && CUSTOM_FIREBASE_CONFIG.apiKey.trim() !== "") {
+                activeConfig = CUSTOM_FIREBASE_CONFIG;
+            }
+            // 2. Fallback alternatif ke isian Panel Admin (Hanya aktif di browser saat ini)
+            else if (window.appData.firebaseConfigStr && window.appData.firebaseConfigStr.trim() !== "") {
                 try {
                     activeConfig = JSON.parse(window.appData.firebaseConfigStr);
                     if (window.appData.firebaseAppId) {
@@ -1327,10 +1344,10 @@
                     console.error("Format JSON Firebase Config Salah!", e);
                 }
             } 
-            // 2. Otherwise try using system Canvas default (if inside the Canvas iframe environment)
+            // 3. Fallback bawaan sistem jika berada di platform pengujian
             else if (typeof __firebase_config !== 'undefined' && __firebase_config) {
                 activeConfig = JSON.parse(__firebase_config);
-                activeAppId = typeof __app_id !== 'undefined' ? __app_id : 'sdnegeri-sekardoja';
+                activeAppId = typeof __app_id !== 'undefined' ? __app_id : CUSTOM_COLLECTION_APP_ID;
             }
 
             if (activeConfig && activeConfig.apiKey && activeConfig.apiKey !== "mock-key") {
@@ -1734,6 +1751,7 @@
             renderQuotes();
         }
 
+        // Quote Carousel
         function nextQuote() {
             activeQuoteIndex = (activeQuoteIndex + 1) % window.appData.quotes.length;
             renderQuotes();
@@ -2514,7 +2532,7 @@
                                 <input type="text" id="partner-icon-${index}" value="${partner.icon}" class="w-full text-xs p-2.5 bg-white border border-slate-200 rounded-lg outline-none">
                             </div>
                             <div class="md:col-span-2">
-                                <label class="block text-[9px] font-black text-slate-500 uppercase mb-0.5">URL Tautan Utama (Langsung Terbuka Baru)</label>
+                                <label class="block text-[9px] font-black text-slate-500 uppercase mb-1">URL Tautan Utama (Langsung Terbuka Baru)</label>
                                 <input type="text" id="partner-url-${index}" value="${partner.url || ''}" class="w-full text-xs p-2.5 bg-white border border-slate-200 rounded-lg outline-none" placeholder="https://...">
                             </div>
                         </div>
