@@ -111,7 +111,7 @@
 
             // Dynamic Welcome Profile card properties matching image_5361e4.jpg (Right Panel)
             welcomeTitle: "SELAMAT DATANG DI <br><span class=\"text-blue-600\">WEBSITE</span> SEKOLAH KAMI",
-            welcomeDesc: "Website ini dirancang untuk mendukung komunikasi dan transparansi antara sekolah, siswa, orang tua, dan masyarakat. Temukan informasi terbaru, program unggulan, and berbagai kegiatan sekolah dalam satu tempat. Bersama-sama, kita wujudkan generasi yang unggul dan berkarakter.",
+            welcomeDesc: "Website ini dirancang untuk mendukung komunikasi dan transparansi antara sekolah, siswa, orang tua, and masyarakat. Temukan informasi terbaru, program unggulan, dan berbagai kegiatan sekolah dalam satu tempat. Bersama-sama, kita wujudkan generasi yang unggul dan berkarakter.",
             welcomeBadgeText: "A",
             welcomeImg1: "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80&w=300",
             welcomeImg2: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=300",
@@ -200,9 +200,23 @@
         };
 
         // Initialize state globally (Safe fallback)
-        window.appData = JSON.parse(localStorage.getItem('sekardoja_comprehensive_data')) || DEFAULT_SCHOOL_DATA;
+        window.appData = DEFAULT_SCHOOL_DATA; 
+        try {
+            const localData = localStorage.getItem('sekardoja_comprehensive_data');
+            if (localData) {
+                window.appData = JSON.parse(localData);
+            }
+        } catch (e) {
+            console.warn("Gagal membaca LocalStorage, menggunakan data bawaan:", e);
+        }
 
         // Ensure newly introduced properties exist in appData (backwards compatibility)
+        if (!window.appData.name) window.appData.name = DEFAULT_SCHOOL_DATA.name;
+        if (!window.appData.address) window.appData.address = DEFAULT_SCHOOL_DATA.address;
+        if (!window.appData.phone) window.appData.phone = DEFAULT_SCHOOL_DATA.phone;
+        if (!window.appData.email) window.appData.email = DEFAULT_SCHOOL_DATA.email;
+        if (!window.appData.about) window.appData.about = DEFAULT_SCHOOL_DATA.about;
+        if (!window.appData.history) window.appData.history = DEFAULT_SCHOOL_DATA.history;
         if (!window.appData.welcomeTitle) window.appData.welcomeTitle = DEFAULT_SCHOOL_DATA.welcomeTitle;
         if (!window.appData.welcomeDesc) window.appData.welcomeDesc = DEFAULT_SCHOOL_DATA.welcomeDesc;
         if (!window.appData.welcomeBadgeText) window.appData.welcomeBadgeText = DEFAULT_SCHOOL_DATA.welcomeBadgeText;
@@ -414,7 +428,7 @@
                         SELAMAT DATANG DI <br><span class="text-blue-600">WEBSITE</span> SEKOLAH KAMI
                     </h3>
                     <p id="welcome-desc-display" class="text-slate-600 text-xs mt-3 leading-relaxed">
-                        Website ini dirancang untuk mendukung komunikasi dan transparansi antara sekolah, siswa, orang tua, dan masyarakat. Temukan informasi terbaru, program unggulan, and berbagai kegiatan sekolah dalam satu tempat. Bersama-sama, kita wujudkan generasi yang unggul dan berkarakter.
+                        Website ini dirancang untuk mendukung komunikasi dan transparansi antara sekolah, siswa, orang tua, and masyarakat. Temukan informasi terbaru, program unggulan, and berbagai kegiatan sekolah dalam satu tempat. Bersama-sama, kita wujudkan generasi yang unggul dan berkarakter.
                     </p>
                 </div>
             </div>
@@ -657,186 +671,6 @@
         </a>
     </footer>
 
-    <!-- MODAL 1: TENTANG SEKOLAH (Tentang Sekolah / Profil) -->
-    <div id="about-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-100">
-            <div class="bg-blue-900 p-5 text-white flex justify-between items-center">
-                <h3 class="font-bold text-sm uppercase flex items-center gap-2"><i class="fa-solid fa-circle-info text-amber-300"></i> Profil Sekolah</h3>
-                <button onclick="closeAboutModal()" class="text-white/80 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <div class="p-6 space-y-4 text-xs md:text-sm">
-                <div>
-                    <h4 class="font-bold text-slate-900 uppercase text-[10px] text-blue-600 mb-1">Sekilas Tentang Sekolah</h4>
-                    <p id="about-text-desc" class="text-slate-700 leading-relaxed"></p>
-                </div>
-                <div class="border-t border-slate-100 pt-4">
-                    <h4 class="font-bold text-slate-900 uppercase text-[10px] text-blue-600 mb-1">Sejarah Sekolah</h4>
-                    <p id="about-text-history" class="text-slate-700 leading-relaxed"></p>
-                </div>
-            </div>
-            <div class="bg-slate-50 px-6 py-4 flex justify-end border-t border-slate-100">
-                <button onclick="closeAboutModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-950 text-white rounded-lg text-xs font-bold">Tutup</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL 2: GURU DIRECTORY MODAL -->
-    <div id="teachers-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-2xl w-full overflow-hidden shadow-2xl border border-slate-100">
-            <div class="bg-blue-900 p-5 text-white flex justify-between items-center">
-                <h3 class="font-bold text-sm uppercase flex items-center gap-2"><i class="fa-solid fa-chalkboard-user text-amber-300"></i> Direktori Guru & Staff</h3>
-                <button onclick="closeTeachersModal()" class="text-white/80 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <div id="teachers-modal-grid" class="p-6 overflow-y-auto max-h-[60vh] grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <!-- Loaded dynamically -->
-            </div>
-            <div class="bg-slate-50 px-6 py-4 flex justify-end border-t border-slate-100">
-                <button onclick="closeTeachersModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-950 text-white rounded-lg text-xs font-bold">Tutup</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL 3: STRUKTUR ORGANISASI MODAL -->
-    <div id="structure-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-xl w-full overflow-hidden shadow-2xl border border-slate-100">
-            <div class="bg-blue-900 p-5 text-white flex justify-between items-center">
-                <h3 class="font-bold text-sm uppercase flex items-center gap-2"><i class="fa-solid fa-sitemap text-amber-300"></i> Struktur Organisasi</h3>
-                <button onclick="closeStructureModal()" class="text-white/80 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <div id="structure-org-tree" class="p-6 space-y-4">
-                <!-- Org tree loaded dynamically from window.appData.organization -->
-            </div>
-            <div class="bg-slate-50 px-6 py-4 flex justify-end border-t border-slate-100">
-                <button onclick="closeStructureModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-950 text-white rounded-lg text-xs font-bold">Tutup</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL 4: SARANA PRASARANA LIST MODAL -->
-    <div id="facilities-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-xl w-full overflow-hidden shadow-2xl border border-slate-100">
-            <div class="bg-blue-95 p-5 text-white flex justify-between items-center">
-                <h3 class="font-bold text-sm uppercase flex items-center gap-2"><i class="fa-solid fa-school text-amber-300"></i> Sarana dan Prasarana</h3>
-                <button onclick="closeFacilitiesModal()" class="text-white/80 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <div id="facilities-modal-list" class="p-6 space-y-3 max-h-[60vh] overflow-y-auto">
-                <!-- Loaded dynamically -->
-            </div>
-            <div class="bg-slate-50 px-6 py-4 flex justify-end border-t border-slate-100">
-                <button onclick="closeFacilitiesModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-950 text-white rounded-lg text-xs font-bold">Tutup</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL 5: KESISWAAN (EKSTRAKURIKULER) MODAL -->
-    <div id="kesiswaan-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-xl w-full overflow-hidden shadow-2xl border border-slate-100">
-            <div class="bg-blue-900 p-5 text-white flex justify-between items-center">
-                <h3 class="font-bold text-sm uppercase flex items-center gap-2"><i class="fa-solid fa-star-and-crescent text-amber-300"></i> Bidang Kesiswaan (Ekstrakurikuler)</h3>
-                <button onclick="closeKesiswaanModal()" class="text-white/80 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <div id="kesiswaan-modal-list" class="p-6 space-y-4 max-h-[60vh] overflow-y-auto">
-                <!-- Loaded dynamically -->
-            </div>
-            <div class="bg-slate-50 px-6 py-4 flex justify-end border-t border-slate-100">
-                <button onclick="closeKesiswaanModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-950 text-white rounded-lg text-xs font-bold">Tutup</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL 6: VISI & MISI MODAL -->
-    <div id="visi-misi-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-100">
-            <div class="bg-blue-900 p-5 text-white flex justify-between items-center">
-                <h3 class="font-bold text-sm uppercase flex items-center gap-2"><i class="fa-solid fa-lightbulb text-amber-300"></i> Visi & Misi</h3>
-                <button onclick="closeVisiMisiModal()" class="text-white/80 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <div class="p-6 space-y-5 text-xs md:text-sm">
-                <div>
-                    <h4 class="font-bold text-amber-600 uppercase text-[10px] mb-2 tracking-wider">Visi</h4>
-                    <p id="modal-visi" class="text-slate-800 italic leading-relaxed bg-amber-50 p-4 rounded-xl border border-amber-100"></p>
-                </div>
-                <div>
-                    <h4 class="font-bold text-blue-600 uppercase text-[10px] mb-2 tracking-wider">Misi</h4>
-                    <ul id="modal-misi" class="space-y-2 text-slate-700 list-decimal pl-5 leading-relaxed"></ul>
-                </div>
-            </div>
-            <div class="bg-slate-50 px-6 py-4 flex justify-end border-t border-slate-100">
-                <button onclick="closeVisiMisiModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-950 text-white rounded-lg text-xs font-bold">Tutup</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL 7: SISWA & PRESTASI INTEGRATED DASHBOARD -->
-    <div id="siswa-dashboard-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-2xl w-full overflow-hidden shadow-2xl border border-slate-100">
-            <div class="bg-blue-900 p-5 text-white flex justify-between items-center">
-                <h3 class="font-bold text-sm uppercase flex items-center gap-2"><i class="fa-solid fa-graduation-cap text-amber-300"></i> Informasi & Prestasi Siswa</h3>
-                <button onclick="closeSiswaDashboardModal()" class="text-white/80 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <div class="p-6 space-y-4 max-h-[60vh] overflow-y-auto">
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-slate-50 p-4 rounded-xl text-center">
-                        <span class="text-3xl font-black text-blue-600" id="dash-siswa"></span>
-                        <span class="text-[10px] text-slate-500 font-bold uppercase block mt-1">Siswa Aktif</span>
-                    </div>
-                    <div class="bg-slate-50 p-4 rounded-xl text-center">
-                        <span class="text-3xl font-black text-emerald-600" id="dash-prestasi"></span>
-                        <span class="text-[10px] text-slate-500 font-bold uppercase block mt-1">Sertifikasi Prestasi</span>
-                    </div>
-                </div>
-                <div class="bg-amber-50 border border-amber-100 p-4 rounded-xl">
-                    <h4 class="font-bold text-xs text-amber-800 uppercase mb-1">Penerimaan Siswa Baru (PPDB)</h4>
-                    <p class="text-[11px] text-slate-600 leading-relaxed">
-                        Kami membuka penerimaan peserta didik baru kelas 1 setiap awal semester ganjil. Hubungi panitia PPDB Sekolah via email atau nomor telepon yang tertera pada footer halaman untuk konsultasi berkas fisik pendaftaran.
-                    </p>
-                </div>
-            </div>
-            <div class="bg-slate-50 px-6 py-4 flex justify-end border-t border-slate-100">
-                <button onclick="closeSiswaDashboardModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-950 text-white rounded-lg text-xs font-bold">Tutup</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL 8: VIDEO GALLERY EMBEDS -->
-    <div id="video-gallery-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-xl w-full overflow-hidden shadow-2xl border border-slate-100">
-            <div class="bg-blue-900 p-5 text-white flex justify-between items-center">
-                <h3 class="font-bold text-sm uppercase flex items-center gap-2"><i class="fa-solid fa-video text-amber-300"></i> Galeri Dokumentasi Video</h3>
-                <button onclick="closeVideoGalleryModal()" class="text-white/80 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <div id="video-modal-list" class="p-6 space-y-4 max-h-[60vh] overflow-y-auto">
-                <!-- Video items loaded dynamically -->
-            </div>
-            <div class="bg-slate-50 px-6 py-4 flex justify-end border-t border-slate-100">
-                <button onclick="closeVideoGalleryModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-950 text-white rounded-lg text-xs font-bold">Tutup</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL 9: VIDEO PLAYER SIMULATOR -->
-    <div id="video-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl border border-slate-800">
-            <div class="p-5 text-white flex justify-between items-center border-b border-slate-800">
-                <h3 class="font-bold text-xs uppercase flex items-center gap-2"><i class="fa-solid fa-video text-amber-400"></i> Video Tur SDN Sekardoja</h3>
-                <button onclick="closeVideoPlayer()" class="text-white/60 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <div class="aspect-video bg-black flex flex-col items-center justify-center p-8 text-center relative">
-                <div class="flex items-center space-x-1.5 mb-5">
-                    <span class="w-1.5 h-10 bg-amber-500 rounded-full animate-bounce" style="animation-delay: 0.1s"></span>
-                    <span class="w-1.5 h-6 bg-amber-500 rounded-full animate-bounce" style="animation-delay: 0.3s"></span>
-                    <span class="w-1.5 h-12 bg-blue-500 rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
-                    <span class="w-1.5 h-8 bg-blue-500 rounded-full animate-bounce" style="animation-delay: 0.4s"></span>
-                </div>
-                <h4 class="text-white font-extrabold text-sm px-6 leading-relaxed">Profil Pengenalan Pembelajaran Kreatif</h4>
-                <p class="text-[10px] text-slate-400 mt-1">Menyiapkan Generasi Emas Brebes Unggul & Mandiri</p>
-                <div class="mt-6 flex justify-center">
-                    <button onclick="closeVideoPlayer()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold rounded-lg">Tutup</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- DIAGNOSTICS & TROUBLESHOOTING MODAL (Sangat Membantu Memecahkan Masalah Konfigurasi) -->
     <div id="diagnostics-modal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-100">
@@ -883,7 +717,7 @@
                         <div class="flex items-center gap-2">
                             <h3 class="font-extrabold text-sm md:text-base tracking-wide">Panel Admin Utama</h3>
                             <!-- Connection Status Badge Admin Panel -->
-                            <button onclick="window.showDiagnosticsModal()" id="db-status-admin" class="px-2.5 py-0.5 rounded-full text-[9px] font-bold bg-amber-50 text-amber-700 border border-amber-200 flex items-center gap-1 shadow-sm">
+                            <button onclick="window.showDiagnosticsModal()" id="db-status-admin" class="px-2.5 py-0.5 rounded-full text-[9px] font-bold bg-amber-50 text-amber-700 border border-amber-200 flex items-center gap-1.5 shadow-sm">
                                 <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
                                 <span>Lokal</span>
                             </button>
@@ -1317,6 +1151,1129 @@
         <span id="feedback-text" class="text-xs font-semibold">Perubahan berhasil disimpan!</span>
     </div>
 
+    <!-- MAIN JAVASCRIPT GLOBAL LOGIC -->
+    <script>
+        // Active states & Carousel controls
+        let activeQuoteIndex = 0;
+        let isAdminLoggedIn = sessionStorage.getItem('isAdminLoggedIn') === 'true';
+        let currentPostCategoryFilter = 'Semua';
+
+        // GLOBAL SINKRONISASI INDIKATOR STATUS SENSOR
+        window.updateStatusIndicator = function(status) {
+            const desktopStatus = document.getElementById('db-status-desktop');
+            const mobileStatus = document.getElementById('db-status-mobile');
+            const adminStatus = document.getElementById('db-status-admin');
+
+            let bgClass = 'bg-amber-50';
+            let textClass = 'text-amber-700';
+            let borderClass = 'border-amber-200';
+            let dotClass = 'bg-amber-500';
+            let label = 'Offline (Lokal)';
+
+            if (status === 'online') {
+                bgClass = 'bg-emerald-50';
+                textClass = 'text-emerald-700';
+                borderClass = 'border-emerald-200';
+                dotClass = 'bg-emerald-500';
+                label = 'Online (Awan)';
+            } else if (status === 'connecting') {
+                bgClass = 'bg-blue-50';
+                textClass = 'text-blue-700';
+                borderClass = 'border-blue-200';
+                dotClass = 'bg-blue-500 animate-ping';
+                label = 'Menghubungkan...';
+            }
+
+            [desktopStatus, mobileStatus, adminStatus].forEach(el => {
+                if (el) {
+                    el.className = `ml-2 px-2.5 py-1 rounded-full text-[9px] md:text-[10px] font-bold ${bgClass} ${textClass} border ${borderClass} flex items-center gap-1.5`;
+                    el.innerHTML = `<span class="w-1.5 h-1.5 rounded-full ${dotClass}"></span><span>${label}</span>`;
+                }
+            });
+        }
+
+        // WINDOW DIAGNOSTIC MODAL TRIGGER
+        window.showDiagnosticsModal = function() {
+            const modal = document.getElementById('diagnostics-modal');
+            const badge = document.getElementById('diagnostics-status-badge');
+            const errorText = document.getElementById('diagnostics-error-msg');
+            const solutionList = document.getElementById('diagnostics-solution-steps');
+
+            if (modal) modal.classList.remove('hidden');
+
+            const err = window.firebaseErrorData;
+            if (err) {
+                if (badge) {
+                    badge.className = "px-3 py-1 rounded-full text-xs font-black bg-rose-50 text-rose-700 border border-rose-200";
+                    badge.innerText = "Offline / Gagal Terhubung";
+                }
+                if (errorText) errorText.innerText = `Eror Code: ${err.code || 'N/A'}\nPesan: ${err.message || 'Unknown Error'}`;
+
+                let steps = '';
+                if (err.code === 'auth/invalid-api-key' || (err.message && err.message.includes('apiKey'))) {
+                    steps = `
+                        <li class="mb-1"><strong>Masalah:</strong> Kunci API Firebase di index.html salah, kosong, atau masih tiruan (Mock Key).</li>
+                        <li class="mb-1"><strong>Solusi:</strong> Buka file <code>index.html</code> di repositori GitHub Anda. Ganti isi dari <code>CUSTOM_FIREBASE_CONFIG</code> dengan kredensial proyek asli Anda.</li>
+                    `;
+                } else if (err.code === 'auth/unauthorized-domain' || (err.message && err.message.includes('domain'))) {
+                    steps = `
+                        <li class="mb-1"><strong>Masalah:</strong> Domain GitHub Pages belum didaftarkan di Firebase Console.</li>
+                        <li class="mb-1"><strong>Solusi:</strong> Masuk to Firebase Console Anda -> Authentication -> Settings -> Authorized Domains -> Tambahkan domain GitHub Pages Anda (misal: <code>username.github.io</code>).</li>
+                    `;
+                } else {
+                    steps = `
+                        <li class="mb-1"><strong>Masalah:</strong> Pengaturan Firebase tidak aktif atau Aturan Akses Database memblokir koneksi.</li>
+                        <li class="mb-1"><strong>Solusi:</strong> Pastikan Cloud Firestore diaktifkan dalam <strong>Test Mode</strong> agar semua perangkat diizinkan membaca & menulis data.</li>
+                    `;
+                }
+                if (solutionList) solutionList.innerHTML = steps;
+            } else {
+                if (badge) {
+                    badge.className = "px-3 py-1 rounded-full text-xs font-black bg-emerald-50 text-emerald-700 border border-emerald-200";
+                    badge.innerText = "Online / Terhubung Sempurna";
+                }
+                if (errorText) errorText.innerText = "Tidak ada masalah koneksi terdeteksi. Sinkronisasi real-time antar perangkat aktif!";
+                if (solutionList) {
+                    solutionList.innerHTML = `
+                        <li class="mb-1">Selamat! Website Anda telah berhasil terhubung ke cloud database secara real-time.</li>
+                        <li class="mb-1">Setiap kali Anda menekan <strong>Simpan Perubahan</strong> di Panel Admin, data di HP atau laptop guru lain akan langsung terupdate otomatis.</li>
+                    `;
+                }
+            }
+        }
+
+        window.closeDiagnosticsModal = function() {
+            const modal = document.getElementById('diagnostics-modal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('mobile-menu-icon');
+            if (menu) {
+                if (menu.classList.contains('hidden')) {
+                    menu.classList.remove('hidden');
+                    if (icon) icon.className = 'fa-solid fa-xmark text-xl';
+                } else {
+                    menu.classList.add('hidden');
+                    if (icon) icon.className = 'fa-solid fa-bars text-xl';
+                }
+            }
+        }
+
+        function scrollToNews() {
+            const el = document.getElementById('berita');
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function scrollToGallery() {
+            const el = document.getElementById('galeri');
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Render quotes slideshow
+        function renderQuotes() {
+            const container = document.getElementById('quotes-container');
+            if (!container) return;
+            if (!window.appData || !window.appData.quotes || window.appData.quotes.length === 0) {
+                container.innerHTML = `<p class="text-slate-400 text-xs">Belum ada quote inspiratif.</p>`;
+                return;
+            }
+            if (activeQuoteIndex >= window.appData.quotes.length) activeQuoteIndex = 0;
+            const q = window.appData.quotes[activeQuoteIndex];
+            container.innerHTML = `
+                <p class="text-xs md:text-sm font-semibold italic leading-relaxed text-slate-100">
+                    "${q.text}"
+                </p>
+                <div class="mt-3 text-[10px] font-bold uppercase tracking-wider text-amber-400">
+                    - ${q.author}
+                </div>
+            `;
+        }
+
+        function prevQuote() {
+            if (window.appData && window.appData.quotes && window.appData.quotes.length > 0) {
+                activeQuoteIndex = (activeQuoteIndex - 1 + window.appData.quotes.length) % window.appData.quotes.length;
+                renderQuotes();
+            }
+        }
+
+        // Quote Carousel
+        function nextQuote() {
+            if (window.appData && window.appData.quotes && window.appData.quotes.length > 0) {
+                activeQuoteIndex = (activeQuoteIndex + 1) % window.appData.quotes.length;
+                renderQuotes();
+            }
+        }
+
+        // Filter and display client post feed
+        function filterPostsByCategory(category) {
+            const grid = document.getElementById('news-grid');
+            const catHeader = document.getElementById('current-category-view');
+            if (!grid) return;
+            grid.innerHTML = '';
+            
+            const posts = (window.appData && window.appData.posts) ? window.appData.posts : [];
+            let filtered = posts;
+            if (category !== 'Semua') {
+                filtered = posts.filter(p => p.category.toLowerCase() === category.toLowerCase());
+                if (catHeader) catHeader.innerText = `${category} Terbaru`;
+            } else {
+                if (catHeader) catHeader.innerText = "Berita & Artikel Terbaru";
+            }
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<p class="text-slate-500 text-xs py-10 col-span-full text-center">Tidak ada postingan dalam kategori ini.</p>`;
+                return;
+            }
+
+            filtered.forEach(post => {
+                grid.innerHTML += `
+                    <article class="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-xs hover:shadow-lg transition-all flex flex-col">
+                        <div class="relative aspect-video">
+                            <img class="w-full h-full object-cover" src="${convertCloudLink(post.image)}" alt="${post.title}" onerror="this.src='https://placehold.co/600x400/0c1a30/ffffff?text=Sekardoja'">
+                            <span class="absolute top-3 left-3 bg-blue-600 text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-widest shadow-xs">
+                                ${post.category}
+                            </span>
+                        </div>
+                        <div class="p-5 flex-1 flex flex-col justify-between">
+                            <div>
+                                <div class="text-slate-400 text-[10px] font-semibold mb-2"><i class="fa-regular fa-calendar"></i> ${post.date}</div>
+                                <h4 class="font-extrabold text-slate-900 text-xs md:text-sm leading-snug line-clamp-2">${post.title}</h4>
+                                <p class="text-slate-500 text-[11px] mt-2 leading-relaxed line-clamp-3">${post.summary}</p>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-slate-50 flex justify-end">
+                                <button onclick="openPostModal('${post.title}', '${post.summary.replace(/'/g, "\\'")}', '${post.image}', '${post.category}')" class="text-[11px] font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1">
+                                    Baca Selengkapnya <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1.5 transition-transform"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                `;
+            });
+            scrollToNews();
+        }
+
+        // Open detailed view modal for any post
+        function openPostModal(title, content, image, category) {
+            const m = document.createElement('div');
+            m.className = 'fixed inset-0 bg-slate-900/70 backdrop-blur-xs z-50 flex items-center justify-center p-4';
+            m.onclick = () => m.remove();
+            m.innerHTML = `
+                <div class="bg-white rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-100" onclick="event.stopPropagation()">
+                    <div class="relative aspect-video">
+                        <img class="w-full h-full object-cover" src="${convertCloudLink(image)}" onerror="this.src='https://placehold.co/600x400/0c1a30/ffffff?text=Sekardoja'">
+                        <span class="absolute top-3 left-3 bg-blue-600 text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-widest">${category}</span>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <h3 class="font-extrabold text-sm md:text-base text-slate-900 leading-tight">${title}</h3>
+                        <p class="text-xs md:text-sm text-slate-700 leading-relaxed">${content}</p>
+                    </div>
+                    <div class="bg-slate-50 px-6 py-4 flex justify-end border-t border-slate-100">
+                        <button onclick="this.closest('.fixed').remove()" class="px-4 py-2 bg-slate-800 hover:bg-slate-950 text-white rounded-lg text-xs font-bold">Tutup</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(m);
+        }
+
+        function renderAllSections() {
+            // Safe fallback guard: if appData is null or empty, wait or use DEFAULT_SCHOOL_DATA
+            if (!window.appData) {
+                window.appData = DEFAULT_SCHOOL_DATA;
+            }
+
+            // Update Text Nodes
+            const headerNameEl = document.getElementById('header-school-name');
+            const footerNameEl = document.getElementById('footer-school-name');
+            const headerAddressEl = document.getElementById('header-school-address');
+            const footerAddressEl = document.getElementById('footer-school-address');
+            const footerPhoneEl = document.getElementById('footer-school-phone');
+            const footerEmailEl = document.getElementById('footer-school-email');
+            const footerAboutSummary = document.getElementById('footer-about-summary');
+
+            if (headerNameEl) headerNameEl.innerText = window.appData.name || '';
+            if (footerNameEl) footerNameEl.innerText = window.appData.name || '';
+            if (headerAddressEl) headerAddressEl.innerHTML = `<i class="fa-solid fa-location-dot text-amber-400"></i> ${window.appData.address || ''}`;
+            if (footerAddressEl) footerAddressEl.innerText = window.appData.address || '';
+            if (footerPhoneEl) footerPhoneEl.innerText = window.appData.phone || '';
+            if (footerEmailEl) footerEmailEl.innerText = window.appData.email || '';
+            if (footerAboutSummary) footerAboutSummary.innerText = window.appData.about || '';
+
+            // Render Dynamic Welcome Card Kiri (Situs Resmi Selamat Datang)
+            const heroTaglineDisplay = document.getElementById('hero-tagline-display');
+            const heroTitleDisplay = document.getElementById('hero-title-display');
+            const heroDescDisplay = document.getElementById('hero-desc-display');
+
+            if (heroTaglineDisplay) heroTaglineDisplay.innerText = window.appData.heroTagline || "SITUS RESMI";
+            if (heroTitleDisplay) heroTitleDisplay.innerHTML = window.appData.heroTitle || "Selamat <br class=\"hidden md:inline\">Datang";
+            if (heroDescDisplay) heroDescDisplay.innerText = window.appData.heroDesc || "";
+
+            // Render Dynamic Welcome Card Kanan (Hero section right panel - image_5361e4.jpg)
+            const welcomeTitleDisplay = document.getElementById('welcome-title-display');
+            const welcomeDescDisplay = document.getElementById('welcome-desc-display');
+            const welcomeBadgeDisplay = document.getElementById('welcome-badge-display');
+
+            if (welcomeTitleDisplay) welcomeTitleDisplay.innerHTML = window.appData.welcomeTitle || 'SELAMAT DATANG DI <br><span class="text-blue-600">WEBSITE</span> SEKOLAH KAMI';
+            if (welcomeDescDisplay) welcomeDescDisplay.innerText = window.appData.welcomeDesc || '';
+            if (welcomeBadgeDisplay) welcomeBadgeDisplay.innerText = window.appData.welcomeBadgeText || 'A';
+
+            // Render 3 Welcome Card Grid Images (Dinamis / Editable)
+            const welcomeImg1Display = document.getElementById('welcome-img1-display');
+            const welcomeImg2Display = document.getElementById('welcome-img2-display');
+            const welcomeImg3Display = document.getElementById('welcome-img3-display');
+
+            if (welcomeImg1Display) welcomeImg1Display.src = convertCloudLink(window.appData.welcomeImg1 || DEFAULT_SCHOOL_DATA.welcomeImg1);
+            if (welcomeImg2Display) welcomeImg2Display.src = convertCloudLink(window.appData.welcomeImg2 || DEFAULT_SCHOOL_DATA.welcomeImg2);
+            if (welcomeImg3Display) welcomeImg3Display.src = convertCloudLink(window.appData.welcomeImg3 || DEFAULT_SCHOOL_DATA.welcomeImg3);
+
+            // Render Dynamic 4 Key Advantages
+            const advantagesContainer = document.getElementById('advantages-container');
+            if (advantagesContainer) {
+                advantagesContainer.innerHTML = '';
+                const colorClassMap = {
+                    blue: "bg-blue-50 text-blue-600",
+                    emerald: "bg-emerald-50 text-emerald-600",
+                    purple: "bg-purple-50 text-purple-600",
+                    amber: "bg-amber-50 text-amber-600"
+                };
+                const advantages = window.appData.advantages || DEFAULT_SCHOOL_DATA.advantages;
+                advantages.forEach(adv => {
+                    const badgeColor = colorClassMap[adv.colorClass] || "bg-blue-50 text-blue-600";
+                    advantagesContainer.innerHTML += `
+                        <div class="bg-white p-6 rounded-2xl border border-slate-100 hover:shadow-lg transition-all text-center flex flex-col items-center">
+                            <div class="w-14 h-14 rounded-full ${badgeColor} flex items-center justify-center mb-5">
+                                <i class="fa-solid ${adv.icon || 'fa-award'} text-xl"></i>
+                            </div>
+                            <h4 class="text-sm font-bold text-slate-900">${adv.title}</h4>
+                            <p class="text-slate-500 text-xs mt-2 leading-relaxed">
+                                ${adv.desc}
+                            </p>
+                        </div>
+                    `;
+                });
+            }
+
+            // Render Dynamic Logos (Header and Footer)
+            const logoContainer = document.getElementById('header-logo-container');
+            const footerLogoContainer = document.getElementById('footer-logo-container');
+            const defaultSchoolLogoSVG = `
+                <svg viewBox="0 0 100 100" class="w-full h-full text-emerald-400">
+                    <polygon points="50,5 90,25 90,75 50,95 10,75 10,25" fill="#1b5e20" stroke="#ffd700" stroke-width="3.5"/>
+                    <circle cx="50" cy="50" r="28" fill="#1e88e5" />
+                    <path d="M50,30 Q65,40 50,70 Q35,40 50,30" fill="#fff59d" />
+                    <circle cx="50" cy="50" r="10" fill="#e53935" />
+                    <text x="50" y="90" fill="#ffffff" font-size="10.5" font-weight="bold" text-anchor="middle">BREBES</text>
+                </svg>
+            `;
+            const defaultFooterLogoSVG = `
+                <svg viewBox="0 0 100 100" class="w-12 h-12 text-emerald-400 flex-shrink-0">
+                    <polygon points="50,5 90,25 90,75 50,95 10,75 10,25" fill="#1b5e20" stroke="#ffd700" stroke-width="3"/>
+                    <circle cx="50" cy="50" r="28" fill="#1e88e5"/>
+                    <path d="M50,30 Q65,40 50,70 Q35,40 50,30" fill="#fff59d"/>
+                </svg>
+            `;
+
+            if (logoContainer) {
+                if (window.appData.logoUrl && window.appData.logoUrl.trim() !== "") {
+                    logoContainer.innerHTML = `<img src="${convertCloudLink(window.appData.logoUrl)}" class="w-full h-full object-contain rounded-full" onerror="this.src='https://placehold.co/150x150/0a2540/ffffff?text=Logo'">`;
+                } else {
+                    logoContainer.innerHTML = defaultSchoolLogoSVG;
+                }
+            }
+            if (footerLogoContainer) {
+                if (window.appData.logoUrl && window.appData.logoUrl.trim() !== "") {
+                    footerLogoContainer.innerHTML = `<img src="${convertCloudLink(window.appData.logoUrl)}" class="w-12 h-12 object-contain rounded-full" onerror="this.src='https://placehold.co/150x150/0a2540/ffffff?text=Logo'">`;
+                } else {
+                    footerLogoContainer.innerHTML = defaultFooterLogoSVG;
+                }
+            }
+
+            // Render Dynamic Ministry Badge
+            const ministryLogoContainer = document.getElementById('ministry-logo-container');
+            const defaultMinistryLogoSVG = `
+                <svg class="w-11 h-11 text-sky-400" viewBox="0 0 100 100" fill="currentColor">
+                    <polygon points="50,10 85,35 85,75 50,90 15,75 15,35" fill="#0066cc" stroke="#ffffff" stroke-width="2"/>
+                    <polygon points="50,22 75,40 75,70 50,82 25,70 25,40" fill="#ffffff"/>
+                    <path d="M50,30 L55,48 L73,48 L58,58 L63,76 L50,65 L37,76 L42,58 L27,48 L45,48 Z" fill="#ffcc00"/>
+                    <text x="50" y="97" fill="#ffffff" font-size="7.5" font-weight="bold" text-anchor="middle">TUT WURI HANDAYANI</text>
+                </svg>
+            `;
+
+            if (ministryLogoContainer) {
+                if (window.appData.ministryLogoUrl && window.appData.ministryLogoUrl.trim() !== "") {
+                    ministryLogoContainer.innerHTML = `<img src="${convertCloudLink(window.appData.ministryLogoUrl)}" class="w-11 h-11 object-contain" onerror="this.src='https://placehold.co/150x150/0066cc/ffffff?text=Kemendikbud'">`;
+                } else {
+                    ministryLogoContainer.innerHTML = defaultMinistryLogoSVG;
+                }
+            }
+
+            // Render Ministry Text
+            const hMinText1 = document.getElementById('header-ministry-text1');
+            const hMinText2 = document.getElementById('header-ministry-text2');
+            if (hMinText1) hTransitionText(hMinText1, window.appData.ministryText1 || "Kementerian Pendidikan");
+            if (hMinText2) hTransitionText(hMinText2, window.appData.ministryText2 || "Republik Indonesia");
+
+            // Sambutan Section
+            const speechName = document.getElementById('speech-name');
+            const speechImage = document.getElementById('speech-image');
+            const speechTextContainer = document.getElementById('speech-text');
+
+            if (speechName && window.appData.principal) {
+                speechName.innerText = window.appData.principal.name || '';
+            }
+            if (speechImage && window.appData.principal && window.appData.principal.image) {
+                speechImage.src = convertCloudLink(window.appData.principal.image);
+                speechImage.onerror = function() { this.src='https://placehold.co/400x500/0c1a30/ffffff?text=Principal'; };
+            }
+            
+            if (speechTextContainer && window.appData.principal && window.appData.principal.speech) {
+                speechTextContainer.innerHTML = window.appData.principal.speech.split('\n').map(p => `<p class="mb-3">${p}</p>`).join('');
+            }
+
+            // Stats Counters
+            if (window.appData.stats) {
+                const statSiswa = document.getElementById('stat-siswa');
+                const statRombel = document.getElementById('stat-rombel');
+                const statGuru = document.getElementById('stat-guru');
+                const statPrestasi = document.getElementById('stat-prestasi');
+                if (statSiswa) statSiswa.innerText = window.appData.stats.siswa || 0;
+                if (statRombel) statRombel.innerText = window.appData.stats.rombel || 0;
+                if (statGuru) statGuru.innerText = window.appData.stats.guru || 0;
+                if (statPrestasi) statPrestasi.innerText = window.appData.stats.prestasi || 0;
+            }
+
+            // News Feed
+            const grid = document.getElementById('news-grid');
+            if (grid && window.appData.posts) {
+                grid.innerHTML = '';
+                window.appData.posts.forEach(post => {
+                    grid.innerHTML += `
+                        <article class="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-xs hover:shadow-lg transition-all flex flex-col">
+                            <div class="relative aspect-video">
+                                <img class="w-full h-full object-cover" src="${convertCloudLink(post.image)}" alt="${post.title}" onerror="this.src='https://placehold.co/600x400/0c1a30/ffffff?text=Sekardoja'">
+                                <span class="absolute top-3 left-3 bg-blue-600 text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-widest shadow-xs">
+                                    ${post.category}
+                                </span>
+                            </div>
+                            <div class="p-5 flex-1 flex flex-col justify-between">
+                                <div>
+                                    <div class="text-slate-400 text-[10px] font-semibold mb-2"><i class="fa-regular fa-calendar"></i> ${post.date}</div>
+                                    <h4 class="font-extrabold text-slate-900 text-xs md:text-sm leading-snug line-clamp-2">${post.title}</h4>
+                                    <p class="text-slate-500 text-[11px] mt-2 leading-relaxed line-clamp-3">${post.summary}</p>
+                                </div>
+                                <div class="mt-4 pt-3 border-t border-slate-50 flex justify-end">
+                                    <button onclick="openPostModal('${post.title}', '${post.summary.replace(/'/g, "\\'")}', '${post.image}', '${post.category}')" class="text-[11px] font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1">
+                                        Baca Selengkapnya <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1.5 transition-transform"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </article>
+                    `;
+                });
+            }
+
+            // News Update in Footer matching image_34038c.jpg
+            const footerNews = document.getElementById('footer-news');
+            if (footerNews && window.appData.posts) {
+                footerNews.innerHTML = '';
+                window.appData.posts.slice(0, 2).forEach(post => {
+                    footerNews.innerHTML += `
+                        <div class="flex items-center space-x-3.5">
+                            <img class="w-11 h-11 object-cover rounded-lg bg-slate-800 flex-shrink-0" src="${convertCloudLink(post.image)}" alt="${post.title}" onerror="this.src='https://placehold.co/100x100/0c1a30/ffffff?text=Berita'">
+                            <div>
+                                <h6 class="text-[11px] font-extrabold text-slate-200 line-clamp-2 hover:text-amber-400 transition-colors">
+                                    <button onclick="openPostModal('${post.title}', '${post.summary.replace(/'/g, "\\'")}', '${post.image}', '${post.category}')" class="text-left font-bold text-slate-200">${post.title}</button>
+                                </h6>
+                                <span class="text-[9px] text-slate-500 flex items-center gap-1 mt-0.5">
+                                    <i class="fa-regular fa-calendar"></i> ${post.date}
+                                </span>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            // Quotes
+            renderQuotes();
+
+            // Photo Gallery Grid matching image_33ffca.jpg & image_34038c.jpg style
+            const galleryGrid = document.getElementById('gallery-grid');
+            if (galleryGrid && window.appData.gallery) {
+                galleryGrid.innerHTML = '';
+                window.appData.gallery.forEach(item => {
+                    galleryGrid.innerHTML += `
+                        <div class="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-xs hover:shadow-lg transition-all group cursor-pointer" onclick="openLightbox('${convertCloudLink(item.image)}', '${item.title}')">
+                            <div class="relative overflow-hidden aspect-[4/3]">
+                                <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="${convertCloudLink(item.image)}" alt="${item.title}" onerror="this.src='https://placehold.co/600x450/0c1a30/ffffff?text=Galeri'">
+                                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-5">
+                                    <div>
+                                        <span class="text-[8px] font-black tracking-widest text-amber-400 uppercase block mb-1">${item.type}</span>
+                                        <h5 class="text-white text-xs font-bold line-clamp-1">${item.title}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            // Render Dynamic Partner Badges with Links
+            const partnersContainer = document.getElementById('partners-container');
+            if (partnersContainer && window.appData.partners) {
+                partnersContainer.innerHTML = '';
+                window.appData.partners.forEach(partner => {
+                    partnersContainer.innerHTML += `
+                        <a href="${partner.url || '#'}" target="_blank" class="h-8 flex items-center space-x-2 grayscale hover:grayscale-0 transition-all hover:scale-105 duration-150">
+                            <i class="fa-solid ${partner.icon || 'fa-link'} ${partner.colorClass || 'text-slate-700'} text-lg"></i>
+                            <span class="font-bold text-slate-700 tracking-tight text-[11px] uppercase">${partner.name}</span>
+                        </a>
+                    `;
+                });
+            }
+        }
+
+        // Helper safe transition text
+        function hTransitionText(element, value) {
+            if (element) {
+                element.innerText = value;
+                return true;
+            }
+            return false;
+        }
+
+        // Image Lightbox Viewer
+        function openLightbox(imageUrl, title) {
+            const lb = document.createElement('div');
+            lb.className = 'fixed inset-0 bg-black/95 backdrop-blur-md z-50 flex flex-col items-center justify-center p-4';
+            lb.onclick = () => lb.remove();
+            lb.innerHTML = `
+                <div class="relative max-w-4xl max-h-[80vh] overflow-hidden rounded-2xl shadow-2xl border border-white/10" onclick="event.stopPropagation()">
+                    <button onclick="this.closest('.fixed').remove()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/60 text-white hover:bg-black/90 transition-all flex items-center justify-center text-lg z-50"><i class="fa-solid fa-xmark"></i></button>
+                    <img class="max-w-full max-h-[80vh] object-contain rounded-xl" src="${imageUrl}" alt="${title}">
+                </div>
+                <div class="mt-4 text-center text-white" onclick="event.stopPropagation()">
+                    <h5 class="font-bold text-sm uppercase tracking-wide">${title}</h5>
+                    <p class="text-[10px] text-slate-400 mt-1">Dokumentasi Resmi - SD NEGERI SEKARDOJA</p>
+                </div>
+            `;
+            document.body.appendChild(lb);
+        }
+    </script>
+
+    <!-- PANEL ADMIN WORKSPACE CONTROLLER AND ACTIONS -->
+    <script>
+        // PANEL ADMIN UI LOGIC EXPOSED GLOBALLY
+        window.openAdminModal = function() {
+            if (!isAdminLoggedIn) {
+                const errEl = document.getElementById('login-error-msg');
+                const uInput = document.getElementById('login-username');
+                const pInput = document.getElementById('login-password');
+                const modal = document.getElementById('admin-login-modal');
+
+                if (errEl) errEl.classList.add('hidden');
+                if (uInput) uInput.value = '';
+                if (pInput) pInput.value = '';
+                if (modal) modal.classList.remove('hidden');
+                return;
+            }
+
+            // Safe guard data binding
+            if (!window.appData) window.appData = DEFAULT_SCHOOL_DATA;
+
+            // Bind values to Admin Editor inputs on open safely
+            safeValueBinding('input-school-name', window.appData.name);
+            safeValueBinding('input-school-address', window.appData.address);
+            safeValueBinding('input-school-phone', window.appData.phone);
+            safeValueBinding('input-school-email', window.appData.email);
+            safeValueBinding('input-school-about', window.appData.about);
+            safeValueBinding('input-school-history', window.appData.history);
+
+            safeValueBinding('input-welcome-title', window.appData.welcomeTitle || "");
+            safeValueBinding('input-welcome-desc', window.appData.welcomeDesc || "");
+            safeValueBinding('input-welcome-badge', window.appData.welcomeBadgeText || "A");
+            
+            // Welcome card 3 photos bindings
+            safeValueBinding('input-welcome-img1', window.appData.welcomeImg1 || "");
+            safeValueBinding('input-welcome-img2', window.appData.welcomeImg2 || "");
+            safeValueBinding('input-welcome-img3', window.appData.welcomeImg3 || "");
+
+            // Logos and ministry state binding
+            safeValueBinding('input-school-logo-url', window.appData.logoUrl || "");
+            safeValueBinding('input-ministry-logo-url', window.appData.ministryLogoUrl || "");
+            safeValueBinding('input-ministry-text1', window.appData.ministryText1 || "Kementerian Pendidikan");
+            safeValueBinding('input-ministry-text2', window.appData.ministryText2 || "Republik Indonesia");
+            
+            // Custom Firebase fields binding
+            safeValueBinding('input-firebase-config-str', window.appData.firebaseConfigStr || "");
+            safeValueBinding('input-firebase-app-id', window.appData.firebaseAppId || "");
+
+            if (window.appData.principal) {
+                safeValueBinding('input-principal-name', window.appData.principal.name);
+                safeValueBinding('input-principal-image', window.appData.principal.image);
+                safeValueBinding('input-principal-speech', window.appData.principal.speech);
+            }
+            
+            safeValueBinding('input-school-visi', window.appData.visi);
+
+            // Stats
+            if (window.appData.stats) {
+                safeValueBinding('input-stat-siswa', window.appData.stats.siswa);
+                safeValueBinding('input-stat-rombel', window.appData.stats.rombel);
+                safeValueBinding('input-stat-guru', window.appData.stats.guru);
+                safeValueBinding('input-stat-prestasi', window.appData.stats.prestasi);
+            }
+
+            // Hero Left Section binding
+            safeValueBinding('input-hero-tagline', window.appData.heroTagline || "SITUS RESMI");
+            safeValueBinding('input-hero-title', window.appData.heroTitle || "Selamat <br class=\"hidden md:inline\">Datang");
+            safeValueBinding('input-hero-desc', window.appData.heroDesc || "");
+
+            // Render sub lists
+            renderAdminTeachersList();
+            renderAdminFacilitiesList();
+            renderAdminKesiswaanList();
+            renderAdminPostsList();
+            renderAdminGalleryList();
+            renderAdminQuotesList();
+            renderAdminOrgList();
+            renderAdminAdvantagesList();
+            renderAdminPartnersList();
+
+            const modal = document.getElementById('admin-modal');
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function safeValueBinding(elementId, value) {
+            const el = document.getElementById(elementId);
+            if (el) el.value = value || '';
+        }
+
+        window.closeAdminModal = function() {
+            const modal = document.getElementById('admin-modal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        window.closeLoginModal = function() {
+            const modal = document.getElementById('admin-login-modal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        window.togglePasswordVisibility = function() {
+            const pwd = document.getElementById('login-password');
+            const icon = document.getElementById('password-toggle-icon');
+            if (pwd) {
+                if (pwd.type === 'password') {
+                    pwd.type = 'text';
+                    if (icon) icon.className = 'fa-solid fa-eye-slash text-xs';
+                } else {
+                    pwd.type = 'password';
+                    if (icon) icon.className = 'fa-solid fa-eye text-xs';
+                }
+            }
+        }
+
+        window.handleAdminLogin = function() {
+            const uInput = document.getElementById('login-username');
+            const pInput = document.getElementById('login-password');
+            const error = document.getElementById('login-error-msg');
+
+            const u = uInput ? uInput.value : '';
+            const p = pInput ? pInput.value : '';
+
+            // Hardcoded safe credentials
+            if (u === 'admin' && p === 'sekardoja123') {
+                isAdminLoggedIn = true;
+                sessionStorage.setItem('isAdminLoggedIn', 'true');
+                if (error) error.classList.add('hidden');
+                closeLoginModal();
+                openAdminModal();
+                showToast("Akses Diterima! Selamat datang Admin.");
+            } else {
+                if (error) error.classList.remove('hidden');
+            }
+        }
+
+        window.handleAdminLogout = function() {
+            isAdminLoggedIn = false;
+            sessionStorage.removeItem('isAdminLoggedIn');
+            closeAdminModal();
+            showToast("Berhasil keluar dari sesi Admin.");
+        }
+
+        window.switchAdminTab = function(tabName) {
+            document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+                btn.className = "admin-tab-btn flex items-center space-x-3 w-full text-left px-3.5 py-3 rounded-xl text-xs font-bold transition-all text-slate-500 hover:bg-slate-100 whitespace-nowrap md:whitespace-normal";
+            });
+            document.querySelectorAll('.admin-panel-content').forEach(p => p.classList.add('hidden'));
+
+            const actBtn = document.getElementById(`tab-${tabName}`);
+            if (actBtn) {
+                actBtn.className = "admin-tab-btn flex items-center space-x-3 w-full text-left px-3.5 py-3 rounded-xl text-xs font-bold transition-all text-blue-600 bg-blue-50/80 whitespace-nowrap md:whitespace-normal";
+            }
+            const panel = document.getElementById(`admin-panel-${tabName}`);
+            if (panel) panel.classList.remove('hidden');
+            activeAdminTab = tabName;
+        }
+
+        // Sub lists rendering for Admin tab management
+        function renderAdminTeachersList() {
+            const list = document.getElementById('admin-teachers-list');
+            if (!list) return;
+            list.innerHTML = '';
+            const teachers = (window.appData && window.appData.teachers) ? window.appData.teachers : [];
+            teachers.forEach((t, i) => {
+                list.innerHTML += `
+                    <div class="p-3 border border-slate-150 bg-slate-50/50 rounded-xl flex items-center justify-between gap-2">
+                        <div class="flex items-center space-x-3 overflow-hidden">
+                            <img class="w-10 h-10 object-cover rounded-lg bg-slate-200" src="${convertCloudLink(t.image)}" onerror="this.src='https://placehold.co/100x100/0c1a30/ffffff?text=Guru'">
+                            <div>
+                                <h6 class="text-xs font-bold text-slate-800 truncate">${t.name}</h6>
+                                <span class="text-[9px] text-slate-400 block">${t.role}</span>
+                            </div>
+                        </div>
+                        <button onclick="deleteTeacher(${i})" class="text-rose-600 hover:bg-rose-100 w-7 h-7 rounded-lg flex items-center justify-center text-xs"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+            });
+        }
+
+        function renderAdminFacilitiesList() {
+            const list = document.getElementById('admin-facilities-list');
+            if (!list) return;
+            list.innerHTML = '';
+            const facilities = (window.appData && window.appData.facilities) ? window.appData.facilities : [];
+            facilities.forEach((fac, i) => {
+                list.innerHTML += `
+                    <div class="p-3 border border-slate-150 bg-slate-50/50 rounded-xl flex items-center justify-between gap-3">
+                        <div>
+                            <span class="text-xs font-bold text-slate-800 block">${fac.title}</span>
+                            <span class="text-[9px] text-slate-400 block line-clamp-1">${fac.desc}</span>
+                        </div>
+                        <button onclick="deleteFacility(${i})" class="text-rose-600 hover:bg-rose-100 w-7 h-7 rounded-lg flex items-center justify-center text-xs"><i class="fa-solid fa-trash text-sm"></i></button>
+                    </div>
+                `;
+            });
+        }
+
+        // Sub lists rendering
+        function renderAdminKesiswaanList() {
+            const list = document.getElementById('admin-extracurricular-list');
+            if (!list) return;
+            list.innerHTML = '';
+            const extracurriculars = (window.appData && window.appData.extracurriculars) ? window.appData.extracurriculars : [];
+            extracurriculars.forEach((item, i) => {
+                list.innerHTML += `
+                    <div class="p-3 border border-slate-150 bg-slate-50/50 rounded-xl flex items-center justify-between gap-3">
+                        <div>
+                            <span class="text-xs font-bold text-slate-800 block">${item.name}</span>
+                            <span class="text-[9px] text-slate-400 block line-clamp-1">${item.desc}</span>
+                        </div>
+                        <button onclick="deleteExtracurricular(${i})" class="text-rose-600 hover:bg-rose-100 w-7 h-7 rounded-lg flex items-center justify-center text-xs"><i class="fa-solid fa-trash text-sm"></i></button>
+                    </div>
+                `;
+            });
+        }
+
+        function renderAdminPostsList() {
+            const list = document.getElementById('admin-posts-list');
+            if (!list) return;
+            list.innerHTML = '';
+            const posts = (window.appData && window.appData.posts) ? window.appData.posts : [];
+            posts.forEach((post, i) => {
+                list.innerHTML += `
+                    <div class="p-3 border border-slate-150 bg-slate-50/50 rounded-xl flex items-center justify-between gap-3">
+                        <div class="flex items-center space-x-3 overflow-hidden">
+                            <img class="w-10 h-10 object-cover rounded-lg bg-slate-200" src="${convertCloudLink(post.image)}" onerror="this.src='https://placehold.co/100x100/0c1a30/ffffff?text=Post'">
+                            <div>
+                                <h6 class="text-xs font-bold text-slate-800 truncate">${post.title}</h6>
+                                <span class="text-[9px] font-bold text-slate-400 block">${post.category} | ${post.date}</span>
+                            </div>
+                        </div>
+                        <button onclick="deletePost(${i})" class="text-rose-600 hover:bg-rose-100 w-7 h-7 rounded-lg flex items-center justify-center text-xs"><i class="fa-solid fa-trash text-sm"></i></button>
+                    </div>
+                `;
+            });
+        }
+
+        function renderAdminGalleryList() {
+            const photoList = document.getElementById('admin-gallery-photo-grid');
+            if (photoList) {
+                photoList.innerHTML = '';
+                const gallery = (window.appData && window.appData.gallery) ? window.appData.gallery : [];
+                gallery.forEach((item, i) => {
+                    photoList.innerHTML += `
+                        <div class="border border-slate-200 rounded-2xl p-4 bg-slate-50/50 space-y-3 relative shadow-xs">
+                            <button onclick="deleteGalleryPhoto(${i})" class="absolute top-3 right-3 text-rose-600 hover:bg-rose-100 w-7 h-7 rounded-lg flex items-center justify-center text-xs border border-slate-200 bg-white shadow-xs z-10">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                            
+                            <div class="aspect-video w-full rounded-xl overflow-hidden bg-slate-100 border border-slate-200 relative">
+                                <img class="w-full h-full object-cover" src="${convertCloudLink(item.image)}" onerror="this.src='https://placehold.co/300x180/0c1a30/ffffff?text=Tautan+Galeri+Belum+Valid'">
+                                <span class="absolute bottom-2 left-2 bg-slate-900/70 text-white text-[8px] font-extrabold px-2 py-0.5 rounded-md backdrop-blur-xs uppercase">Preview</span>
+                            </div>
+                            
+                            <div class="space-y-2">
+                                <div>
+                                    <label class="block text-[8px] font-black text-slate-400 uppercase tracking-wider mb-0.5">Judul Kegiatan</label>
+                                    <input type="text" id="gallery-photo-title-${i}" value="${item.title}" class="w-full text-xs px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg outline-none font-bold text-slate-800">
+                                </div>
+                                <div>
+                                    <label class="block text-[8px] font-black text-slate-400 uppercase tracking-wider mb-0.5">Tautan Gambar (Google Drive / Lainnya)</label>
+                                    <input type="text" id="gallery-photo-image-${i}" value="${item.image}" class="w-full text-xs px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg outline-none font-mono text-blue-600" placeholder="Paste link drive / raw image url...">
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            const videoList = document.getElementById('admin-gallery-video-list');
+            if (videoList) {
+                videoList.innerHTML = '';
+                const videos = (window.appData && window.appData.videos) ? window.appData.videos : [];
+                videos.forEach((video, i) => {
+                    videoList.innerHTML += `
+                        <div class="p-3 border border-slate-150 bg-slate-50/50 rounded-xl flex items-center justify-between gap-3">
+                            <div>
+                                <span class="text-xs font-bold text-slate-800 block">${video.title}</span>
+                                <span class="text-[9px] text-slate-400 block">${video.embedUrl}</span>
+                            </div>
+                            <button onclick="deleteGalleryVideo(${i})" class="text-rose-600 hover:bg-rose-100 w-7 h-7 rounded-lg flex items-center justify-center text-xs"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    `;
+                });
+            }
+        }
+
+        function renderAdminQuotesList() {
+            const list = document.getElementById('admin-quotes-list');
+            if (!list) return;
+            list.innerHTML = '';
+            const quotes = (window.appData && window.appData.quotes) ? window.appData.quotes : [];
+            quotes.forEach((q, i) => {
+                list.innerHTML += `
+                    <div class="p-3.5 border border-slate-150 bg-slate-50/50 rounded-xl space-y-2">
+                        <textarea onchange="updateQuoteText(${i}, this.value)" class="w-full text-xs p-2 border border-slate-200 rounded-lg outline-none" rows="2">${q.text}</textarea>
+                        <div class="flex justify-between items-center">
+                            <input type="text" value="${q.author}" onchange="updateQuoteAuthor(${i}, this.value)" class="text-[10px] font-bold text-slate-600 bg-transparent border-b border-slate-200 px-1 py-0.5 outline-none">
+                            <button onclick="deleteQuote(${i})" class="text-rose-600 hover:text-rose-800 text-xs flex items-center gap-1 font-bold"><i class="fa-solid fa-trash"></i> Hapus</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderAdminOrgList() {
+            const container = document.getElementById('admin-org-list');
+            if (!container) return;
+            container.innerHTML = '';
+            const organization = (window.appData && window.appData.organization) ? window.appData.organization : [];
+            organization.forEach((item, index) => {
+                container.innerHTML += `
+                    <div class="flex items-center gap-3 bg-slate-50 p-2.5 rounded-xl border border-slate-150">
+                        <div class="flex-1">
+                            <label class="block text-[8px] font-black text-slate-400 uppercase tracking-wider mb-0.5">Jabatan / Role</label>
+                            <input type="text" id="org-role-${index}" value="${item.role}" class="w-full text-xs px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg outline-none font-extrabold text-blue-600">
+                        </div>
+                        <div class="flex-1">
+                            <label class="block text-[8px] font-black text-slate-400 uppercase tracking-wider mb-0.5">Nama Pejabat</label>
+                            <input type="text" id="org-name-${index}" value="${item.name}" class="w-full text-xs px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg outline-none font-medium text-slate-800">
+                        </div>
+                        <button type="button" onclick="deleteOrgRole(${index})" class="text-rose-600 hover:bg-rose-100 p-2 rounded-lg flex items-center justify-center text-xs mt-3.5">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        function renderAdminAdvantagesList() {
+            const container = document.getElementById('admin-advantages-list');
+            if (!container) return;
+            container.innerHTML = '';
+            const advantages = (window.appData && window.appData.advantages) ? window.appData.advantages : [];
+            advantages.forEach((adv, index) => {
+                container.innerHTML += `
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
+                        <div class="font-bold text-xs text-blue-600 uppercase tracking-wider">Kotak Keunggulan #${index + 1}</div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[9px] font-black text-slate-500 uppercase mb-0.5">Judul Keunggulan</label>
+                                <input type="text" id="adv-title-${index}" value="${adv.title}" class="w-full text-xs p-2.5 bg-white border border-slate-200 rounded-lg outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[9px] font-black text-slate-500 uppercase mb-0.5">Ikon FontAwesome (contoh: fa-school)</label>
+                                <input type="text" id="adv-icon-${index}" value="${adv.icon}" class="w-full text-xs p-2.5 bg-white border border-slate-200 rounded-lg outline-none">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[9px] font-black text-slate-500 uppercase mb-0.5">Deskripsi Ringkat</label>
+                            <textarea id="adv-desc-${index}" rows="2" class="w-full text-xs p-2.5 bg-white border border-slate-200 rounded-lg outline-none">${adv.desc}</textarea>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderAdminPartnersList() {
+            const container = document.getElementById('admin-partners-list');
+            if (!container) return;
+            container.innerHTML = '';
+            const partners = (window.appData && window.appData.partners) ? window.appData.partners : [];
+            partners.forEach((partner, index) => {
+                container.innerHTML += `
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
+                        <div class="font-bold text-xs text-emerald-600 uppercase tracking-wider">Partner Badge #${index + 1}</div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[9px] font-black text-slate-500 uppercase mb-0.5">Nama Instansi / Program</label>
+                                <input type="text" id="partner-name-${index}" value="${partner.name}" class="w-full text-xs p-2.5 bg-white border border-slate-200 rounded-lg outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[9px] font-black text-slate-500 uppercase mb-0.5">Ikon FontAwesome (contoh: fa-database)</label>
+                                <input type="text" id="partner-icon-${index}" value="${partner.icon}" class="w-full text-xs p-2.5 bg-white border border-slate-200 rounded-lg outline-none">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-[9px] font-black text-slate-500 uppercase mb-1">URL Tautan Utama (Langsung Terbuka Baru)</label>
+                                <input type="text" id="partner-url-${index}" value="${partner.url || ''}" class="w-full text-xs p-2.5 bg-white border border-slate-200 rounded-lg outline-none" placeholder="https://...">
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function syncOrgStateFromInputs() {
+            const organization = (window.appData && window.appData.organization) ? window.appData.organization : [];
+            organization.forEach((item, index) => {
+                const roleInput = document.getElementById(`org-role-${index}`);
+                const nameInput = document.getElementById(`org-name-${index}`);
+                if (roleInput && nameInput) {
+                    item.role = roleInput.value;
+                    item.name = nameInput.value;
+                }
+            });
+        }
+
+        // Export helper mutations so inline actions can utilize them
+        window.deleteTeacher = function(index) {
+            if (window.appData && window.appData.teachers) {
+                window.appData.teachers.splice(index, 1);
+                renderAdminTeachersList();
+                showToast("Guru berhasil dihapus!");
+            }
+        };
+        window.deleteFacility = function(index) {
+            if (window.appData && window.appData.facilities) {
+                window.appData.facilities.splice(index, 1);
+                renderAdminFacilitiesList();
+                showToast("Sarana prasarana berhasil dihapus!");
+            }
+        };
+        window.deleteExtracurricular = function(index) {
+            if (window.appData && window.appData.extracurriculars) {
+                window.appData.extracurriculars.splice(index, 1);
+                renderAdminKesiswaanList();
+                showToast("Ekstrakurikuler berhasil dihapus!");
+            }
+        };
+        window.deletePost = function(index) {
+            if (window.appData && window.appData.posts) {
+                window.appData.posts.splice(index, 1);
+                renderAdminPostsList();
+                showToast("Postingan berhasil dihapus!");
+            }
+        };
+        window.deleteGalleryPhoto = function(index) {
+            if (window.appData && window.appData.gallery) {
+                window.appData.gallery.splice(index, 1);
+                renderAdminGalleryList();
+                showToast("Foto dihapus dari galeri!");
+            }
+        };
+        window.deleteGalleryVideo = function(index) {
+            if (window.appData && window.appData.videos) {
+                window.appData.videos.splice(index, 1);
+                renderAdminGalleryList();
+                showToast("Link video berhasil dihapus!");
+            }
+        };
+        window.deleteQuote = function(index) {
+            if (window.appData && window.appData.quotes) {
+                window.appData.quotes.splice(index, 1);
+                renderAdminQuotesList();
+                showToast("Quote berhasil dihapus!");
+            }
+        };
+        window.deleteOrgRole = function(index) {
+            syncOrgStateFromInputs();
+            if (window.appData && window.appData.organization) {
+                window.appData.organization.splice(index, 1);
+                renderAdminOrgList();
+            }
+        };
+
+        window.createNewTeacher = function() {
+            const name = prompt("Nama Lengkap Guru (dengan gelar):");
+            if (!name) return;
+            const role = prompt("Jabatan / Mata Pelajaran:", "Guru Kelas");
+            const nip = prompt("NIP Guru (Opsional):", "");
+            const image = prompt("URL Foto Guru (Opsional):", "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=300");
+            
+            if (!window.appData.teachers) window.appData.teachers = [];
+            window.appData.teachers.push({
+                name,
+                role: role || "Guru Kelas",
+                nip: nip || "",
+                image: image || "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=300"
+            });
+            renderAdminTeachersList();
+            showToast("Guru berhasil ditambahkan ke daftar!");
+        };
+
+        window.createNewFacility = function() {
+            const title = prompt("Nama Sarana Prasarana:");
+            if (!title) return;
+            const desc = prompt("Keterangan Detail Sarpras:");
+            const icon = prompt("Nama Ikon FontAwesome (contoh: fa-door-open, fa-book, fa-desktop):", "fa-building");
+            
+            if (!window.appData.facilities) window.appData.facilities = [];
+            window.appData.facilities.push({
+                title,
+                desc: desc || "Fasilitas penunjang pembelajaran berkualitas unggulan.",
+                icon: icon || "fa-building"
+            });
+            renderAdminFacilitiesList();
+            showToast("Sarana prasarana baru berhasil ditambahkan!");
+        };
+
+        window.createNewExtracurricular = function() {
+            const name = prompt("Nama Kegiatan Ekskul:");
+            if (!name) return;
+            const desc = prompt("Deskripsi Kegiatan:");
+            const icon = prompt("Nama Ikon FontAwesome (contoh: fa-campground, fa-drum, fa-volleyball):", "fa-star-and-crescent");
+            
+            if (!window.appData.extracurriculars) window.appData.extracurriculars = [];
+            window.appData.extracurriculars.push({
+                name,
+                desc: desc || "Kegiatan ekstrakurikuler peningkatan bakat siswa.",
+                icon: icon || "fa-star-and-crescent"
+            });
+            renderAdminKesiswaanList();
+            showToast("Ekstrakurikuler berhasil ditambahkan!");
+        };
+
+        window.createNewPost = function() {
+            const title = prompt("Masukkan Judul Postingan:");
+            if (!title) return;
+            const category = prompt("Masukkan Kategori (Berita / Artikel / Informasi):", "Berita");
+            const summary = prompt("Teks/Ringkasan Isi Postingan:");
+            const image = prompt("URL Foto Sampul (Opsional):", "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80&w=600");
+            
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            const today = new Date().toLocaleDateString('en-US', options);
+
+            if (!window.appData.posts) window.appData.posts = [];
+            window.appData.posts.unshift({
+                id: Date.now(),
+                title,
+                category: category || "Berita",
+                date: today,
+                summary: summary || "Postingan portal dinamis sekolah yang disunting langsung oleh admin SD Negeri Sekardoja.",
+                image: image || "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80&w=600"
+            });
+            renderAdminPostsList();
+            showToast("Postingan baru berhasil diluncurkan!");
+        };
+
+        window.addNewGalleryPhoto = function() {
+            const title = prompt("Judul Foto Kegiatan:");
+            if (!title) return;
+            const image = prompt("URL Foto Kegiatan (Mendukung Google Drive & Dropbox):");
+            if (!image) return;
+
+            if (!window.appData.gallery) window.appData.gallery = [];
+            window.appData.gallery.unshift({
+                id: Date.now(),
+                title,
+                image,
+                type: "FOTO"
+            });
+            renderAdminGalleryList();
+            showToast("Foto baru berhasil ditambahkan ke galeri!");
+        };
+
+        window.addNewGalleryVideo = function() {
+            const title = prompt("Judul Dokumentasi Video:");
+            if (!title) return;
+            const embedUrl = prompt("URL Video YouTube Embed (contoh: https://www.youtube.com/embed/dQw4w9WgXcQ):");
+            if (!embedUrl) return;
+
+            if (!window.appData.videos) window.appData.videos = [];
+            window.appData.videos.push({
+                id: Date.now(),
+                title,
+                embedUrl
+            });
+            renderAdminGalleryList();
+            showToast("Link video berhasil ditambahkan ke kanal!");
+        };
+
+        window.createNewQuote = function() {
+            const text = prompt("Isi Kalimat Quote Motivasi:");
+            if (!text) return;
+            const author = prompt("Nama Penulis Quote:", "Anonim");
+            if (!window.appData.quotes) window.appData.quotes = [];
+            window.appData.quotes.push({
+                text,
+                author: author || "Anonim"
+                });
+            renderAdminQuotesList();
+            showToast("Quote motivasi baru ditambahkan!");
+        };
+
+        window.addOrgRole = function() {
+            syncOrgStateFromInputs();
+            if (!window.appData.organization) window.appData.organization = [];
+            window.appData.organization.push({ role: "Jabatan Baru", name: "Nama Pejabat" });
+            renderAdminOrgList();
+        };
+
+        window.updateQuoteText = function(index, value) {
+            if (window.appData && window.appData.quotes && window.appData.quotes[index]) {
+                window.appData.quotes[index].text = value;
+            }
+        };
+        window.updateQuoteAuthor = function(index, value) {
+            if (window.appData && window.appData.quotes && window.appData.quotes[index]) {
+                window.appData.quotes[index].author = value;
+            }
+        };
+
+        window.saveStateToCloud = function(newData) {
+            localStorage.setItem('sekardoja_comprehensive_data', JSON.stringify(newData));
+            renderAllSections();
+            showToast("Tersimpan lokal di browser ini.");
+        };
+
+        function showToast(text) {
+            const t = document.getElementById('feedback-toast');
+            if (t) {
+                document.getElementById('feedback-text').innerText = text;
+                t.classList.remove('translate-y-24');
+                setTimeout(() => {
+                    t.classList.add('translate-y-24');
+                }, 3000);
+            }
+        }
+
+        // On window load
+        window.onload = function() {
+            renderAllSections();
+        };
+    </script>
+
     <!-- Dynamic Firebase & Firestore Real-Time Module Integrator -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
@@ -1327,7 +2284,7 @@
         // ⚠️ PENTING: TEMPELKAN (PASTE) KODE FIREBASE CONFIG ASLI ANDA DI BAWAH INI!
         // =========================================================================
         const CUSTOM_FIREBASE_CONFIG = {
-            apiKey: "AIzaSyCJp9SEDg07gKJfU0gf735aSwdsZ7LRpE8", // <-- Ganti baris ini dengan apiKey asli Anda!
+           apiKey: "AIzaSyCJp9SEDg07gKJfU0gf735aSwdsZ7LRpE8", // <-- Ganti baris ini dengan apiKey asli Anda!
             authDomain: "sdn-sekardoja.firebaseapp.com",
             projectId: "sdn-sekardoja",
             storageBucket: "sdn-sekardoja.firebasestorage.app",
@@ -1351,6 +2308,11 @@
 
             // Flag state indicator to connecting
             window.updateStatusIndicator('connecting');
+
+            // Ensure window.appData is initialized before accessing its properties
+            if (!window.appData) {
+                window.appData = DEFAULT_SCHOOL_DATA;
+            }
 
             // 1. Prioritaskan Config yang di-hardcode oleh pengguna di atas
             if (CUSTOM_FIREBASE_CONFIG && CUSTOM_FIREBASE_CONFIG.apiKey && CUSTOM_FIREBASE_CONFIG.apiKey.trim() !== "" && !CUSTOM_FIREBASE_CONFIG.apiKey.includes("Mock_Key")) {
@@ -1423,7 +2385,7 @@
                     window.firebaseErrorData = null;
                 } else {
                     // Send first time set
-                    saveStateToCloud(window.appData);
+                    window.saveStateToCloud(window.appData);
                 }
             }, (error) => {
                 console.warn("Real-time cloud database disconnected:", error);
@@ -1433,7 +2395,12 @@
         }
 
         function setupLocalStorageFallback() {
-            window.appData = JSON.parse(localStorage.getItem('sekardoja_comprehensive_data')) || DEFAULT_SCHOOL_DATA;
+            const stored = localStorage.getItem('sekardoja_comprehensive_data');
+            try {
+                window.appData = stored ? JSON.parse(stored) : DEFAULT_SCHOOL_DATA;
+            } catch (e) {
+                window.appData = DEFAULT_SCHOOL_DATA;
+            }
             ensureDataCompatibility();
             renderAllSections();
             // Update visual status indicators to Offline
@@ -1442,6 +2409,7 @@
 
         // Backward compatibility handler
         function ensureDataCompatibility() {
+            if (!window.appData) window.appData = DEFAULT_SCHOOL_DATA;
             if (!window.appData.welcomeTitle) window.appData.welcomeTitle = DEFAULT_SCHOOL_DATA.welcomeTitle;
             if (!window.appData.welcomeDesc) window.appData.welcomeDesc = DEFAULT_SCHOOL_DATA.welcomeDesc;
             if (!window.appData.welcomeBadgeText) window.appData.welcomeBadgeText = DEFAULT_SCHOOL_DATA.welcomeBadgeText;
@@ -1455,8 +2423,8 @@
             if (!window.appData.partners) window.appData.partners = DEFAULT_SCHOOL_DATA.partners;
         }
 
-        // Save State Mutation to Cloud
-        async function saveStateToCloud(newData) {
+        // Overwrite global function to save to Firebase real-time
+        window.saveStateToCloud = async function(newData) {
             localStorage.setItem('sekardoja_comprehensive_data', JSON.stringify(newData));
             if (!isFirebaseInitialized || !customDocRef) {
                 renderAllSections();
@@ -1475,695 +2443,10 @@
                 showToast("Disimpan secara lokal (Awan terputus).");
                 window.updateStatusIndicator('offline');
             }
-        }
-
-        // Export all form saving and mutations into global window scope for inline HTML handlers
-        window.saveAdminData = function() {
-            // Profil Utama
-            window.appData.name = document.getElementById('input-school-name').value;
-            window.appData.address = document.getElementById('input-school-address').value;
-            window.appData.phone = document.getElementById('input-school-phone').value;
-            window.appData.email = document.getElementById('input-school-email').value;
-            window.appData.about = document.getElementById('input-school-about').value;
-            window.appData.history = document.getElementById('input-school-history').value;
-
-            window.appData.welcomeTitle = document.getElementById('input-welcome-title').value;
-            window.appData.welcomeDesc = document.getElementById('input-welcome-desc').value;
-            window.appData.welcomeBadgeText = document.getElementById('input-welcome-badge').value;
-            
-            // Welcome 3 photos
-            window.appData.welcomeImg1 = document.getElementById('input-welcome-img1').value;
-            window.appData.welcomeImg2 = document.getElementById('input-welcome-img2').value;
-            window.appData.welcomeImg3 = document.getElementById('input-welcome-img3').value;
-
-            // Logos and Ministry data
-            window.appData.logoUrl = document.getElementById('input-school-logo-url').value;
-            window.appData.ministryLogoUrl = document.getElementById('input-ministry-logo-url').value;
-            window.appData.ministryText1 = document.getElementById('input-ministry-text1').value;
-            window.appData.ministryText2 = document.getElementById('input-ministry-text2').value;
-
-            // Custom Firebase string configs
-            window.appData.firebaseConfigStr = document.getElementById('input-firebase-config-str').value;
-            window.appData.firebaseAppId = document.getElementById('input-firebase-app-id').value;
-
-            // Kepala Sekolah
-            window.appData.principal.name = document.getElementById('input-principal-name').value;
-            window.appData.principal.image = document.getElementById('input-principal-image').value;
-            window.appData.principal.speech = document.getElementById('input-principal-speech').value;
-            
-            // Visi
-            window.appData.visi = document.getElementById('input-school-visi').value;
-
-            // Stats
-            window.appData.stats.siswa = parseInt(document.getElementById('input-stat-siswa').value) || 0;
-            window.appData.stats.rombel = parseInt(document.getElementById('input-stat-rombel').value) || 0;
-            window.appData.stats.guru = parseInt(document.getElementById('input-stat-guru').value) || 0;
-            window.appData.stats.prestasi = parseInt(document.getElementById('input-stat-prestasi').value) || 0;
-
-            // Save Hero Left Section
-            window.appData.heroTagline = document.getElementById('input-hero-tagline').value;
-            window.appData.heroTitle = document.getElementById('input-hero-title').value;
-            window.appData.heroDesc = document.getElementById('input-hero-desc').value;
-
-            // Save 4 Key Advantages
-            window.appData.advantages.forEach((adv, index) => {
-                adv.title = document.getElementById(`adv-title-${index}`).value;
-                adv.icon = document.getElementById(`adv-icon-${index}`).value;
-                adv.desc = document.getElementById(`adv-desc-${index}`).value;
-            });
-
-            // Save Partners links and parameters
-            window.appData.partners.forEach((partner, index) => {
-                partner.name = document.getElementById(`partner-name-${index}`).value;
-                partner.icon = document.getElementById(`partner-icon-${index}`).value;
-                partner.url = document.getElementById(`partner-url-${index}`).value;
-            });
-
-            // Save Gallery Photos Direct Inputs
-            window.appData.gallery.forEach((item, i) => {
-                const titleInput = document.getElementById(`gallery-photo-title-${i}`);
-                const imageInput = document.getElementById(`gallery-photo-image-${i}`);
-                if (titleInput && imageInput) {
-                    item.title = titleInput.value;
-                    item.image = imageInput.value;
-                }
-            });
-
-            syncOrgStateFromInputs();
-
-            // Re-initialize Firebase configurations in case they have changed
-            isFirebaseInitialized = false;
-            saveStateToCloud(window.appData);
-            initFirebaseService();
-            closeAdminModal();
-            showToast("Perubahan diterapkan & Berhasil disimpan!");
         };
 
-        window.restoreDefaults = function() {
-            if (confirm("Apakah Anda yakin ingin mengembalikan seluruh data situs ke setelan dasar pabrik SD Negeri Sekardoja?")) {
-                window.appData = JSON.parse(JSON.stringify(DEFAULT_SCHOOL_DATA));
-                saveStateToCloud(window.appData);
-                openAdminModal(); // Reload fields view
-                showToast("Setelan bawaan sekolah berhasil dipulihkan!");
-            }
-        };
-
-        // Export helper mutations so inline actions can utilize them
-        window.deleteTeacher = function(index) {
-            window.appData.teachers.splice(index, 1);
-            renderAdminTeachersList();
-            showToast("Guru berhasil dihapus!");
-        };
-        window.deleteFacility = function(index) {
-            window.appData.facilities.splice(index, 1);
-            renderAdminFacilitiesList();
-            showToast("Sarana prasarana berhasil dihapus!");
-        };
-        window.deleteExtracurricular = function(index) {
-            window.appData.extracurriculars.splice(index, 1);
-            renderAdminKesiswaanList();
-            showToast("Ekstrakurikuler berhasil dihapus!");
-        };
-        window.deletePost = function(index) {
-            window.appData.posts.splice(index, 1);
-            renderAdminPostsList();
-            showToast("Postingan berhasil dihapus!");
-        };
-        window.deleteGalleryPhoto = function(index) {
-            window.appData.gallery.splice(index, 1);
-            renderAdminGalleryList();
-            showToast("Foto dihapus dari galeri!");
-        };
-        window.deleteGalleryVideo = function(index) {
-            window.appData.videos.splice(index, 1);
-            renderAdminGalleryList();
-            showToast("Link video berhasil dihapus!");
-        };
-        window.deleteQuote = function(index) {
-            window.appData.quotes.splice(index, 1);
-            renderAdminQuotesList();
-            showToast("Quote berhasil dihapus!");
-        };
-        window.deleteOrgRole = function(index) {
-            syncOrgStateFromInputs();
-            window.appData.organization.splice(index, 1);
-            renderAdminOrgList();
-        };
-
-        window.createNewTeacher = function() {
-            const name = prompt("Nama Lengkap Guru (dengan gelar):");
-            if (!name) return;
-            const role = prompt("Jabatan / Mata Pelajaran:", "Guru Kelas");
-            const nip = prompt("NIP Guru (Opsional):", "");
-            const image = prompt("URL Foto Guru (Opsional):", "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=300");
-            
-            window.appData.teachers.push({
-                name,
-                role: role || "Guru Kelas",
-                nip: nip || "",
-                image: image || "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=300"
-            });
-            renderAdminTeachersList();
-            showToast("Guru berhasil ditambahkan ke daftar!");
-        };
-
-        window.createNewFacility = function() {
-            const title = prompt("Nama Sarana Prasarana:");
-            if (!title) return;
-            const desc = prompt("Keterangan Detail Sarpras:");
-            const icon = prompt("Nama Ikon FontAwesome (contoh: fa-door-open, fa-book, fa-desktop):", "fa-building");
-            
-            window.appData.facilities.push({
-                title,
-                desc: desc || "Fasilitas penunjang pembelajaran berkualitas unggulan.",
-                icon: icon || "fa-building"
-            });
-            renderAdminFacilitiesList();
-            showToast("Sarana prasarana baru berhasil ditambahkan!");
-        };
-
-        window.createNewExtracurricular = function() {
-            const name = prompt("Nama Kegiatan Ekskul:");
-            if (!name) return;
-            const desc = prompt("Deskripsi Kegiatan:");
-            const icon = prompt("Nama Ikon FontAwesome (contoh: fa-campground, fa-drum, fa-volleyball):", "fa-star-and-crescent");
-            
-            window.appData.extracurriculars.push({
-                name,
-                desc: desc || "Kegiatan ekstrakurikuler peningkatan bakat siswa.",
-                icon: icon || "fa-star-and-crescent"
-            });
-            renderAdminKesiswaanList();
-            showToast("Ekstrakurikuler berhasil ditambahkan!");
-        };
-
-        window.createNewPost = function() {
-            const title = prompt("Masukkan Judul Postingan:");
-            if (!title) return;
-            const category = prompt("Masukkan Kategori (Berita / Artikel / Informasi):", "Berita");
-            const summary = prompt("Teks/Ringkasan Isi Postingan:");
-            const image = prompt("URL Foto Sampul (Opsional):", "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80&w=600");
-            
-            const options = { year: 'numeric', month: 'short', day: 'numeric' };
-            const today = new Date().toLocaleDateString('en-US', options);
-
-            window.appData.posts.unshift({
-                id: Date.now(),
-                title,
-                category: category || "Berita",
-                date: today,
-                summary: summary || "Postingan portal dinamis sekolah yang disunting langsung oleh admin SD Negeri Sekardoja.",
-                image: image || "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80&w=600"
-            });
-            renderAdminPostsList();
-            showToast("Postingan baru berhasil diluncurkan!");
-        };
-
-        window.addNewGalleryPhoto = function() {
-            const title = prompt("Judul Foto Kegiatan:");
-            if (!title) return;
-            const image = prompt("URL Foto Kegiatan (Mendukung Google Drive & Dropbox):");
-            if (!image) return;
-
-            window.appData.gallery.unshift({
-                id: Date.now(),
-                title,
-                image,
-                type: "FOTO"
-            });
-            renderAdminGalleryList();
-            showToast("Foto baru berhasil ditambahkan ke galeri!");
-        };
-
-        window.addNewGalleryVideo = function() {
-            const title = prompt("Judul Dokumentasi Video:");
-            if (!title) return;
-            const embedUrl = prompt("URL Video YouTube Embed (contoh: https://www.youtube.com/embed/dQw4w9WgXcQ):");
-            if (!embedUrl) return;
-
-            if (!window.appData.videos) window.appData.videos = [];
-            window.appData.videos.push({
-                id: Date.now(),
-                title,
-                embedUrl
-            });
-            renderAdminGalleryList();
-            showToast("Link video berhasil ditambahkan ke kanal!");
-        };
-
-        window.createNewQuote = function() {
-            const text = prompt("Isi Kalimat Quote Motivasi:");
-            if (!text) return;
-            const author = prompt("Nama Penulis Quote:", "Anonim");
-            window.appData.quotes.push({
-                text,
-                author: author || "Anonim"
-            });
-            renderAdminQuotesList();
-            showToast("Quote motivasi baru ditambahkan!");
-        };
-
-        window.addOrgRole = function() {
-            syncOrgStateFromInputs();
-            window.appData.organization.push({ role: "Jabatan Baru", name: "Nama Pejabat" });
-            renderAdminOrgList();
-        };
-
-        window.updateQuoteText = function(index, value) {
-            window.appData.quotes[index].text = value;
-        };
-        window.updateQuoteAuthor = function(index, value) {
-            window.appData.quotes[index].author = value;
-        };
-
-        // Initialize dynamic Firebase environment process
+        // Initialize Firebase
         initFirebaseService();
-    </script>
-
-    <!-- MAIN JAVASCRIPT GLOBAL LOGIC -->
-    <script>
-        // Active states & Carousel controls
-        let activeQuoteIndex = 0;
-        let isAdminLoggedIn = sessionStorage.getItem('isAdminLoggedIn') === 'true';
-        let currentPostCategoryFilter = 'Semua';
-
-        // GLOBAL SINKRONISASI INDIKATOR STATUS SENSOR
-        window.updateStatusIndicator = function(status) {
-            const desktopStatus = document.getElementById('db-status-desktop');
-            const mobileStatus = document.getElementById('db-status-mobile');
-            const adminStatus = document.getElementById('db-status-admin');
-
-            let bgClass = 'bg-amber-50';
-            let textClass = 'text-amber-700';
-            let borderClass = 'border-amber-200';
-            let dotClass = 'bg-amber-500';
-            let label = 'Offline (Lokal)';
-
-            if (status === 'online') {
-                bgClass = 'bg-emerald-50';
-                textClass = 'text-emerald-700';
-                borderClass = 'border-emerald-200';
-                dotClass = 'bg-emerald-500';
-                label = 'Online (Awan)';
-            } else if (status === 'connecting') {
-                bgClass = 'bg-blue-50';
-                textClass = 'text-blue-700';
-                borderClass = 'border-blue-200';
-                dotClass = 'bg-blue-500 animate-ping';
-                label = 'Menghubungkan...';
-            }
-
-            [desktopStatus, mobileStatus, adminStatus].forEach(el => {
-                if (el) {
-                    el.className = `ml-2 px-2.5 py-1 rounded-full text-[9px] md:text-[10px] font-bold ${bgClass} ${textClass} border ${borderClass} flex items-center gap-1.5`;
-                    el.innerHTML = `<span class="w-1.5 h-1.5 rounded-full ${dotClass}"></span><span>${label}</span>`;
-                }
-            });
-        }
-
-        // WINDOW DIAGNOSTIC MODAL TRIGGER
-        window.showDiagnosticsModal = function() {
-            const modal = document.getElementById('diagnostics-modal');
-            const badge = document.getElementById('diagnostics-status-badge');
-            const errorText = document.getElementById('diagnostics-error-msg');
-            const solutionList = document.getElementById('diagnostics-solution-steps');
-
-            modal.classList.remove('hidden');
-
-            const err = window.firebaseErrorData;
-            if (err) {
-                badge.className = "px-3 py-1 rounded-full text-xs font-black bg-rose-50 text-rose-700 border border-rose-200";
-                badge.innerText = "Offline / Gagal Terhubung";
-                errorText.innerText = `Eror Code: ${err.code || 'N/A'}\nPesan: ${err.message || 'Unknown Error'}`;
-
-                let steps = '';
-                if (err.code === 'auth/invalid-api-key' || (err.message && err.message.includes('apiKey'))) {
-                    steps = `
-                        <li class="mb-1"><strong>Masalah:</strong> Kunci API Firebase di index.html salah, kosong, atau masih tiruan (Mock Key).</li>
-                        <li class="mb-1"><strong>Solusi:</strong> Buka file <code>index.html</code> di repositori GitHub Anda. Ganti isi dari <code>CUSTOM_FIREBASE_CONFIG</code> dengan kredensial proyek asli Anda.</li>
-                    `;
-                } else if (err.code === 'auth/unauthorized-domain' || (err.message && err.message.includes('domain'))) {
-                    steps = `
-                        <li class="mb-1"><strong>Masalah:</strong> Domain GitHub Pages belum didaftarkan di Firebase Console.</li>
-                        <li class="mb-1"><strong>Solusi:</strong> Masuk ke Firebase Console Anda -> Authentication -> Settings -> Authorized Domains -> Tambahkan domain GitHub Pages Anda (misal: <code>username.github.io</code>).</li>
-                    `;
-                } else {
-                    steps = `
-                        <li class="mb-1"><strong>Masalah:</strong> Pengaturan Firebase tidak aktif atau Aturan Akses Database memblokir koneksi.</li>
-                        <li class="mb-1"><strong>Solusi:</strong> Pastikan Cloud Firestore diaktifkan dalam <strong>Test Mode</strong> agar semua perangkat diizinkan membaca & menulis data.</li>
-                    `;
-                }
-                solutionList.innerHTML = steps;
-            } else {
-                badge.className = "px-3 py-1 rounded-full text-xs font-black bg-emerald-50 text-emerald-700 border border-emerald-200";
-                badge.innerText = "Online / Terhubung Sempurna";
-                errorText.innerText = "Tidak ada masalah koneksi terdeteksi. Sinkronisasi real-time antar perangkat aktif!";
-                solutionList.innerHTML = `
-                    <li class="mb-1">Selamat! Website Anda telah berhasil terhubung ke cloud database secara real-time.</li>
-                    <li class="mb-1">Setiap kali Anda menekan <strong>Simpan Perubahan</strong> di Panel Admin, data di HP atau laptop guru lain akan langsung terupdate otomatis.</li>
-                `;
-            }
-        }
-
-        window.closeDiagnosticsModal = function() {
-            document.getElementById('diagnostics-modal').classList.add('hidden');
-        }
-
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            const icon = document.getElementById('mobile-menu-icon');
-            if (menu.classList.contains('hidden')) {
-                menu.classList.remove('hidden');
-                icon.className = 'fa-solid fa-xmark text-xl';
-            } else {
-                menu.classList.add('hidden');
-                icon.className = 'fa-solid fa-bars text-xl';
-            }
-        }
-
-        function scrollToNews() {
-            document.getElementById('berita').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function scrollToGallery() {
-            document.getElementById('galeri').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // Render quotes slideshow
-        function renderQuotes() {
-            const container = document.getElementById('quotes-container');
-            if (!window.appData.quotes || window.appData.quotes.length === 0) {
-                container.innerHTML = `<p class="text-slate-400 text-xs">Belum ada quote inspiratif.</p>`;
-                return;
-            }
-            if (activeQuoteIndex >= window.appData.quotes.length) activeQuoteIndex = 0;
-            const q = window.appData.quotes[activeQuoteIndex];
-            container.innerHTML = `
-                <p class="text-xs md:text-sm font-semibold italic leading-relaxed text-slate-100">
-                    "${q.text}"
-                </p>
-                <div class="mt-3 text-[10px] font-bold uppercase tracking-wider text-amber-400">
-                    - ${q.author}
-                </div>
-            `;
-        }
-
-        function prevQuote() {
-            activeQuoteIndex = (activeQuoteIndex - 1 + window.appData.quotes.length) % window.appData.quotes.length;
-            renderQuotes();
-        }
-
-        // Quote Carousel
-        function nextQuote() {
-            activeQuoteIndex = (activeQuoteIndex + 1) % window.appData.quotes.length;
-            renderQuotes();
-        }
-
-        // Filter and display client post feed
-        function filterPostsByCategory(category) {
-            currentPostCategoryFilter = category;
-            const grid = document.getElementById('news-grid');
-            const catHeader = document.getElementById('current-category-view');
-            grid.innerHTML = '';
-            
-            let filtered = window.appData.posts;
-            if (category !== 'Semua') {
-                filtered = window.appData.posts.filter(p => p.category.toLowerCase() === category.toLowerCase());
-                catHeader.innerText = `${category} Terbaru`;
-            } else {
-                catHeader.innerText = "Berita & Artikel Terbaru";
-            }
-
-            if (filtered.length === 0) {
-                grid.innerHTML = `<p class="text-slate-500 text-xs py-10 col-span-full text-center">Tidak ada postingan dalam kategori ini.</p>`;
-                return;
-            }
-
-            filtered.forEach(post => {
-                grid.innerHTML += `
-                    <article class="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-xs hover:shadow-lg transition-all flex flex-col">
-                        <div class="relative aspect-video">
-                            <img class="w-full h-full object-cover" src="${convertCloudLink(post.image)}" alt="${post.title}" onerror="this.src='https://placehold.co/600x400/0c1a30/ffffff?text=Sekardoja'">
-                            <span class="absolute top-3 left-3 bg-blue-600 text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-widest shadow-xs">
-                                ${post.category}
-                            </span>
-                        </div>
-                        <div class="p-5 flex-1 flex flex-col justify-between">
-                            <div>
-                                <div class="text-slate-400 text-[10px] font-semibold mb-2"><i class="fa-regular fa-calendar"></i> ${post.date}</div>
-                                <h4 class="font-extrabold text-slate-900 text-xs md:text-sm leading-snug line-clamp-2">${post.title}</h4>
-                                <p class="text-slate-500 text-[11px] mt-2 leading-relaxed line-clamp-3">${post.summary}</p>
-                            </div>
-                            <div class="mt-4 pt-3 border-t border-slate-50 flex justify-end">
-                                <button onclick="openPostModal('${post.title}', '${post.summary}', '${post.image}', '${post.category}')" class="text-[11px] font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1">
-                                    Baca Selengkapnya <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1.5 transition-transform"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </article>
-                `;
-            });
-            scrollToNews();
-        }
-
-        // Open detailed view modal for any post
-        function openPostModal(title, content, image, category) {
-            const m = document.createElement('div');
-            m.className = 'fixed inset-0 bg-slate-900/70 backdrop-blur-xs z-50 flex items-center justify-center p-4';
-            m.onclick = () => m.remove();
-            m.innerHTML = `
-                <div class="bg-white rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-100" onclick="event.stopPropagation()">
-                    <div class="relative aspect-video">
-                        <img class="w-full h-full object-cover" src="${convertCloudLink(image)}" onerror="this.src='https://placehold.co/600x400/0c1a30/ffffff?text=Sekardoja'">
-                        <span class="absolute top-3 left-3 bg-blue-600 text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-widest">${category}</span>
-                    </div>
-                    <div class="p-6 space-y-3">
-                        <h3 class="font-extrabold text-sm md:text-base text-slate-900 leading-tight">${title}</h3>
-                        <p class="text-xs md:text-sm text-slate-700 leading-relaxed">${content}</p>
-                    </div>
-                    <div class="bg-slate-50 px-6 py-4 flex justify-end border-t border-slate-100">
-                        <button onclick="this.closest('.fixed').remove()" class="px-4 py-2 bg-slate-800 hover:bg-slate-950 text-white rounded-lg text-xs font-bold">Tutup</button>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(m);
-        }
-
-        function renderAllSections() {
-            // Update Text Nodes
-            document.getElementById('header-school-name').innerText = window.appData.name;
-            document.getElementById('footer-school-name').innerText = window.appData.name;
-            document.getElementById('header-school-address').innerHTML = `<i class="fa-solid fa-location-dot text-amber-400"></i> ${window.appData.address}`;
-            document.getElementById('footer-school-address').innerText = window.appData.address;
-            document.getElementById('footer-school-phone').innerText = window.appData.phone;
-            document.getElementById('footer-school-email').innerText = window.appData.email;
-            document.getElementById('footer-about-summary').innerText = window.appData.about;
-
-            // Render Dynamic Welcome Card Kiri (Situs Resmi Selamat Datang)
-            document.getElementById('hero-tagline-display').innerText = window.appData.heroTagline || "SITUS RESMI";
-            document.getElementById('hero-title-display').innerHTML = window.appData.heroTitle || "Selamat <br class=\"hidden md:inline\">Datang";
-            document.getElementById('hero-desc-display').innerText = window.appData.heroDesc || "";
-
-            // Render Dynamic Welcome Card Kanan (Hero section right panel - image_5361e4.jpg)
-            document.getElementById('welcome-title-display').innerHTML = window.appData.welcomeTitle || 'SELAMAT DATANG DI <br><span class="text-blue-600">WEBSITE</span> SEKOLAH KAMI';
-            document.getElementById('welcome-desc-display').innerText = window.appData.welcomeDesc || '';
-            document.getElementById('welcome-badge-display').innerText = window.appData.welcomeBadgeText || 'A';
-
-            // Render 3 Welcome Card Grid Images (Dinamis / Editable)
-            document.getElementById('welcome-img1-display').src = convertCloudLink(window.appData.welcomeImg1 || DEFAULT_SCHOOL_DATA.welcomeImg1);
-            document.getElementById('welcome-img2-display').src = convertCloudLink(window.appData.welcomeImg2 || DEFAULT_SCHOOL_DATA.welcomeImg2);
-            document.getElementById('welcome-img3-display').src = convertCloudLink(window.appData.welcomeImg3 || DEFAULT_SCHOOL_DATA.welcomeImg3);
-
-            // Render Dynamic 4 Key Advantages
-            const advantagesContainer = document.getElementById('advantages-container');
-            advantagesContainer.innerHTML = '';
-            const colorClassMap = {
-                blue: "bg-blue-50 text-blue-600",
-                emerald: "bg-emerald-50 text-emerald-600",
-                purple: "bg-purple-50 text-purple-600",
-                amber: "bg-amber-50 text-amber-600"
-            };
-            window.appData.advantages.forEach(adv => {
-                const badgeColor = colorClassMap[adv.colorClass] || "bg-blue-50 text-blue-600";
-                advantagesContainer.innerHTML += `
-                    <div class="bg-white p-6 rounded-2xl border border-slate-100 hover:shadow-lg transition-all text-center flex flex-col items-center">
-                        <div class="w-14 h-14 rounded-full ${badgeColor} flex items-center justify-center mb-5">
-                            <i class="fa-solid ${adv.icon || 'fa-award'} text-xl"></i>
-                        </div>
-                        <h4 class="text-sm font-bold text-slate-900">${adv.title}</h4>
-                        <p class="text-slate-500 text-xs mt-2 leading-relaxed">
-                            ${adv.desc}
-                        </p>
-                    </div>
-                `;
-            });
-
-            // Render Dynamic Logos (Header and Footer)
-            const logoContainer = document.getElementById('header-logo-container');
-            const footerLogoContainer = document.getElementById('footer-logo-container');
-            const defaultSchoolLogoSVG = `
-                <svg viewBox="0 0 100 100" class="w-full h-full text-emerald-400">
-                    <polygon points="50,5 90,25 90,75 50,95 10,75 10,25" fill="#1b5e20" stroke="#ffd700" stroke-width="3.5"/>
-                    <circle cx="50" cy="50" r="28" fill="#1e88e5" />
-                    <path d="M50,30 Q65,40 50,70 Q35,40 50,30" fill="#fff59d" />
-                    <circle cx="50" cy="50" r="10" fill="#e53935" />
-                    <text x="50" y="90" fill="#ffffff" font-size="10.5" font-weight="bold" text-anchor="middle">BREBES</text>
-                </svg>
-            `;
-            const defaultFooterLogoSVG = `
-                <svg viewBox="0 0 100 100" class="w-12 h-12 text-emerald-400 flex-shrink-0">
-                    <polygon points="50,5 90,25 90,75 50,95 10,75 10,25" fill="#1b5e20" stroke="#ffd700" stroke-width="3"/>
-                    <circle cx="50" cy="50" r="28" fill="#1e88e5"/>
-                    <path d="M50,30 Q65,40 50,70 Q35,40 50,30" fill="#fff59d"/>
-                </svg>
-            `;
-
-            if (window.appData.logoUrl && window.appData.logoUrl.trim() !== "") {
-                logoContainer.innerHTML = `<img src="${convertCloudLink(window.appData.logoUrl)}" class="w-full h-full object-contain rounded-full" onerror="this.src='https://placehold.co/150x150/0a2540/ffffff?text=Logo'">`;
-                if (footerLogoContainer) {
-                    footerLogoContainer.innerHTML = `<img src="${convertCloudLink(window.appData.logoUrl)}" class="w-12 h-12 object-contain rounded-full" onerror="this.src='https://placehold.co/150x150/0a2540/ffffff?text=Logo'">`;
-                }
-            } else {
-                logoContainer.innerHTML = defaultSchoolLogoSVG;
-                if (footerLogoContainer) {
-                    footerLogoContainer.innerHTML = defaultFooterLogoSVG;
-                }
-            }
-
-            // Render Dynamic Ministry Badge
-            const ministryLogoContainer = document.getElementById('ministry-logo-container');
-            const defaultMinistryLogoSVG = `
-                <svg class="w-11 h-11 text-sky-400" viewBox="0 0 100 100" fill="currentColor">
-                    <polygon points="50,10 85,35 85,75 50,90 15,75 15,35" fill="#0066cc" stroke="#ffffff" stroke-width="2"/>
-                    <polygon points="50,22 75,40 75,70 50,82 25,70 25,40" fill="#ffffff"/>
-                    <path d="M50,30 L55,48 L73,48 L58,58 L63,76 L50,65 L37,76 L42,58 L27,48 L45,48 Z" fill="#ffcc00"/>
-                    <text x="50" y="97" fill="#ffffff" font-size="7.5" font-weight="bold" text-anchor="middle">TUT WURI HANDAYANI</text>
-                </svg>
-            `;
-
-            if (window.appData.ministryLogoUrl && window.appData.ministryLogoUrl.trim() !== "") {
-                ministryLogoContainer.innerHTML = `<img src="${convertCloudLink(window.appData.ministryLogoUrl)}" class="w-11 h-11 object-contain" onerror="this.src='https://placehold.co/150x150/0066cc/ffffff?text=Kemendikbud'">`;
-            } else {
-                ministryLogoContainer.innerHTML = defaultMinistryLogoSVG;
-            }
-
-            // Render Ministry Text
-            document.getElementById('header-ministry-text1').innerText = window.appData.ministryText1 || "Kementerian Pendidikan";
-            document.getElementById('header-ministry-text2').innerText = window.appData.ministryText2 || "Republik Indonesia";
-
-            // Sambutan Section
-            document.getElementById('speech-name').innerText = window.appData.principal.name;
-            document.getElementById('speech-image').src = convertCloudLink(window.appData.principal.image);
-            document.getElementById('speech-image').onerror = function() { this.src='https://placehold.co/400x500/0c1a30/ffffff?text=Principal'; };
-            
-            const speechTextContainer = document.getElementById('speech-text');
-            speechTextContainer.innerHTML = window.appData.principal.speech.split('\n').map(p => `<p class="mb-3">${p}</p>`).join('');
-
-            // Stats Counters
-            document.getElementById('stat-siswa').innerText = window.appData.stats.siswa;
-            document.getElementById('stat-rombel').innerText = window.appData.stats.rombel;
-            document.getElementById('stat-guru').innerText = window.appData.stats.guru;
-            document.getElementById('stat-prestasi').innerText = window.appData.stats.prestasi;
-
-            // News Feed
-            const grid = document.getElementById('news-grid');
-            grid.innerHTML = '';
-            window.appData.posts.forEach(post => {
-                grid.innerHTML += `
-                    <article class="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-xs hover:shadow-lg transition-all flex flex-col">
-                        <div class="relative aspect-video">
-                            <img class="w-full h-full object-cover" src="${convertCloudLink(post.image)}" alt="${post.title}" onerror="this.src='https://placehold.co/600x400/0c1a30/ffffff?text=Sekardoja'">
-                            <span class="absolute top-3 left-3 bg-blue-600 text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-widest shadow-xs">
-                                ${post.category}
-                            </span>
-                        </div>
-                        <div class="p-5 flex-1 flex flex-col justify-between">
-                            <div>
-                                <div class="text-slate-400 text-[10px] font-semibold mb-2"><i class="fa-regular fa-calendar"></i> ${post.date}</div>
-                                <h4 class="font-extrabold text-slate-900 text-xs md:text-sm leading-snug line-clamp-2">${post.title}</h4>
-                                <p class="text-slate-500 text-[11px] mt-2 leading-relaxed line-clamp-3">${post.summary}</p>
-                            </div>
-                            <div class="mt-4 pt-3 border-t border-slate-50 flex justify-end">
-                                <button onclick="openPostModal('${post.title}', '${post.summary}', '${post.image}', '${post.category}')" class="text-[11px] font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1">
-                                    Baca Selengkapnya <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1.5 transition-transform"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </article>
-                `;
-            });
-
-            // News Update in Footer matching image_34038c.jpg
-            const footerNews = document.getElementById('footer-news');
-            footerNews.innerHTML = '';
-            window.appData.posts.slice(0, 2).forEach(post => {
-                footerNews.innerHTML += `
-                    <div class="flex items-center space-x-3.5">
-                        <img class="w-11 h-11 object-cover rounded-lg bg-slate-800 flex-shrink-0" src="${convertCloudLink(post.image)}" alt="${post.title}" onerror="this.src='https://placehold.co/100x100/0c1a30/ffffff?text=Berita'">
-                        <div>
-                            <h6 class="text-[11px] font-extrabold text-slate-200 line-clamp-2 hover:text-amber-400 transition-colors">
-                                <button onclick="openPostModal('${post.title}', '${post.summary}', '${post.image}', '${post.category}')" class="text-left font-bold text-slate-200">${post.title}</button>
-                            </h6>
-                            <span class="text-[9px] text-slate-500 flex items-center gap-1 mt-0.5">
-                                <i class="fa-regular fa-calendar"></i> ${post.date}
-                            </span>
-                        </div>
-                    </div>
-                `;
-            });
-
-            // Quotes
-            renderQuotes();
-
-            // Photo Gallery Grid matching image_33ffca.jpg & image_34038c.jpg style
-            const galleryGrid = document.getElementById('gallery-grid');
-            galleryGrid.innerHTML = '';
-            window.appData.gallery.forEach(item => {
-                galleryGrid.innerHTML += `
-                    <div class="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-xs hover:shadow-lg transition-all group cursor-pointer" onclick="openLightbox('${convertCloudLink(item.image)}', '${item.title}')">
-                        <div class="relative overflow-hidden aspect-[4/3]">
-                            <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="${convertCloudLink(item.image)}" alt="${item.title}" onerror="this.src='https://placehold.co/600x450/0c1a30/ffffff?text=Galeri'">
-                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-5">
-                                <div>
-                                    <span class="text-[8px] font-black tracking-widest text-amber-400 uppercase block mb-1">${item.type}</span>
-                                    <h5 class="text-white text-xs font-bold line-clamp-1">${item.title}</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-
-            // Render Dynamic Partner Badges with Links
-            const partnersContainer = document.getElementById('partners-container');
-            partnersContainer.innerHTML = '';
-            window.appData.partners.forEach(partner => {
-                partnersContainer.innerHTML += `
-                    <a href="${partner.url || '#'}" target="_blank" class="h-8 flex items-center space-x-2 grayscale hover:grayscale-0 transition-all hover:scale-105 duration-150">
-                        <i class="fa-solid ${partner.icon || 'fa-link'} ${partner.colorClass || 'text-slate-700'} text-lg"></i>
-                        <span class="font-bold text-slate-700 tracking-tight text-[11px] uppercase">${partner.name}</span>
-                    </a>
-                `;
-            });
-        }
-
-        // Image Lightbox Viewer
-        function openLightbox(imageUrl, title) {
-            const lb = document.createElement('div');
-            lb.className = 'fixed inset-0 bg-black/95 backdrop-blur-md z-50 flex flex-col items-center justify-center p-4';
-            lb.onclick = () => lb.remove();
-            lb.innerHTML = `
-                <div class="relative max-w-4xl max-h-[80vh] overflow-hidden rounded-2xl shadow-2xl border border-white/10" onclick="event.stopPropagation()">
-                    <button onclick="this.closest('.fixed').remove()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/60 text-white hover:bg-black/90 transition-all flex items-center justify-center text-lg z-50"><i class="fa-solid fa-xmark"></i></button>
-                    <img class="max-w-full max-h-[80vh] object-contain rounded-xl" src="${imageUrl}" alt="${title}">
-                </div>
-                <div class="mt-4 text-center text-white" onclick="event.stopPropagation()">
-                    <h5 class="font-bold text-sm uppercase tracking-wide">${title}</h5>
-                    <p class="text-[10px] text-slate-400 mt-1">Dokumentasi Resmi - SD NEGERI SEKARDOJA</p>
-                </div>
-            `;
-            document.body.appendChild(lb);
-        }
     </script>
 </body>
 </html>
