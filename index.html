@@ -102,7 +102,7 @@
             
             // Custom Firebase config storage for fallback
             firebaseConfigStr: "",
-            firebaseAppId: "sdnegeri-sekardoja",
+            firebaseAppId: "sd-negeri-sekardoja",
 
             // Welcome Section Banner (Left Panel)
             heroTagline: "SITUS RESMI",
@@ -111,7 +111,7 @@
 
             // Dynamic Welcome Profile card properties matching image_5361e4.jpg (Right Panel)
             welcomeTitle: "SELAMAT DATANG DI <br><span class=\"text-blue-600\">WEBSITE</span> SEKOLAH KAMI",
-            welcomeDesc: "Website ini dirancang untuk mendukung komunikasi dan transparansi antara sekolah, siswa, orang tua, dan masyarakat. Temukan informasi terbaru, program unggulan, dan berbagai kegiatan sekolah dalam satu tempat. Bersama-sama, kita wujudkan generasi yang unggul dan berkarakter.",
+            welcomeDesc: "Website ini dirancang untuk mendukung komunikasi dan transparansi antara sekolah, siswa, orang tua, dan masyarakat. Temukan informasi terbaru, program unggulan, and berbagai kegiatan sekolah dalam satu tempat. Bersama-sama, kita wujudkan generasi yang unggul dan berkarakter.",
             welcomeBadgeText: "A",
             welcomeImg1: "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80&w=300",
             welcomeImg2: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=300",
@@ -279,7 +279,7 @@
                             Profil +
                         </button>
                         <div class="absolute left-0 mt-0 w-56 bg-white border border-slate-100 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 py-1">
-                            <button onclick="showAboutModal()" class="w-full text-left px-4 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-blue-600 flex items-center gap-2">
+                            <button onclick="showAboutModal()" class="w-full text-left px-4 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-blue-600 border-b border-slate-100 flex items-center gap-2">
                                 <i class="fa-solid fa-circle-info text-slate-400"></i> Tentang Sekolah +
                             </button>
                             <button onclick="showVisiMisiModal()" class="w-full text-left px-4 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-blue-600 flex items-center justify-between">
@@ -715,7 +715,7 @@
     <!-- MODAL 4: SARANA PRASARANA LIST MODAL -->
     <div id="facilities-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-xl w-full overflow-hidden shadow-2xl border border-slate-100">
-            <div class="bg-blue-950 p-5 text-white flex justify-between items-center">
+            <div class="bg-blue-95 p-5 text-white flex justify-between items-center">
                 <h3 class="font-bold text-sm uppercase flex items-center gap-2"><i class="fa-solid fa-school text-amber-300"></i> Sarana dan Prasarana</h3>
                 <button onclick="closeFacilitiesModal()" class="text-white/80 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
@@ -1065,13 +1065,13 @@
   "projectId": "sdnegeri-sekardoja",
   "storageBucket": "sdnegeri-sekardoja.appspot.com",
   "messagingSenderId": "12345678",
-  "appId": "sdnegeri-sekardoja"
+  "appId": "1:123456:web:abcd"
 }'></textarea>
                                 </div>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                                     <div>
                                         <label class="block text-[9px] font-black text-slate-600 uppercase tracking-widest mb-1">Firebase App ID / Collection Path</label>
-                                        <input type="text" id="input-firebase-app-id" class="w-full text-xs p-3 border border-slate-200 rounded-lg outline-none font-mono text-slate-700" placeholder="Contoh: sdnegeri-sekardoja">
+                                        <input type="text" id="input-firebase-app-id" class="w-full text-xs p-3 border border-slate-200 rounded-lg outline-none font-mono text-slate-700" placeholder="Contoh: sd-negeri-sekardoja">
                                     </div>
                                     <div class="bg-blue-50/50 p-3 rounded-lg border border-blue-100 flex items-center gap-2 text-[10px] text-blue-800">
                                         <i class="fa-solid fa-circle-question text-xs flex-shrink-0"></i>
@@ -1317,7 +1317,7 @@
         <span id="feedback-text" class="text-xs font-semibold">Perubahan berhasil disimpan!</span>
     </div>
 
-    <!-- Firebase SDK Dependencies -->
+    <!-- Dynamic Firebase & Firestore Real-Time Module Integrator -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -1328,13 +1328,13 @@
         // =========================================================================
         const CUSTOM_FIREBASE_CONFIG = {
             apiKey: "AIzaSyBOKAzVSKVzaA-mTKaKZUX9LTbI14xqfI4", // <-- Ganti baris ini dengan apiKey asli Anda!
-            authDomain: "esdesekardoja-34a83.firebaseapp.com",
+            authDomain: "sdn-sekardoja.firebaseapp.com",
             projectId: "sdn-sekardoja",
             storageBucket: "sdn-sekardoja.appspot.com",
             messagingSenderId: "123456789012",
             appId: "1:815052026723:web:645b594122028c0d6c9956" // <-- Ganti baris ini dengan appId asli Anda!
         };
-        const CUSTOM_COLLECTION_APP_ID = "sdnegeri-sekardoja"; // Sesuai struktur database Firestore Anda
+        const CUSTOM_COLLECTION_APP_ID = "sd-negeri-sekardoja"; // Sesuai struktur database Firestore Anda
         // =========================================================================
 
         let customApp = null;
@@ -1794,28 +1794,23 @@
             if (err) {
                 badge.className = "px-3 py-1 rounded-full text-xs font-black bg-rose-50 text-rose-700 border border-rose-200";
                 badge.innerText = "Offline / Gagal Terhubung";
-                errorText.innerText = `Eror Code: ${err.code}\nPesan: ${err.message}`;
+                errorText.innerText = `Eror Code: ${err.code || 'N/A'}\nPesan: ${err.message || 'Unknown Error'}`;
 
                 let steps = '';
-                if (err.code === 'auth/invalid-api-key' || err.message.includes('apiKey')) {
+                if (err.code === 'auth/invalid-api-key' || (err.message && err.message.includes('apiKey'))) {
                     steps = `
-                        <li class="mb-1"><strong>Masalah:</strong> API Key atau App ID Firebase di index.html salah / masih tiruan.</li>
-                        <li class="mb-1"><strong>Solusi:</strong> Buka file <strong>index.html</strong> di GitHub Anda. Cari bagian <code>CUSTOM_FIREBASE_CONFIG</code> di baris sekitar 1120. Ganti teks <code>"AIzaSyC-hR6mHh6Vl1fSgV_Mock_Key"</code> dan <code>"1:123456789012:web:mock123abcd"</code> dengan Kredensial Asli dari Firebase Console Anda.</li>
+                        <li class="mb-1"><strong>Masalah:</strong> Kunci API Firebase di index.html salah, kosong, atau masih tiruan (Mock Key).</li>
+                        <li class="mb-1"><strong>Solusi:</strong> Buka file <code>index.html</code> di repositori GitHub Anda. Ganti isi dari <code>CUSTOM_FIREBASE_CONFIG</code> dengan kredensial proyek asli Anda.</li>
                     `;
-                } else if (err.code === 'auth/unauthorized-domain' || err.message.includes('domain')) {
+                } else if (err.code === 'auth/unauthorized-domain' || (err.message && err.message.includes('domain'))) {
                     steps = `
-                        <li class="mb-1"><strong>Masalah:</strong> Domain GitHub Pages belum diotorisasi di Firebase.</li>
-                        <li class="mb-1"><strong>Solusi:</strong> Masuk ke <strong>Firebase Console</strong> -> Pilih Proyek Anda -> Klik Menu <strong>Authentication</strong> -> Pilih Tab <strong>Settings</strong> -> Pilih <strong>Authorized Domains</strong> -> Klik <strong>Add Domain</strong> -> Masukkan domain GitHub Anda (contoh: <code>username.github.io</code>).</li>
-                    `;
-                } else if (err.code === 'permission-denied') {
-                    steps = `
-                        <li class="mb-1"><strong>Masalah:</strong> Aturan Akses Database (Rules) di Firestore memblokir koneksi.</li>
-                        <li class="mb-1"><strong>Solusi:</strong> Masuk ke <strong>Firebase Console</strong> -> Klik <strong>Firestore Database</strong> -> Pilih Tab <strong>Rules</strong> -> Ubah isi aturan menjadi: <br><code class="block bg-slate-100 p-1.5 rounded text-[10px] my-1">allow read, write: if true;</code> lalu klik <strong>Publish</strong>.</li>
+                        <li class="mb-1"><strong>Masalah:</strong> Domain GitHub Pages belum didaftarkan di Firebase Console.</li>
+                        <li class="mb-1"><strong>Solusi:</strong> Masuk ke Firebase Console Anda -> Authentication -> Settings -> Authorized Domains -> Tambahkan domain GitHub Pages Anda (misal: <code>username.github.io</code>).</li>
                     `;
                 } else {
                     steps = `
-                        <li class="mb-1"><strong>Masalah:</strong> Koneksi jaringan terhambat atau format config JSON salah.</li>
-                        <li class="mb-1"><strong>Solusi:</strong> Pastikan format penulisan konfigurasi Firebase Anda di GitHub tidak ada koma yang hilang atau kurung kurawal yang salah.</li>
+                        <li class="mb-1"><strong>Masalah:</strong> Pengaturan Firebase tidak aktif atau Aturan Akses Database memblokir koneksi.</li>
+                        <li class="mb-1"><strong>Solusi:</strong> Pastikan Cloud Firestore diaktifkan dalam <strong>Test Mode</strong> agar semua perangkat diizinkan membaca & menulis data.</li>
                     `;
                 }
                 solutionList.innerHTML = steps;
@@ -1824,7 +1819,7 @@
                 badge.innerText = "Online / Terhubung Sempurna";
                 errorText.innerText = "Tidak ada masalah koneksi terdeteksi. Sinkronisasi real-time antar perangkat aktif!";
                 solutionList.innerHTML = `
-                    <li class="mb-1">Selamat! Website Anda telah berhasil terhubung ke cloud database.</li>
+                    <li class="mb-1">Selamat! Website Anda telah berhasil terhubung ke cloud database secara real-time.</li>
                     <li class="mb-1">Setiap kali Anda menekan <strong>Simpan Perubahan</strong> di Panel Admin, data di HP atau laptop guru lain akan langsung terupdate otomatis.</li>
                 `;
             }
@@ -2168,515 +2163,6 @@
                 </div>
             `;
             document.body.appendChild(lb);
-        }
-    </script>
-
-    <script>
-        // Dialog: About/Profil
-        function showAboutModal() {
-            document.getElementById('about-text-desc').innerText = window.appData.about;
-            document.getElementById('about-text-history').innerText = window.appData.history;
-            document.getElementById('about-modal').classList.remove('hidden');
-        }
-        function closeAboutModal() {
-            document.getElementById('about-modal').classList.add('hidden');
-        }
-
-        // Dialog: Visi & Misi
-        function showVisiMisiModal() {
-            document.getElementById('modal-visi').innerText = window.appData.visi;
-            const mList = document.getElementById('modal-misi');
-            mList.innerHTML = window.appData.misi.map(m => `<li>${m}</li>`).join('');
-            document.getElementById('visi-misi-modal').classList.remove('hidden');
-        }
-        function closeVisiMisiModal() {
-            document.getElementById('visi-misi-modal').classList.add('hidden');
-        }
-
-        // Dialog: Guru
-        function showTeachersModal() {
-            const grid = document.getElementById('teachers-modal-grid');
-            grid.innerHTML = '';
-            window.appData.teachers.forEach(t => {
-                grid.innerHTML += `
-                    <div class="bg-slate-50 rounded-2xl p-4 flex items-center gap-4 border border-slate-150">
-                        <img class="w-14 h-14 object-cover rounded-full border border-slate-300" src="${convertCloudLink(t.image)}" onerror="this.src='https://placehold.co/150x150/0a2540/ffffff?text=Guru'">
-                        <div>
-                            <h5 class="font-extrabold text-slate-900 text-xs md:text-sm leading-tight">${t.name}</h5>
-                            <p class="text-[11px] text-blue-600 font-bold mt-0.5">${t.role}</p>
-                            <p class="text-[9px] text-slate-400 mt-0.5">NIP: ${t.nip || '-'}</p>
-                        </div>
-                    </div>
-                `;
-            });
-            document.getElementById('teachers-modal').classList.remove('hidden');
-        }
-        function closeTeachersModal() {
-            document.getElementById('teachers-modal').classList.add('hidden');
-        }
-
-        // Dialog: Struktur Organisasi (Cuplikan layar 2026-06-24 065449.jpg)
-        function showStructureModal() {
-            const orgContainer = document.getElementById('structure-org-tree');
-            orgContainer.innerHTML = '';
-            window.appData.organization.forEach(item => {
-                orgContainer.innerHTML += `
-                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex items-center justify-between">
-                        <div>
-                            <span class="text-[9px] font-black text-slate-400 block uppercase mb-0.5">${item.role}</span>
-                            <span class="font-extrabold text-slate-800 text-xs md:text-sm">${item.name}</span>
-                        </div>
-                        <i class="fa-solid fa-id-card-clip text-slate-300 text-lg"></i>
-                    </div>
-                `;
-            });
-            document.getElementById('structure-modal').classList.remove('hidden');
-        }
-        function closeStructureModal() {
-            document.getElementById('structure-modal').classList.add('hidden');
-        }
-
-        // Dialog: Sarana Prasarana
-        function showFacilitiesModal() {
-            const list = document.getElementById('facilities-modal-list');
-            list.innerHTML = '';
-            window.appData.facilities.forEach(item => {
-                list.innerHTML += `
-                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex items-center gap-4">
-                        <div class="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-sm flex-shrink-0">
-                            <i class="fa-solid ${item.icon || 'fa-building'}"></i>
-                        </div>
-                        <div>
-                            <span class="font-extrabold text-slate-900 text-xs block">${item.title}</span>
-                            <span class="text-[10px] text-slate-500 leading-normal block mt-1">${item.desc}</span>
-                        </div>
-                    </div>
-                `;
-            });
-            document.getElementById('facilities-modal').classList.remove('hidden');
-        }
-        function closeFacilitiesModal() {
-            document.getElementById('facilities-modal').classList.add('hidden');
-        }
-
-        // Dialog: Kesiswaan (Ekstrakurikuler)
-        function showKesiswaanModal() {
-            const list = document.getElementById('kesiswaan-modal-list');
-            list.innerHTML = '';
-            window.appData.extracurriculars.forEach(item => {
-                list.innerHTML += `
-                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex gap-4">
-                        <div class="w-10 h-10 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center text-sm flex-shrink-0">
-                            <i class="fa-solid ${item.icon || 'fa-star-and-crescent'}"></i>
-                        </div>
-                        <div>
-                            <h5 class="font-extrabold text-slate-900 text-xs uppercase">${item.name}</h5>
-                            <p class="text-[10px] text-slate-500 mt-1 leading-normal">${item.desc}</p>
-                        </div>
-                    </div>
-                `;
-            });
-            document.getElementById('kesiswaan-modal').classList.remove('hidden');
-        }
-        function closeKesiswaanModal() {
-            document.getElementById('kesiswaan-modal').classList.add('hidden');
-        }
-
-        // Dialog: Siswa Dashboard & PPDB Info
-        function showSiswaDashboardModal() {
-            document.getElementById('dash-siswa').innerText = window.appData.stats.siswa;
-            document.getElementById('dash-prestasi').innerText = window.appData.stats.prestasi;
-            document.getElementById('siswa-dashboard-modal').classList.remove('hidden');
-        }
-        function closeSiswaDashboardModal() {
-            document.getElementById('siswa-dashboard-modal').classList.add('hidden');
-        }
-
-        // Dialog: Video Gallery List
-        function showVideoGalleryModal() {
-            const list = document.getElementById('video-modal-list');
-            list.innerHTML = '';
-            if (!window.appData.videos || window.appData.videos.length === 0) {
-                list.innerHTML = `<p class="text-slate-500 text-xs py-4 text-center">Belum ada video.</p>`;
-            } else {
-                window.appData.videos.forEach(v => {
-                    list.innerHTML += `
-                        <div class="bg-slate-50 border border-slate-150 rounded-2xl p-4 space-y-2">
-                            <span class="font-extrabold text-slate-900 text-xs leading-snug block">${v.title}</span>
-                            <div class="aspect-video w-full rounded-lg overflow-hidden border border-slate-200">
-                                <iframe class="w-full h-full" src="${v.embedUrl}" title="${v.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            </div>
-                        </div>
-                    `;
-                });
-            }
-            document.getElementById('video-gallery-modal').classList.remove('hidden');
-        }
-        function closeVideoGalleryModal() {
-            document.getElementById('video-gallery-modal').classList.add('hidden');
-        }
-
-        // Hero watch video button
-        function openVideoPlayer() {
-            document.getElementById('video-modal').classList.remove('hidden');
-        }
-        function closeVideoPlayer() {
-            document.getElementById('video-modal').classList.add('hidden');
-        }
-    </script>
-
-    <!-- PANEL ADMIN WORKSPACE CONTROLLER -->
-    <script>
-        let activeAdminTab = 'general';
-
-        // Access gate logic
-        function openAdminModal() {
-            if (!isAdminLoggedIn) {
-                document.getElementById('login-error-msg').classList.add('hidden');
-                document.getElementById('login-username').value = '';
-                document.getElementById('login-password').value = '';
-                document.getElementById('admin-login-modal').classList.remove('hidden');
-                return;
-            }
-
-            // Bind values to Admin Editor inputs on open
-            document.getElementById('input-school-name').value = window.appData.name;
-            document.getElementById('input-school-address').value = window.appData.address;
-            document.getElementById('input-school-phone').value = window.appData.phone;
-            document.getElementById('input-school-email').value = window.appData.email;
-            document.getElementById('input-school-about').value = window.appData.about;
-            document.getElementById('input-school-history').value = window.appData.history;
-
-            document.getElementById('input-welcome-title').value = window.appData.welcomeTitle || "";
-            document.getElementById('input-welcome-desc').value = window.appData.welcomeDesc || "";
-            document.getElementById('input-welcome-badge').value = window.appData.welcomeBadgeText || "A";
-            
-            // Welcome card 3 photos bindings (image_7a5fa5.png)
-            document.getElementById('input-welcome-img1').value = window.appData.welcomeImg1 || "";
-            document.getElementById('input-welcome-img2').value = window.appData.welcomeImg2 || "";
-            document.getElementById('input-welcome-img3').value = window.appData.welcomeImg3 || "";
-
-            // Logos and ministry state binding
-            document.getElementById('input-school-logo-url').value = window.appData.logoUrl || "";
-            document.getElementById('input-ministry-logo-url').value = window.appData.ministryLogoUrl || "";
-            document.getElementById('input-ministry-text1').value = window.appData.ministryText1 || "Kementerian Pendidikan";
-            document.getElementById('input-ministry-text2').value = window.appData.ministryText2 || "Republik Indonesia";
-            
-            // Custom Firebase fields binding
-            document.getElementById('input-firebase-config-str').value = window.appData.firebaseConfigStr || "";
-            document.getElementById('input-firebase-app-id').value = window.appData.firebaseAppId || "";
-
-            document.getElementById('input-principal-name').value = window.appData.principal.name;
-            document.getElementById('input-principal-image').value = window.appData.principal.image;
-            document.getElementById('input-principal-speech').value = window.appData.principal.speech;
-            
-            document.getElementById('input-school-visi').value = window.appData.visi;
-
-            // Stats
-            document.getElementById('input-stat-siswa').value = window.appData.stats.siswa;
-            document.getElementById('input-stat-rombel').value = window.appData.stats.rombel;
-            document.getElementById('input-stat-guru').value = window.appData.stats.guru;
-            document.getElementById('input-stat-prestasi').value = window.appData.stats.prestasi;
-
-            // Hero Left Section binding
-            document.getElementById('input-hero-tagline').value = window.appData.heroTagline || "SITUS RESMI";
-            document.getElementById('input-hero-title').value = window.appData.heroTitle || "Selamat <br class=\"hidden md:inline\">Datang";
-            document.getElementById('input-hero-desc').value = window.appData.heroDesc || "";
-
-            // Render sub lists
-            renderAdminTeachersList();
-            renderAdminFacilitiesList();
-            renderAdminKesiswaanList();
-            renderAdminPostsList();
-            renderAdminGalleryList();
-            renderAdminQuotesList();
-            renderAdminOrgList();
-            renderAdminAdvantagesList();
-            renderAdminPartnersList();
-
-            document.getElementById('admin-modal').classList.remove('hidden');
-        }
-
-        function closeAdminModal() {
-            document.getElementById('admin-modal').classList.add('hidden');
-        }
-
-        function closeLoginModal() {
-            document.getElementById('admin-login-modal').classList.add('hidden');
-        }
-
-        function togglePasswordVisibility() {
-            const pwd = document.getElementById('login-password');
-            const icon = document.getElementById('password-toggle-icon');
-            if (pwd.type === 'password') {
-                pwd.type = 'text';
-                icon.className = 'fa-solid fa-eye-slash text-xs';
-            } else {
-                pwd.type = 'password';
-                icon.className = 'fa-solid fa-eye text-xs';
-            }
-        }
-
-        function handleAdminLogin() {
-            const u = document.getElementById('login-username').value;
-            const p = document.getElementById('login-password').value;
-            const error = document.getElementById('login-error-msg');
-
-            // Hardcoded safe credentials
-            if (u === 'admin' && p === 'sekardoja123') {
-                isAdminLoggedIn = true;
-                sessionStorage.setItem('isAdminLoggedIn', 'true');
-                error.classList.add('hidden');
-                closeLoginModal();
-                openAdminModal();
-                showToast("Akses Diterima! Selamat datang Admin.");
-            } else {
-                error.classList.remove('hidden');
-            }
-        }
-
-        function handleAdminLogout() {
-            isAdminLoggedIn = false;
-            sessionStorage.removeItem('isAdminLoggedIn');
-            closeAdminModal();
-            showToast("Berhasil keluar dari sesi Admin.");
-        }
-
-        function switchAdminTab(tabName) {
-            document.querySelectorAll('.admin-tab-btn').forEach(btn => {
-                btn.className = "admin-tab-btn flex items-center space-x-3 w-full text-left px-3.5 py-3 rounded-xl text-xs font-bold transition-all text-slate-500 hover:bg-slate-100 whitespace-nowrap md:whitespace-normal";
-            });
-            document.querySelectorAll('.admin-panel-content').forEach(p => p.classList.add('hidden'));
-
-            const actBtn = document.getElementById(`tab-${tabName}`);
-            if (actBtn) {
-                actBtn.className = "admin-tab-btn flex items-center space-x-3 w-full text-left px-3.5 py-3 rounded-xl text-xs font-bold transition-all text-blue-600 bg-blue-50/80 whitespace-nowrap md:whitespace-normal";
-            }
-            document.getElementById(`admin-panel-${tabName}`).classList.remove('hidden');
-            activeAdminTab = tabName;
-        }
-
-        // Sub lists rendering for Admin tab management
-        function renderAdminTeachersList() {
-            const list = document.getElementById('admin-teachers-list');
-            list.innerHTML = '';
-            window.appData.teachers.forEach((t, i) => {
-                list.innerHTML += `
-                    <div class="p-3 border border-slate-150 bg-slate-50/50 rounded-xl flex items-center justify-between gap-2">
-                        <div class="flex items-center space-x-3 overflow-hidden">
-                            <img class="w-10 h-10 object-cover rounded-lg bg-slate-200" src="${convertCloudLink(t.image)}" onerror="this.src='https://placehold.co/100x100/0c1a30/ffffff?text=Guru'">
-                            <div>
-                                <h6 class="text-xs font-bold text-slate-800 truncate">${t.name}</h6>
-                                <span class="text-[9px] text-slate-400 block">${t.role}</span>
-                            </div>
-                        </div>
-                        <button onclick="deleteTeacher(${i})" class="text-rose-600 hover:bg-rose-100 w-7 h-7 rounded-lg flex items-center justify-center text-xs"><i class="fa-solid fa-trash"></i></button>
-                    </div>
-                `;
-            });
-        }
-
-        function renderAdminFacilitiesList() {
-            const list = document.getElementById('admin-facilities-list');
-            list.innerHTML = '';
-            window.appData.facilities.forEach((fac, i) => {
-                list.innerHTML += `
-                    <div class="p-3 border border-slate-150 bg-slate-50/50 rounded-xl flex items-center justify-between gap-3">
-                        <div>
-                            <span class="text-xs font-bold text-slate-800 block">${fac.title}</span>
-                            <span class="text-[9px] text-slate-400 block line-clamp-1">${fac.desc}</span>
-                        </div>
-                        <button onclick="deleteFacility(${i})" class="text-rose-600 hover:bg-rose-100 w-7 h-7 rounded-lg flex items-center justify-center text-xs"><i class="fa-solid fa-trash text-sm"></i></button>
-                    </div>
-                `;
-            });
-        }
-
-        // Sub lists rendering
-        function renderAdminKesiswaanList() {
-            const list = document.getElementById('admin-extracurricular-list');
-            list.innerHTML = '';
-            window.appData.extracurriculars.forEach((item, i) => {
-                list.innerHTML += `
-                    <div class="p-3 border border-slate-150 bg-slate-50/50 rounded-xl flex items-center justify-between gap-3">
-                        <div>
-                            <span class="text-xs font-bold text-slate-800 block">${item.name}</span>
-                            <span class="text-[9px] text-slate-400 block line-clamp-1">${item.desc}</span>
-                        </div>
-                        <button onclick="deleteExtracurricular(${i})" class="text-rose-600 hover:bg-rose-100 w-7 h-7 rounded-lg flex items-center justify-center text-xs"><i class="fa-solid fa-trash text-sm"></i></button>
-                    </div>
-                `;
-            });
-        }
-
-        function renderAdminPostsList() {
-            const list = document.getElementById('admin-posts-list');
-            list.innerHTML = '';
-            window.appData.posts.forEach((post, i) => {
-                list.innerHTML += `
-                    <div class="p-3 border border-slate-150 bg-slate-50/50 rounded-xl flex items-center justify-between gap-3">
-                        <div class="flex items-center space-x-3 overflow-hidden">
-                            <img class="w-10 h-10 object-cover rounded-lg bg-slate-200" src="${convertCloudLink(post.image)}" onerror="this.src='https://placehold.co/100x100/0c1a30/ffffff?text=Post'">
-                            <div>
-                                <h6 class="text-xs font-bold text-slate-800 truncate">${post.title}</h6>
-                                <span class="text-[9px] font-bold text-slate-400 block">${post.category} | ${post.date}</span>
-                            </div>
-                        </div>
-                        <button onclick="deletePost(${i})" class="text-rose-600 hover:bg-rose-100 w-7 h-7 rounded-lg flex items-center justify-center text-xs"><i class="fa-solid fa-trash text-sm"></i></button>
-                    </div>
-                `;
-            });
-        }
-
-        function renderAdminGalleryList() {
-            // Photo Section (Strictly matching image_33ffca.jpg design with smart direct-editing inputs)
-            const photoList = document.getElementById('admin-gallery-photo-grid');
-            photoList.innerHTML = '';
-            window.appData.gallery.forEach((item, i) => {
-                photoList.innerHTML += `
-                    <div class="border border-slate-200 rounded-2xl p-4 bg-slate-50/50 space-y-3 relative shadow-xs">
-                        <!-- Red delete icon on top right -->
-                        <button onclick="deleteGalleryPhoto(${i})" class="absolute top-3 right-3 text-rose-600 hover:bg-rose-100 w-7 h-7 rounded-lg flex items-center justify-center text-xs border border-slate-200 bg-white shadow-xs z-10">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                        
-                        <!-- High Resolution Real-time Image preview -->
-                        <div class="aspect-video w-full rounded-xl overflow-hidden bg-slate-100 border border-slate-200 relative">
-                            <img class="w-full h-full object-cover" src="${convertCloudLink(item.image)}" onerror="this.src='https://placehold.co/300x180/0c1a30/ffffff?text=Tautan+Galeri+Belum+Valid'">
-                            <span class="absolute bottom-2 left-2 bg-slate-900/70 text-white text-[8px] font-extrabold px-2 py-0.5 rounded-md backdrop-blur-xs uppercase">Preview</span>
-                        </div>
-                        
-                        <div class="space-y-2">
-                            <div>
-                                <label class="block text-[8px] font-black text-slate-400 uppercase tracking-wider mb-0.5">Judul Kegiatan</label>
-                                <input type="text" id="gallery-photo-title-${i}" value="${item.title}" class="w-full text-xs px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg outline-none font-bold text-slate-800">
-                            </div>
-                            <div>
-                                <label class="block text-[8px] font-black text-slate-400 uppercase tracking-wider mb-0.5">Tautan Gambar (Google Drive / Lainnya)</label>
-                                <input type="text" id="gallery-photo-image-${i}" value="${item.image}" class="w-full text-xs px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg outline-none font-mono text-blue-600" placeholder="Paste link drive / raw image url...">
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-
-            // Video Section
-            const videoList = document.getElementById('admin-gallery-video-list');
-            videoList.innerHTML = '';
-            if (window.appData.videos) {
-                window.appData.videos.forEach((video, i) => {
-                    videoList.innerHTML += `
-                        <div class="p-3 border border-slate-150 bg-slate-50/50 rounded-xl flex items-center justify-between gap-3">
-                            <div>
-                                <span class="text-xs font-bold text-slate-800 block">${video.title}</span>
-                                <span class="text-[9px] text-slate-400 block">${video.embedUrl}</span>
-                            </div>
-                            <button onclick="deleteGalleryVideo(${i})" class="text-rose-600 hover:bg-rose-100 w-7 h-7 rounded-lg flex items-center justify-center text-xs"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    `;
-                });
-            }
-        }
-
-        function renderAdminQuotesList() {
-            const list = document.getElementById('admin-quotes-list');
-            list.innerHTML = '';
-            window.appData.quotes.forEach((q, i) => {
-                list.innerHTML += `
-                    <div class="p-3.5 border border-slate-150 bg-slate-50/50 rounded-xl space-y-2">
-                        <textarea onchange="updateQuoteText(${i}, this.value)" class="w-full text-xs p-2 border border-slate-200 rounded-lg outline-none" rows="2">${q.text}</textarea>
-                        <div class="flex justify-between items-center">
-                            <input type="text" value="${q.author}" onchange="updateQuoteAuthor(${i}, this.value)" class="text-[10px] font-bold text-slate-600 bg-transparent border-b border-slate-200 px-1 py-0.5 outline-none">
-                            <button onclick="deleteQuote(${i})" class="text-rose-600 hover:text-rose-800 text-xs flex items-center gap-1 font-bold"><i class="fa-solid fa-trash"></i> Hapus</button>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        function renderAdminOrgList() {
-            const container = document.getElementById('admin-org-list');
-            container.innerHTML = '';
-            window.appData.organization.forEach((item, index) => {
-                container.innerHTML += `
-                    <div class="flex items-center gap-3 bg-slate-50 p-2.5 rounded-xl border border-slate-150">
-                        <div class="flex-1">
-                            <label class="block text-[8px] font-black text-slate-400 uppercase tracking-wider mb-0.5">Jabatan / Role</label>
-                            <input type="text" id="org-role-${index}" value="${item.role}" class="w-full text-xs px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg outline-none font-extrabold text-blue-600">
-                        </div>
-                        <div class="flex-1">
-                            <label class="block text-[8px] font-black text-slate-400 uppercase tracking-wider mb-0.5">Nama Pejabat</label>
-                            <input type="text" id="org-name-${index}" value="${item.name}" class="w-full text-xs px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg outline-none font-medium text-slate-800">
-                        </div>
-                        <button type="button" onclick="deleteOrgRole(${index})" class="text-rose-600 hover:bg-rose-100 p-2 rounded-lg flex items-center justify-center text-xs mt-3.5">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </div>
-                `;
-            });
-        }
-
-        function renderAdminAdvantagesList() {
-            const container = document.getElementById('admin-advantages-list');
-            container.innerHTML = '';
-            window.appData.advantages.forEach((adv, index) => {
-                container.innerHTML += `
-                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
-                        <div class="font-bold text-xs text-blue-600 uppercase tracking-wider">Kotak Keunggulan #${index + 1}</div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-[9px] font-black text-slate-500 uppercase mb-0.5">Judul Keunggulan</label>
-                                <input type="text" id="adv-title-${index}" value="${adv.title}" class="w-full text-xs p-2.5 bg-white border border-slate-200 rounded-lg outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-[9px] font-black text-slate-500 uppercase mb-0.5">Ikon FontAwesome (contoh: fa-school)</label>
-                                <input type="text" id="adv-icon-${index}" value="${adv.icon}" class="w-full text-xs p-2.5 bg-white border border-slate-200 rounded-lg outline-none">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-[9px] font-black text-slate-500 uppercase mb-0.5">Deskripsi Ringkat</label>
-                            <textarea id="adv-desc-${index}" rows="2" class="w-full text-xs p-2.5 bg-white border border-slate-200 rounded-lg outline-none">${adv.desc}</textarea>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        function renderAdminPartnersList() {
-            const container = document.getElementById('admin-partners-list');
-            container.innerHTML = '';
-            window.appData.partners.forEach((partner, index) => {
-                container.innerHTML += `
-                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
-                        <div class="font-bold text-xs text-emerald-600 uppercase tracking-wider">Partner Badge #${index + 1}</div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-[9px] font-black text-slate-500 uppercase mb-0.5">Nama Instansi / Program</label>
-                                <input type="text" id="partner-name-${index}" value="${partner.name}" class="w-full text-xs p-2.5 bg-white border border-slate-200 rounded-lg outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-[9px] font-black text-slate-500 uppercase mb-0.5">Ikon FontAwesome (contoh: fa-database)</label>
-                                <input type="text" id="partner-icon-${index}" value="${partner.icon}" class="w-full text-xs p-2.5 bg-white border border-slate-200 rounded-lg outline-none">
-                            </div>
-                            <div class="md:col-span-2">
-                                <label class="block text-[9px] font-black text-slate-500 uppercase mb-1">URL Tautan Utama (Langsung Terbuka Baru)</label>
-                                <input type="text" id="partner-url-${index}" value="${partner.url || ''}" class="w-full text-xs p-2.5 bg-white border border-slate-200 rounded-lg outline-none" placeholder="https://...">
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        function syncOrgStateFromInputs() {
-            window.appData.organization.forEach((item, index) => {
-                const roleInput = document.getElementById(`org-role-${index}`);
-                const nameInput = document.getElementById(`org-name-${index}`);
-                if (roleInput && nameInput) {
-                    item.role = roleInput.value;
-                    item.name = nameInput.value;
-                }
-            });
         }
     </script>
 </body>
